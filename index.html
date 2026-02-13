@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>СТРОЙБРИГАДА · БЕТОН · АРМАТУРА · СРОКИ</title>
+    <style>
+        /* ===== ЧЁРНО-БЕЛОЕ ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background: #0c0c0c;
+            color: #e5e5e5;
+            line-height: 1.45;
+        }
+
+        /* ===== ПРЕЛОУДЕР — ЧЁРНЫЙ, БЕЛЫЙ, БЕТОН ===== */
+        .preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: #0a0a0a;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            border: 8px solid #2a2a2a;
+            transition: opacity 0.6s ease;
+        }
+
+        .preloader.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        /* Текстура бетона — еле видно */
+        .preloader::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: repeating-linear-gradient(45deg, rgba(255,255,255,0.01) 0px, rgba(255,255,255,0.01) 2px, transparent 2px, transparent 12px);
+            opacity: 0.1;
+            pointer-events: none;
+        }
+
+        .preloader-content {
+            position: relative;
+            z-index: 100;
+            text-align: center;
+            max-width: 800px;
+            padding: 20px;
+        }
+
+        .preloader-title {
+            font-size: clamp(3.5rem, 15vw, 7rem);
+            font-weight: 900;
+            text-transform: uppercase;
+            color: #ffffff;
+            line-height: 0.9;
+            letter-spacing: -4px;
+            text-shadow: 4px 4px 0 #2a2a2a;
+            margin-bottom: 16px;
+            border-bottom: 4px solid #4a4a4a;
+            display: inline-block;
+            padding-bottom: 8px;
+        }
+
+        .preloader-sub {
+            font-size: 1.2rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: #b0b0b0;
+            letter-spacing: 6px;
+            margin-bottom: 32px;
+            border-top: 1px solid #4a4a4a;
+            border-bottom: 1px solid #4a4a4a;
+            padding: 10px 0;
+            display: inline-block;
+        }
+
+        .progress-brutal {
+            width: 70%;
+            max-width: 500px;
+            height: 32px;
+            background: #1a1a1a;
+            border: 2px solid #4a4a4a;
+            margin: 32px auto;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            width: 0%;
+            height: 100%;
+            background: #6b6b6b;
+            animation: fillProgress 2.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+        }
+
+        @keyframes fillProgress {
+            0% { width: 0%; }
+            100% { width: 100%; }
+        }
+
+        .percent {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #b0b0b0;
+            margin-top: 8px;
+            letter-spacing: 2px;
+        }
+
+        .construction-icons {
+            display: flex;
+            gap: 24px;
+            justify-content: center;
+            margin-top: 40px;
+            font-size: 2.5rem;
+            opacity: 0.5;
+            filter: grayscale(100%);
+        }
+
+        .stamp {
+            position: absolute;
+            bottom: 30px;
+            right: 30px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: rgba(255,255,255,0.1);
+            text-transform: uppercase;
+            border: 2px solid rgba(255,255,255,0.1);
+            padding: 10px 24px;
+            transform: rotate(-8deg);
+            letter-spacing: 6px;
+        }
+
+        .redirect-note {
+            position: absolute;
+            bottom: 30px;
+            left: 30px;
+            color: #6b6b6b;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            border-left: 3px solid #6b6b6b;
+            padding-left: 12px;
+        }
+
+        /* ===== ОСНОВНОЙ САЙТ — МОНОХРОМ ===== */
+        .main-site {
+            opacity: 0;
+            transition: opacity 0.8s ease;
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 0 30px;
+        }
+
+        .main-site.visible {
+            opacity: 1;
+        }
+
+        h1 {
+            font-size: clamp(3rem, 10vw, 5rem);
+            font-weight: 800;
+            line-height: 0.9;
+            text-transform: uppercase;
+            color: #fff;
+            letter-spacing: -2px;
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            font-size: 2rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: -1px;
+            margin-bottom: 40px;
+            color: #fff;
+            border-left: 6px solid #6b6b6b;
+            padding-left: 20px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 30px 0;
+            border-bottom: 1px solid #2a2a2a;
+            margin-bottom: 60px;
+            flex-wrap: wrap;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            color: #fff;
+            letter-spacing: -2px;
+            background: #0a0a0a;
+            padding: 0 12px;
+            border: 2px solid #5a5a5a;
+        }
+
+        .nav {
+            display: flex;
+            gap: 32px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .nav a {
+            color: #b0b0b0;
+            text-decoration: none;
+            border-bottom: 2px solid transparent;
+            padding-bottom: 4px;
+        }
+
+        .nav a:hover {
+            border-bottom-color: #9e9e9e;
+            color: #fff;
+        }
+
+        .hero {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            margin-bottom: 100px;
+        }
+
+        .hero-left {
+            border-right: 1px solid #333333;
+            padding-right: 40px;
+        }
+
+        .hero-sub {
+            color: #9e9e9e;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            font-size: 0.75rem;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .hero-desc {
+            font-size: 1.1rem;
+            color: #c0c0c0;
+            margin-bottom: 40px;
+            max-width: 450px;
+            border-left: 3px solid #7a7a7a;
+            padding-left: 20px;
+        }
+
+        .btn {
+            display: inline-block;
+            background: #2a2a2a;
+            color: #fff;
+            font-weight: 700;
+            padding: 14px 40px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 0.85rem;
+            text-decoration: none;
+            border: 2px solid #5a5a5a;
+            transition: 0.1s;
+        }
+
+        .btn:hover {
+            background: #3a3a3a;
+            border-color: #9e9e9e;
+        }
+
+        .hero-right {
+            background: #141414;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            border: 1px solid #3a3a3a;
+        }
+
+        .hero-right p {
+            font-size: 1.6rem;
+            font-weight: 700;
+            line-height: 1.2;
+            text-transform: uppercase;
+            color: #fff;
+            margin-bottom: 15px;
+        }
+
+        .hero-right small {
+            color: #b0b0b0;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+
+        .stats {
+            display: flex;
+            gap: 60px;
+            margin-bottom: 100px;
+            border-bottom: 1px solid #2a2a2a;
+            padding-bottom: 50px;
+        }
+
+        .stat {
+            border-top: 3px solid #6b6b6b;
+            padding-top: 15px;
+            width: 140px;
+        }
+
+        .stat-num {
+            font-size: 2.8rem;
+            font-weight: 800;
+            color: #fff;
+            line-height: 1;
+        }
+
+        .stat-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            color: #9e9e9e;
+            letter-spacing: 1.5px;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 25px;
+            margin: 50px 0 100px;
+        }
+
+        .service-card {
+            background: #121212;
+            padding: 30px 25px;
+            border: 1px solid #2a2a2a;
+            transition: 0.15s;
+        }
+
+        .service-card:hover {
+            border-color: #7a7a7a;
+            background: #181818;
+        }
+
+        .service-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            filter: grayscale(100%);
+            opacity: 0.8;
+        }
+
+        .service-card h3 {
+            font-size: 1.6rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            color: #fff;
+        }
+
+        .service-card p {
+            color: #a0a0a0;
+            margin-bottom: 25px;
+            font-size: 0.9rem;
+        }
+
+        .service-link {
+            color: #b0b0b0;
+            text-decoration: none;
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            border-bottom: 2px solid #6b6b6b;
+            padding-bottom: 4px;
+        }
+
+        .service-link:hover {
+            color: #fff;
+            border-bottom-color: #fff;
+        }
+
+        .lorem-block {
+            background: #0f0f0f;
+            padding: 50px;
+            margin: 100px 0;
+            display: grid;
+            grid-template-columns: 1fr 1.5fr;
+            gap: 50px;
+            border-left: 15px solid #4a4a4a;
+        }
+
+        .lorem-title {
+            font-size: 2rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            color: #fff;
+            line-height: 1.1;
+        }
+
+        .lorem-text p {
+            color: #b0b0b0;
+            margin-bottom: 20px;
+            font-size: 0.95rem;
+        }
+
+        .object-row {
+            display: grid;
+            grid-template-columns: 1fr 2.2fr 1.2fr 1.2fr;
+            padding: 18px 0;
+            border-bottom: 1px solid #2a2a2a;
+            align-items: center;
+        }
+
+        .object-row:hover {
+            background: #151515;
+        }
+
+        .object-city {
+            color: #b0b0b0;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+        }
+
+        .object-name {
+            font-weight: 700;
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            color: #fff;
+        }
+
+        .object-date {
+            color: #9e9e9e;
+        }
+
+        .object-status {
+            text-align: right;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: #c0c0c0;
+            font-size: 0.8rem;
+        }
+
+        .contact {
+            background: #0c0c0c;
+            border: 1px solid #2a2a2a;
+            padding: 50px;
+            margin: 100px 0 50px;
+            text-align: center;
+        }
+
+        .contact h2 {
+            border-left: none;
+            color: #fff;
+            margin-bottom: 15px;
+        }
+
+        .contact-info {
+            display: flex;
+            justify-content: center;
+            gap: 50px;
+            margin: 35px 0;
+            font-weight: 600;
+            font-size: 1.1rem;
+            flex-wrap: wrap;
+            color: #d0d0d0;
+        }
+
+        .contact-info span {
+            border-bottom: 2px solid #6b6b6b;
+            padding-bottom: 5px;
+        }
+
+        .footer {
+            display: flex;
+            justify-content: space-between;
+            padding: 40px 0 50px;
+            border-top: 1px solid #2a2a2a;
+            margin-top: 30px;
+            color: #8a8a8a;
+            text-transform: uppercase;
+            font-size: 0.7rem;
+            letter-spacing: 1.5px;
+        }
+
+        .footer a {
+            color: #b0b0b0;
+            text-decoration: none;
+            border-bottom: 1px solid #5a5a5a;
+        }
+
+        @media (max-width: 1000px) {
+            .hero, .lorem-block {
+                grid-template-columns: 1fr;
+            }
+            .hero-left {
+                border-right: none;
+            }
+        }
+
+        @media (max-width: 700px) {
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+            .stats {
+                flex-direction: column;
+                gap: 20px;
+            }
+            .object-row {
+                grid-template-columns: 1fr;
+                gap: 8px;
+            }
+            .object-status {
+                text-align: left;
+            }
+            .contact-info {
+                flex-direction: column;
+                gap: 15px;
+            }
+            .stamp, .redirect-note {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- ПРЕЛОУДЕР -->
+    <div class="preloader" id="preloader">
+        <div class="preloader-content">
+            <div class="preloader-title">СТРОЙ</div>
+            <div class="preloader-title" style="margin-top: -20px;">БРИГАДА</div>
+            <div class="preloader-sub">ЗАГРУЗКА</div>
+            <div class="progress-brutal">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <div class="percent" id="percentDisplay">0%</div>
+            <div class="construction-icons">
+                <span>🏗️</span>
+                <span>🔨</span>
+                <span>🧱</span>
+            </div>
+        </div>
+        <div class="stamp">БЕТОН</div>
+        <div class="redirect-note">ЗАПУСК ЧЕРЕЗ 3 СЕК</div>
+    </div>
+
+    <!-- ОСНОВНОЙ САЙТ -->
+    <div class="main-site" id="mainSite">
+        <div class="header">
+            <div class="logo">СТРОЙКА</div>
+            <div class="nav">
+                <a href="#">РАБОТЫ</a>
+                <a href="#">ОБЪЕКТЫ</a>
+                <a href="#">БРИГАДЫ</a>
+                <a href="#">КОНТАКТЫ</a>
+            </div>
+        </div>
+
+        <div class="hero">
+            <div class="hero-left">
+                <div class="hero-sub">ПРОСТО РАБОТАЕМ</div>
+                <h1>БЕТОН<br>АРМАТУРА<br>СРОКИ</h1>
+                <div class="hero-desc">
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt.
+                </div>
+                <a href="#" class="btn">РАССЧИТАТЬ</a>
+            </div>
+            <div class="hero-right">
+                <p>Работаем по всей Беларуси. Жильё, заводы, склады.</p>
+                <small>— БЕЗ ПРОСТОЕВ</small>
+            </div>
+        </div>
+
+        <div class="stats">
+            <div class="stat">
+                <div class="stat-num">24</div>
+                <div class="stat-label">ГОДА НА РЫНКЕ</div>
+            </div>
+            <div class="stat">
+                <div class="stat-num">147</div>
+                <div class="stat-label">ОБЪЕКТОВ</div>
+            </div>
+            <div class="stat">
+                <div class="stat-num">12</div>
+                <div class="stat-label">БРИГАД</div>
+            </div>
+        </div>
+
+        <h2>ЧТО ДЕЛАЕМ</h2>
+        <div class="services-grid">
+            <div class="service-card">
+                <div class="service-icon">🏗️</div>
+                <h3>МОНОЛИТ</h3>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                <a href="#" class="service-link">ЗАКАЗАТЬ</a>
+            </div>
+            <div class="service-card">
+                <div class="service-icon">🧱</div>
+                <h3>КИРПИЧ</h3>
+                <p>Sed do eiusmod tempor incididunt ut labore et dolore.</p>
+                <a href="#" class="service-link">ЗАКАЗАТЬ</a>
+            </div>
+            <div class="service-card">
+                <div class="service-icon">⚙️</div>
+                <h3>ИНЖЕНЕРКА</h3>
+                <p>Ut enim ad minim veniam, quis nostrud exercitation.</p>
+                <a href="#" class="service-link">ЗАКАЗАТЬ</a>
+            </div>
+            <div class="service-card">
+                <div class="service-icon">📐</div>
+                <h3>ПРОЕКТ</h3>
+                <p>Duis aute irure dolor in reprehenderit in voluptate.</p>
+                <a href="#" class="service-link">ЗАКАЗАТЬ</a>
+            </div>
+        </div>
+
+        <div class="lorem-block">
+            <div class="lorem-title">
+                LOREM<br>IPSUM DOLOR
+            </div>
+            <div class="lorem-text">
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+                <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident.</p>
+            </div>
+        </div>
+
+        <h2>СЕЙЧАС СТРОИМ</h2>
+        <div class="objects">
+            <div class="object-row">
+                <span class="object-city">МИНСК</span>
+                <span class="object-name">ЖК LOREM</span>
+                <span class="object-date">2026</span>
+                <span class="object-status">МОНОЛИТ</span>
+            </div>
+            <div class="object-row">
+                <span class="object-city">ГОМЕЛЬ</span>
+                <span class="object-name">ЗАВОД IPSUM</span>
+                <span class="object-date">2025-26</span>
+                <span class="object-status">КАРКАС</span>
+            </div>
+            <div class="object-row">
+                <span class="object-city">БРЕСТ</span>
+                <span class="object-name">СКЛАД DOLOR</span>
+                <span class="object-date">2026</span>
+                <span class="object-status">СЭНДВИЧ</span>
+            </div>
+            <div class="object-row">
+                <span class="object-city">ВИТЕБСК</span>
+                <span class="object-name">ЖК SIT AMET</span>
+                <span class="object-date">2027</span>
+                <span class="object-status">КИРПИЧ</span>
+            </div>
+        </div>
+
+        <div class="contact">
+            <h2>СВЯЗАТЬСЯ</h2>
+            <div class="contact-info">
+                <span>+375 29 777-44-33</span>
+                <span>info@stroy.by</span>
+                <span>МИНСК, УЛ. СТРОИТЕЛЕЙ 4</span>
+            </div>
+            <a href="#" class="btn">ЗАЯВКА</a>
+            <p style="margin-top: 30px; color: #8a8a8a; font-size: 0.8rem;">
+                * Lorem ipsum dolor sit amet
+            </p>
+        </div>
+
+        <div class="footer">
+            <div>© 2026 СТРОЙБРИГАДА</div>
+            <div><a href="#">ЛИЦЕНЗИИ</a> / <a href="#">ДОКУМЕНТЫ</a></div>
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            const preloader = document.getElementById('preloader');
+            const mainSite = document.getElementById('mainSite');
+            const percentEl = document.getElementById('percentDisplay');
+            
+            let progress = 0;
+            const interval = setInterval(function() {
+                progress += Math.floor(Math.random() * 6) + 4;
+                if (progress >= 100) {
+                    progress = 100;
+                    clearInterval(interval);
+                }
+                percentEl.innerText = progress + '%';
+            }, 130);
+
+            setTimeout(function() {
+                preloader.classList.add('hidden');
+                mainSite.classList.add('visible');
+            }, 3000);
+        })();
+    </script>
+</body>
+</html>
