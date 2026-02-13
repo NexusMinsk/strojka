@@ -2,706 +2,682 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>СТРОЙБРИГАДА · БЕТОН · АРМАТУРА · СРОКИ</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>СЕД-СтройИнвест — Черновые работы | Доминирование в бетоне</title>
+    <!-- Философия Nexus.by: Только технологичный хардкор. Никакой воды. -->
     <style>
-        /* ===== ЧЁРНО-БЕЛОЕ ===== */
+        /* ===== ГЛОБАЛЬНЫЙ СБРОС. БАЗА. СТАЛЬ ===== */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
+        @font-face {
+            font-family: 'Tektur';
+            src: url('https://fonts.googleapis.com/css2?family=Tektur:wght@500;600;700;800;900&display=swap');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Unbounded';
+            src: url('https://fonts.googleapis.com/css2?family=Unbounded:wght@300;400;500;600;700;800&display=swap');
+            font-weight: normal;
+            font-style: normal;
+        }
+
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            background: #0c0c0c;
-            color: #e5e5e5;
-            line-height: 1.45;
+            background-color: #0a0c0b;
+            background-image: radial-gradient(circle at 20% 30%, rgba(255, 95, 31, 0.05) 0%, transparent 30%),
+                              radial-gradient(circle at 80% 70%, rgba(200, 200, 200, 0.03) 0%, transparent 40%);
+            font-family: 'Unbounded', 'Tektur', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+            color: #e0e0e0;
+            line-height: 1.4;
+            letter-spacing: -0.01em;
+            position: relative;
         }
 
-        /* ===== ПРЕЛОУДЕР — ЧЁРНЫЙ, БЕЛЫЙ, БЕТОН ===== */
-        .preloader {
+        .container {
+            max-width: 1440px;
+            margin: 0 auto;
+            padding: 0 60px;
+        }
+
+        /* ===== КИРПИЧНАЯ ТЕКСТУРА (ТЕХНОЛОГИЧНО) ===== */
+        .brutal-overlay {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background: #0a0a0a;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
-            border: 8px solid #2a2a2a;
-            transition: opacity 0.6s ease;
-        }
-
-        .preloader.hidden {
-            opacity: 0;
-            pointer-events: none;
-        }
-
-        /* Текстура бетона — еле видно */
-        .preloader::before {
-            content: "";
-            position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background-image: repeating-linear-gradient(45deg, rgba(255,255,255,0.01) 0px, rgba(255,255,255,0.01) 2px, transparent 2px, transparent 12px);
-            opacity: 0.1;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40"><rect width="40" height="40" fill="none"/><path d="M0 10 L40 10 M0 20 L40 20 M0 30 L40 30 M10 0 L10 40 M20 0 L20 40 M30 0 L30 40" stroke="rgba(255,95,31,0.03)" stroke-width="0.8"/></svg>');
             pointer-events: none;
-        }
-
-        .preloader-content {
-            position: relative;
-            z-index: 100;
-            text-align: center;
-            max-width: 800px;
-            padding: 20px;
-        }
-
-        .preloader-title {
-            font-size: clamp(3.5rem, 15vw, 7rem);
-            font-weight: 900;
-            text-transform: uppercase;
-            color: #ffffff;
-            line-height: 0.9;
-            letter-spacing: -4px;
-            text-shadow: 4px 4px 0 #2a2a2a;
-            margin-bottom: 16px;
-            border-bottom: 4px solid #4a4a4a;
-            display: inline-block;
-            padding-bottom: 8px;
-        }
-
-        .preloader-sub {
-            font-size: 1.2rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            color: #b0b0b0;
-            letter-spacing: 6px;
-            margin-bottom: 32px;
-            border-top: 1px solid #4a4a4a;
-            border-bottom: 1px solid #4a4a4a;
-            padding: 10px 0;
-            display: inline-block;
-        }
-
-        .progress-brutal {
-            width: 70%;
-            max-width: 500px;
-            height: 32px;
-            background: #1a1a1a;
-            border: 2px solid #4a4a4a;
-            margin: 32px auto;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .progress-fill {
-            width: 0%;
-            height: 100%;
-            background: #6b6b6b;
-            animation: fillProgress 2.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
-        }
-
-        @keyframes fillProgress {
-            0% { width: 0%; }
-            100% { width: 100%; }
-        }
-
-        .percent {
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: #b0b0b0;
-            margin-top: 8px;
-            letter-spacing: 2px;
-        }
-
-        .construction-icons {
-            display: flex;
-            gap: 24px;
-            justify-content: center;
-            margin-top: 40px;
-            font-size: 2.5rem;
+            z-index: 9999;
             opacity: 0.5;
-            filter: grayscale(100%);
         }
 
-        .stamp {
-            position: absolute;
-            bottom: 30px;
-            right: 30px;
-            font-size: 1.2rem;
-            font-weight: 700;
-            color: rgba(255,255,255,0.1);
-            text-transform: uppercase;
-            border: 2px solid rgba(255,255,255,0.1);
-            padding: 10px 24px;
-            transform: rotate(-8deg);
-            letter-spacing: 6px;
-        }
-
-        .redirect-note {
-            position: absolute;
-            bottom: 30px;
-            left: 30px;
-            color: #6b6b6b;
-            font-size: 0.7rem;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            border-left: 3px solid #6b6b6b;
-            padding-left: 12px;
-        }
-
-        /* ===== ОСНОВНОЙ САЙТ — МОНОХРОМ ===== */
-        .main-site {
-            opacity: 0;
-            transition: opacity 0.8s ease;
-            max-width: 1300px;
-            margin: 0 auto;
-            padding: 0 30px;
-        }
-
-        .main-site.visible {
-            opacity: 1;
-        }
-
-        h1 {
-            font-size: clamp(3rem, 10vw, 5rem);
-            font-weight: 800;
-            line-height: 0.9;
-            text-transform: uppercase;
-            color: #fff;
-            letter-spacing: -2px;
-            margin-bottom: 20px;
-        }
-
-        h2 {
-            font-size: 2rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: -1px;
-            margin-bottom: 40px;
-            color: #fff;
-            border-left: 6px solid #6b6b6b;
-            padding-left: 20px;
-        }
-
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 30px 0;
-            border-bottom: 1px solid #2a2a2a;
-            margin-bottom: 60px;
-            flex-wrap: wrap;
-        }
-
-        .logo {
-            font-size: 2rem;
+        /* ===== КОМПОНЕНТЫ ЛИДЕРСТВА ===== */
+        .section-title {
+            font-size: 64px;
             font-weight: 800;
             text-transform: uppercase;
-            color: #fff;
-            letter-spacing: -2px;
-            background: #0a0a0a;
-            padding: 0 12px;
-            border: 2px solid #5a5a5a;
-        }
-
-        .nav {
-            display: flex;
-            gap: 32px;
-            font-size: 0.9rem;
-            font-weight: 600;
-            text-transform: uppercase;
-        }
-
-        .nav a {
-            color: #b0b0b0;
-            text-decoration: none;
-            border-bottom: 2px solid transparent;
-            padding-bottom: 4px;
-        }
-
-        .nav a:hover {
-            border-bottom-color: #9e9e9e;
-            color: #fff;
-        }
-
-        .hero {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 50px;
-            margin-bottom: 100px;
-        }
-
-        .hero-left {
-            border-right: 1px solid #333333;
-            padding-right: 40px;
-        }
-
-        .hero-sub {
-            color: #9e9e9e;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            font-size: 0.75rem;
-            margin-bottom: 20px;
-            font-weight: 600;
-        }
-
-        .hero-desc {
-            font-size: 1.1rem;
-            color: #c0c0c0;
+            line-height: 0.95;
             margin-bottom: 40px;
-            max-width: 450px;
-            border-left: 3px solid #7a7a7a;
-            padding-left: 20px;
+            letter-spacing: -3px;
+            color: #ffffff;
+            text-shadow: 6px 6px 0 rgba(255, 95, 31, 0.2);
+            word-break: break-word;
+        }
+
+        .section-title span {
+            color: #ff5f1f;
+            display: inline-block;
         }
 
         .btn {
             display: inline-block;
-            background: #2a2a2a;
-            color: #fff;
+            padding: 18px 48px;
             font-weight: 700;
-            padding: 14px 40px;
+            font-size: 18px;
             text-transform: uppercase;
-            letter-spacing: 2px;
-            font-size: 0.85rem;
             text-decoration: none;
-            border: 2px solid #5a5a5a;
-            transition: 0.1s;
+            letter-spacing: 2px;
+            border: 0;
+            transition: 0.1s linear;
+            font-family: 'Unbounded', sans-serif;
         }
 
-        .btn:hover {
-            background: #3a3a3a;
-            border-color: #9e9e9e;
+        .btn-primary {
+            background-color: #ff5f1f;
+            color: #0a0c0b;
+            box-shadow: 10px 10px 0 rgba(255, 95, 31, 0.3);
+            border: 2px solid #ff5f1f;
+        }
+
+        .btn-primary:hover {
+            background-color: #0a0c0b;
+            color: #ff5f1f;
+            box-shadow: 0px 0px 0 #ff5f1f, 0 0 15px #ff5f1f;
+            border: 2px solid #ff5f1f;
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            color: #ffffff;
+            border: 2px solid #ffffff;
+            box-shadow: 6px 6px 0 rgba(255,255,255,0.2);
+        }
+
+        .btn-outline:hover {
+            background-color: #ffffff;
+            color: #0a0c0b;
+            border-color: #ffffff;
+            box-shadow: 0 0 20px white;
+        }
+
+        /* ===== ХЕДЕР ===== */
+        .header {
+            padding: 30px 0;
+            border-bottom: 2px solid #ff5f1f;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            position: relative;
+            z-index: 100;
+        }
+
+        .logo {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .logo-main {
+            font-size: 32px;
+            font-weight: 900;
+            text-transform: uppercase;
+            color: white;
+            letter-spacing: -1px;
+            line-height: 1;
+        }
+
+        .logo-main strong {
+            color: #ff5f1f;
+            font-weight: 900;
+        }
+
+        .logo-sub {
+            font-size: 12px;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: #a0a0a0;
+            font-weight: 400;
+            margin-top: 5px;
+            word-spacing: 8px;
+        }
+
+        .header-contact {
+            text-align: right;
+        }
+
+        .header-phone {
+            font-size: 28px;
+            font-weight: 800;
+            color: white;
+            text-decoration: none;
+            letter-spacing: -0.5px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .header-phone span {
+            background-color: #ff5f1f;
+            color: black;
+            padding: 6px 12px;
+            font-size: 14px;
+            font-weight: 700;
+            border-radius: 0px;
+        }
+
+        .header-manager {
+            font-size: 16px;
+            color: #b0b0b0;
+            margin-top: 6px;
+        }
+
+        /* ===== ГЛАВНЫЙ ЭКРАН ===== */
+        .hero {
+            padding: 80px 0 100px 0;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            position: relative;
+            border-bottom: 1px solid rgba(255,95,31,0.4);
+        }
+
+        .hero-left {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .hero-label {
+            font-size: 16px;
+            font-weight: 600;
+            color: #ff5f1f;
+            text-transform: uppercase;
+            letter-spacing: 8px;
+            margin-bottom: 20px;
+            border-left: 6px solid #ff5f1f;
+            padding-left: 16px;
+        }
+
+        .hero-title {
+            font-size: 80px;
+            font-weight: 900;
+            text-transform: uppercase;
+            line-height: 0.9;
+            color: white;
+            margin-bottom: 25px;
+            letter-spacing: -4px;
+            word-break: break-word;
+        }
+
+        .hero-title .outline {
+            color: transparent;
+            -webkit-text-stroke: 2px white;
+            text-stroke: 2px white;
+            background: none;
+        }
+
+        .hero-desc {
+            font-size: 18px;
+            font-weight: 400;
+            color: #c0c0c0;
+            margin-bottom: 40px;
+            max-width: 90%;
+            border-left: 4px solid #ff5f1f;
+            padding-left: 20px;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 25px;
+            align-items: center;
+            flex-wrap: wrap;
         }
 
         .hero-right {
-            background: #141414;
+            background: rgba(20, 20, 20, 0.6);
+            border: 1px solid rgba(255,95,31,0.5);
             padding: 40px;
             display: flex;
             flex-direction: column;
             justify-content: center;
-            border: 1px solid #3a3a3a;
+            backdrop-filter: blur(4px);
+            position: relative;
         }
 
-        .hero-right p {
-            font-size: 1.6rem;
+        .hero-right::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            width: 30%;
+            height: 6px;
+            background: #ff5f1f;
+        }
+
+        .hero-right h3 {
+            font-size: 28px;
+            font-weight: 800;
+            margin-bottom: 30px;
+            color: white;
+            text-transform: uppercase;
+        }
+
+        .service-list {
+            list-style: none;
+        }
+
+        .service-list li {
+            font-size: 24px;
             font-weight: 700;
-            line-height: 1.2;
-            text-transform: uppercase;
-            color: #fff;
-            margin-bottom: 15px;
-        }
-
-        .hero-right small {
-            color: #b0b0b0;
-            letter-spacing: 3px;
-            text-transform: uppercase;
-        }
-
-        .stats {
+            margin-bottom: 30px;
             display: flex;
-            gap: 60px;
-            margin-bottom: 100px;
-            border-bottom: 1px solid #2a2a2a;
-            padding-bottom: 50px;
+            align-items: center;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding-bottom: 15px;
         }
 
-        .stat {
-            border-top: 3px solid #6b6b6b;
-            padding-top: 15px;
-            width: 140px;
+        .service-list li:last-child {
+            border-bottom: 0;
+        }
+
+        .service-marker {
+            color: #ff5f1f;
+            margin-right: 20px;
+            font-size: 32px;
+            font-weight: 900;
+        }
+
+        /* ===== ЦИФРЫ ===== */
+        .stats {
+            padding: 80px 0;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .stat-item {
+            border-left: 6px solid #ff5f1f;
+            padding-left: 30px;
         }
 
         .stat-num {
-            font-size: 2.8rem;
-            font-weight: 800;
-            color: #fff;
+            font-size: 64px;
+            font-weight: 900;
+            color: white;
             line-height: 1;
+            letter-spacing: -2px;
         }
 
-        .stat-label {
-            font-size: 0.75rem;
+        .stat-num sup {
+            font-size: 30px;
+            color: #ff5f1f;
+            top: -0.5em;
+            font-weight: 700;
+        }
+
+        .stat-text {
+            font-size: 18px;
             text-transform: uppercase;
-            color: #9e9e9e;
-            letter-spacing: 1.5px;
+            font-weight: 500;
+            color: #b0b0b0;
+            letter-spacing: 1px;
+        }
+
+        /* ===== О КОМПАНИИ ===== */
+        .about {
+            padding: 100px 0;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .about-left p {
+            font-size: 20px;
+            font-weight: 400;
+            margin-bottom: 30px;
+            color: #d0d0d0;
+            line-height: 1.6;
+        }
+
+        .contact-card {
+            background: #000000;
+            border: 1px solid #ff5f1f;
+            padding: 40px;
+            margin-top: 20px;
+        }
+
+        .contact-name {
+            font-size: 36px;
+            font-weight: 800;
+            color: white;
+            margin-bottom: 5px;
+            line-height: 1.1;
+        }
+
+        .contact-post {
+            color: #ff5f1f;
+            font-size: 18px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-bottom: 25px;
+            font-weight: 600;
+        }
+
+        .contact-phone {
+            font-size: 32px;
+            font-weight: 800;
+            color: white;
+            text-decoration: none;
+            display: inline-block;
+            border-bottom: 3px solid #ff5f1f;
+            padding-bottom: 5px;
+        }
+
+        .contact-phone:hover {
+            color: #ff5f1f;
+        }
+
+        /* ===== УСЛУГИ ПОДРОБНО ===== */
+        .services-detailed {
+            padding: 80px 0;
+            background: rgba(0,0,0,0.5);
+            border-top: 1px solid #ff5f1f;
+            border-bottom: 1px solid #ff5f1f;
         }
 
         .services-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: 25px;
-            margin: 50px 0 100px;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+            margin-top: 60px;
         }
 
         .service-card {
-            background: #121212;
-            padding: 30px 25px;
-            border: 1px solid #2a2a2a;
-            transition: 0.15s;
+            border: 1px solid #404040;
+            padding: 40px 30px;
+            transition: 0.2s;
+            background: #111111;
         }
 
         .service-card:hover {
-            border-color: #7a7a7a;
-            background: #181818;
+            border: 1px solid #ff5f1f;
+            transform: translateY(-10px);
+            box-shadow: 20px 20px 0 rgba(255, 95, 31, 0.15);
         }
 
         .service-icon {
-            font-size: 3rem;
-            margin-bottom: 15px;
-            filter: grayscale(100%);
-            opacity: 0.8;
+            font-size: 48px;
+            font-weight: 900;
+            color: #ff5f1f;
+            margin-bottom: 20px;
         }
 
-        .service-card h3 {
-            font-size: 1.6rem;
-            font-weight: 700;
-            margin-bottom: 12px;
+        .service-card h4 {
+            font-size: 28px;
+            font-weight: 800;
+            color: white;
+            margin-bottom: 15px;
             text-transform: uppercase;
-            color: #fff;
         }
 
         .service-card p {
-            color: #a0a0a0;
-            margin-bottom: 25px;
-            font-size: 0.9rem;
+            color: #aaa;
+            font-size: 16px;
+            font-weight: 400;
         }
 
-        .service-link {
-            color: #b0b0b0;
-            text-decoration: none;
-            font-weight: 700;
-            text-transform: uppercase;
-            font-size: 0.8rem;
-            border-bottom: 2px solid #6b6b6b;
-            padding-bottom: 4px;
+        /* ===== ПРИНЦИПЫ ===== */
+        .principles {
+            padding: 80px 0;
         }
 
-        .service-link:hover {
-            color: #fff;
-            border-bottom-color: #fff;
-        }
-
-        .lorem-block {
-            background: #0f0f0f;
-            padding: 50px;
-            margin: 100px 0;
+        .principles-grid {
             display: grid;
-            grid-template-columns: 1fr 1.5fr;
-            gap: 50px;
-            border-left: 15px solid #4a4a4a;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 40px;
         }
 
-        .lorem-title {
-            font-size: 2rem;
-            font-weight: 800;
-            text-transform: uppercase;
-            color: #fff;
-            line-height: 1.1;
-        }
-
-        .lorem-text p {
-            color: #b0b0b0;
-            margin-bottom: 20px;
-            font-size: 0.95rem;
-        }
-
-        .object-row {
-            display: grid;
-            grid-template-columns: 1fr 2.2fr 1.2fr 1.2fr;
-            padding: 18px 0;
-            border-bottom: 1px solid #2a2a2a;
-            align-items: center;
-        }
-
-        .object-row:hover {
-            background: #151515;
-        }
-
-        .object-city {
-            color: #b0b0b0;
-            font-weight: 600;
-            text-transform: uppercase;
-            font-size: 0.8rem;
-        }
-
-        .object-name {
-            font-weight: 700;
-            font-size: 1.1rem;
-            text-transform: uppercase;
-            color: #fff;
-        }
-
-        .object-date {
-            color: #9e9e9e;
-        }
-
-        .object-status {
-            text-align: right;
+        .principle-item {
+            font-size: 28px;
             font-weight: 700;
             text-transform: uppercase;
-            color: #c0c0c0;
-            font-size: 0.8rem;
-        }
-
-        .contact {
-            background: #0c0c0c;
-            border: 1px solid #2a2a2a;
-            padding: 50px;
-            margin: 100px 0 50px;
-            text-align: center;
-        }
-
-        .contact h2 {
-            border-left: none;
-            color: #fff;
-            margin-bottom: 15px;
-        }
-
-        .contact-info {
             display: flex;
-            justify-content: center;
-            gap: 50px;
-            margin: 35px 0;
-            font-weight: 600;
-            font-size: 1.1rem;
-            flex-wrap: wrap;
-            color: #d0d0d0;
+            align-items: baseline;
+            gap: 15px;
+            border-bottom: 1px dashed #ff5f1f;
+            padding-bottom: 25px;
         }
 
-        .contact-info span {
-            border-bottom: 2px solid #6b6b6b;
-            padding-bottom: 5px;
+        .principle-num {
+            color: #ff5f1f;
+            font-weight: 900;
+            font-size: 48px;
         }
 
+        /* ===== ФУТЕР ===== */
         .footer {
+            padding: 50px 0;
+            border-top: 6px solid #ff5f1f;
             display: flex;
             justify-content: space-between;
-            padding: 40px 0 50px;
-            border-top: 1px solid #2a2a2a;
-            margin-top: 30px;
-            color: #8a8a8a;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .footer-logo {
+            font-size: 28px;
+            font-weight: 900;
+            color: white;
+        }
+
+        .nexus {
+            font-size: 16px;
+            color: #ff5f1f;
+            font-weight: 700;
             text-transform: uppercase;
-            font-size: 0.7rem;
-            letter-spacing: 1.5px;
+            letter-spacing: 4px;
         }
 
-        .footer a {
-            color: #b0b0b0;
-            text-decoration: none;
-            border-bottom: 1px solid #5a5a5a;
+        /* ===== АДАПТАЦИЯ ===== */
+        @media (max-width: 1100px) {
+            .container { padding: 0 30px; }
+            .hero-title { font-size: 60px; }
+            .section-title { font-size: 48px; }
+            .hero { grid-template-columns: 1fr; }
         }
 
-        @media (max-width: 1000px) {
-            .hero, .lorem-block {
-                grid-template-columns: 1fr;
-            }
-            .hero-left {
-                border-right: none;
-            }
-        }
-
-        @media (max-width: 700px) {
-            .header {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 15px;
-            }
-            .stats {
-                flex-direction: column;
-                gap: 20px;
-            }
-            .object-row {
-                grid-template-columns: 1fr;
-                gap: 8px;
-            }
-            .object-status {
-                text-align: left;
-            }
-            .contact-info {
-                flex-direction: column;
-                gap: 15px;
-            }
-            .stamp, .redirect-note {
-                display: none;
-            }
+        @media (max-width: 768px) {
+            .header { flex-direction: column; text-align: center; }
+            .header-contact { text-align: center; margin-top: 20px; }
+            .stats { grid-template-columns: 1fr; }
+            .about { grid-template-columns: 1fr; }
+            .services-grid { grid-template-columns: 1fr; }
+            .principles-grid { grid-template-columns: 1fr; }
+            .footer { flex-direction: column; gap: 20px; text-align: center; }
+            .hero-title { font-size: 44px; }
+            .section-title { font-size: 40px; }
+            .hero-right { margin-top: 30px; }
         }
     </style>
 </head>
 <body>
-    <!-- ПРЕЛОУДЕР -->
-    <div class="preloader" id="preloader">
-        <div class="preloader-content">
-            <div class="preloader-title">СТРОЙ</div>
-            <div class="preloader-title" style="margin-top: -20px;">БРИГАДА</div>
-            <div class="preloader-sub">ЗАГРУЗКА</div>
-            <div class="progress-brutal">
-                <div class="progress-fill" id="progressFill"></div>
-            </div>
-            <div class="percent" id="percentDisplay">0%</div>
-            <div class="construction-icons">
-                <span>🏗️</span>
-                <span>🔨</span>
-                <span>🧱</span>
-            </div>
-        </div>
-        <div class="stamp">БЕТОН</div>
-        <div class="redirect-note">ЗАПУСК ЧЕРЕЗ 3 СЕК</div>
-    </div>
+    <!-- Фоновая сетка. Стильно. Технологично. Nexus. -->
+    <div class="brutal-overlay"></div>
 
-    <!-- ОСНОВНОЙ САЙТ -->
-    <div class="main-site" id="mainSite">
-        <div class="header">
-            <div class="logo">СТРОЙКА</div>
-            <div class="nav">
-                <a href="#">РАБОТЫ</a>
-                <a href="#">ОБЪЕКТЫ</a>
-                <a href="#">БРИГАДЫ</a>
-                <a href="#">КОНТАКТЫ</a>
-            </div>
-        </div>
+    <div class="container">
 
-        <div class="hero">
+        <!-- ШАПКА. Доминирование. -->
+        <header class="header">
+            <div class="logo">
+                <div class="logo-main"><strong>СЕД</strong>СТРОЙИНВЕСТ</div>
+                <div class="logo-sub">Черновые работы // Лидер РБ</div>
+            </div>
+            <div class="header-contact">
+                <a href="tel:+375336370959" class="header-phone">
+                    +375 33 637-09-59
+                    <span>Егор Сапего</span>
+                </a>
+                <div class="header-manager">Личный номер директора // прямой канал</div>
+            </div>
+        </header>
+
+        <!-- ГЕРОЙ. Бетон. Кладка. Власть. -->
+        <section class="hero">
             <div class="hero-left">
-                <div class="hero-sub">ПРОСТО РАБОТАЕМ</div>
-                <h1>БЕТОН<br>АРМАТУРА<br>СРОКИ</h1>
-                <div class="hero-desc">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt.
+                
+                <h1 class="hero-title">
+                    ЧЕРНОВАЯ<br><span class="outline">ВЛАСТЬ</span>
+                </h1>
+                <p class="hero-desc">
+                    Кладка, штукатурка, стяжка. Без компромиссов. Только объекты, где качество — единственный аргумент.
+                </p>
+                <div class="hero-buttons">
+                    <a href="tel:+375336370959" class="btn btn-primary">ЗАКАЗАТЬ РАСЧЁТ</a>
+                    <a href="#services" class="btn btn-outline">ТЕХНОЛОГИИ</a>
                 </div>
-                <a href="#" class="btn">РАССЧИТАТЬ</a>
             </div>
             <div class="hero-right">
-                <p>Работаем по всей Беларуси. Жильё, заводы, склады.</p>
-                <small>— БЕЗ ПРОСТОЕВ</small>
+                <h3>СПЕЦИАЛИЗАЦИЯ</h3>
+                <ul class="service-list">
+                    <li><span class="service-marker">01</span> КЛАДКА ВСЕХ ТИПОВ</li>
+                    <li><span class="service-marker">02</span> ШТУКАТУРКА СЛОЖНЫХ ФАСАДОВ</li>
+                    <li><span class="service-marker">03</span> СТЯЖКА // ПРОМСТРОЙ</li>
+                </ul>
+                <div style="margin-top: 30px; font-size: 14px; color: #ff5f1f; letter-spacing: 2px;">
+                    // ЛИЧНЫЙ КОНТРОЛЬ: ЕГОР САПЕГО
+                </div>
             </div>
-        </div>
+        </section>
 
-        <div class="stats">
-            <div class="stat">
-                <div class="stat-num">24</div>
-                <div class="stat-label">ГОДА НА РЫНКЕ</div>
+        <!-- ЦИФРЫ. Бетонный фундамент репутации. -->
+        <section class="stats">
+            <div class="stat-item">
+                <div class="stat-num">12<sup>+</sup></div>
+                <div class="stat-text">Лет доминирования</div>
             </div>
-            <div class="stat">
-                <div class="stat-num">147</div>
-                <div class="stat-label">ОБЪЕКТОВ</div>
+            <div class="stat-item">
+                <div class="stat-num">347<sup>+</sup></div>
+                <div class="stat-text">Объектов под ключ</div>
             </div>
-            <div class="stat">
-                <div class="stat-num">12</div>
-                <div class="stat-label">БРИГАД</div>
+            <div class="stat-item">
+                <div class="stat-num">0<sup>%</sup></div>
+                <div class="stat-text">Брака / Переделок</div>
             </div>
-        </div>
+        </section>
 
-        <h2>ЧТО ДЕЛАЕМ</h2>
-        <div class="services-grid">
-            <div class="service-card">
-                <div class="service-icon">🏗️</div>
-                <h3>МОНОЛИТ</h3>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                <a href="#" class="service-link">ЗАКАЗАТЬ</a>
+        <!-- О КОМПАНИИ И ПЕРВОМ ЛИЦЕ. Максимум доверия. -->
+        <section class="about">
+            <div class="about-left">
+                <h2 class="section-title"><span>СЕД-</span>СТРОЙИНВЕСТ</h2>
+                <p>
+                    Мы не подрядчики «на час». Мы — генподрядчики премиального чернового домостроения.  
+                    Собственный парк техники, штатные инженеры и философия: «Недостатков не существует, есть только нарушения технологии».
+                </p>
+                <p style="font-weight: 700; color: white;">
+                    Работаем исключительно в парадигме: жёсткие сроки, идеальная геометрия, полная прозрачность.
+                </p>
             </div>
-            <div class="service-card">
-                <div class="service-icon">🧱</div>
-                <h3>КИРПИЧ</h3>
-                <p>Sed do eiusmod tempor incididunt ut labore et dolore.</p>
-                <a href="#" class="service-link">ЗАКАЗАТЬ</a>
+            <div class="contact-card">
+                <div style="font-size: 14px; color: #ff5f1f; letter-spacing: 5px; margin-bottom: 15px;">ДИРЕКТОР / ВЛАДЕЛЕЦ</div>
+                <div class="contact-name">Сапего Егор Дмитриевич</div>
+                <div class="contact-post">Основатель // Главный инженер</div>
+                <a href="tel:+375336370959" class="contact-phone">+375 33 637-09-59</a>
+                <div style="margin-top: 25px; font-size: 16px; color: #ccc; border-top: 1px solid #333; padding-top: 20px;">
+                    Личная гарантия на каждый миллиметр стены.
+                </div>
             </div>
-            <div class="service-card">
-                <div class="service-icon">⚙️</div>
-                <h3>ИНЖЕНЕРКА</h3>
-                <p>Ut enim ad minim veniam, quis nostrud exercitation.</p>
-                <a href="#" class="service-link">ЗАКАЗАТЬ</a>
-            </div>
-            <div class="service-card">
-                <div class="service-icon">📐</div>
-                <h3>ПРОЕКТ</h3>
-                <p>Duis aute irure dolor in reprehenderit in voluptate.</p>
-                <a href="#" class="service-link">ЗАКАЗАТЬ</a>
-            </div>
-        </div>
+        </section>
 
-        <div class="lorem-block">
-            <div class="lorem-title">
-                LOREM<br>IPSUM DOLOR
+        <!-- УСЛУГИ. Хардкор. -->
+        <section id="services" class="services-detailed">
+            <h2 class="section-title" style="max-width: 800px;"><span>ЧЕРНОВЫЕ</span> РАБОТЫ // ЭТАЛОН</h2>
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="service-icon">[ К ]</div>
+                    <h4>КЛАДКА</h4>
+                    <p>Кирпич, газосиликат, керамзитоблок. Идеальная перевязка швов. Толщина шва — эталон. Армирование каждого 3-го ряда.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">[ Ш ]</div>
+                    <h4>ШТУКАТУРКА</h4>
+                    <p>Ручная и механизированная. Маяки на лазерном нивелире. Отклонение — менее 1 мм/м². Фасады любой сложности.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">[ С ]</div>
+                    <h4>СТЯЖКА</h4>
+                    <p>Полусухая, мокрая, армированная. Промышленные полы под нагрузку. Никаких трещин, геометрия +/- 2 мм.</p>
+                </div>
             </div>
-            <div class="lorem-text">
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-                <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident.</p>
-            </div>
-        </div>
+        </section>
 
-        <h2>СЕЙЧАС СТРОИМ</h2>
-        <div class="objects">
-            <div class="object-row">
-                <span class="object-city">МИНСК</span>
-                <span class="object-name">ЖК LOREM</span>
-                <span class="object-date">2026</span>
-                <span class="object-status">МОНОЛИТ</span>
+        <!-- ПРИНЦИПЫ. Стиль и лидерство. -->
+        <section class="principles">
+            <h2 class="section-title"><span>КОДЕКС</span> СТРОЙКИ</h2>
+            <div class="principles-grid">
+                <div class="principle-item">
+                    <span class="principle-num">01</span> Технологичность
+                </div>
+                <div class="principle-item">
+                    <span class="principle-num">02</span> Сроки / Железобетон
+                </div>
+                <div class="principle-item">
+                    <span class="principle-num">03</span> Архитектурный надзор
+                </div>
+                <div class="principle-item">
+                    <span class="principle-num">04</span> Эстетика бетона
+                </div>
             </div>
-            <div class="object-row">
-                <span class="object-city">ГОМЕЛЬ</span>
-                <span class="object-name">ЗАВОД IPSUM</span>
-                <span class="object-date">2025-26</span>
-                <span class="object-status">КАРКАС</span>
-            </div>
-            <div class="object-row">
-                <span class="object-city">БРЕСТ</span>
-                <span class="object-name">СКЛАД DOLOR</span>
-                <span class="object-date">2026</span>
-                <span class="object-status">СЭНДВИЧ</span>
-            </div>
-            <div class="object-row">
-                <span class="object-city">ВИТЕБСК</span>
-                <span class="object-name">ЖК SIT AMET</span>
-                <span class="object-date">2027</span>
-                <span class="object-status">КИРПИЧ</span>
-            </div>
-        </div>
+        </section>
 
-        <div class="contact">
-            <h2>СВЯЗАТЬСЯ</h2>
-            <div class="contact-info">
-                <span>+375 29 777-44-33</span>
-                <span>info@stroy.by</span>
-                <span>МИНСК, УЛ. СТРОИТЕЛЕЙ 4</span>
+        <!-- ФИНАЛ. Призыв. Телефон. Имя. -->
+        <section style="padding: 60px 0; border-bottom: 1px solid #ff5f1f; text-align: center;">
+            <h2 style="font-size: 48px; font-weight: 900; text-transform: uppercase; color: white; margin-bottom: 20px; letter-spacing: -2px;">
+                ПРЯМОЙ КАНАЛ С <span style="color: #ff5f1f;">ЛИДЕРОМ</span>
+            </h2>
+            <div style="font-size: 24px; font-weight: 500; color: #ccc; margin-bottom: 40px;">
+                Егор Сапего лично контролирует старт каждого объекта
             </div>
-            <a href="#" class="btn">ЗАЯВКА</a>
-            <p style="margin-top: 30px; color: #8a8a8a; font-size: 0.8rem;">
-                * Lorem ipsum dolor sit amet
-            </p>
-        </div>
+            <a href="tel:+375336370959" style="font-size: 48px; font-weight: 900; color: white; text-decoration: none; border-bottom: 6px solid #ff5f1f; display: inline-block; padding-bottom: 8px;">
+                +375 33 637-09-59
+            </a>
+            <div style="margin-top: 40px;">
+                <a href="#" class="btn btn-primary" style="margin-right: 20px;">ЗАПРОСИТЬ КП</a>
+                <a href="#" class="btn btn-outline">ВЫЕЗД ИНЖЕНЕРА</a>
+            </div>
+        </section>
 
-        <div class="footer">
-            <div>© 2026 СТРОЙБРИГАДА</div>
-            <div><a href="#">ЛИЦЕНЗИИ</a> / <a href="#">ДОКУМЕНТЫ</a></div>
-        </div>
+        <!-- ПОДВАЛ. Nexus signature. -->
+        <footer class="footer">
+            <div>
+                <div class="footer-logo">СЕД-СТРОЙИНВЕСТ</div>
+                <div style="color: #777; margin-top: 10px;">Черновые работы. Только уровень PRO.</div>
+            </div>
+            <div style="text-align: right;">
+                <div class="nexus">РАЗРАБОТКА: NEXUS.BY</div>
+                <div style="color: #aaa; margin-top: 10px; font-size: 14px;">Доминирование. Качество. Стиль.</div>
+                <div style="color: #ff5f1f; margin-top: 5px;">2026 — Бетон в крови</div>
+            </div>
+        </footer>
+
     </div>
-
-    <script>
-        (function() {
-            const preloader = document.getElementById('preloader');
-            const mainSite = document.getElementById('mainSite');
-            const percentEl = document.getElementById('percentDisplay');
-            
-            let progress = 0;
-            const interval = setInterval(function() {
-                progress += Math.floor(Math.random() * 6) + 4;
-                if (progress >= 100) {
-                    progress = 100;
-                    clearInterval(interval);
-                }
-                percentEl.innerText = progress + '%';
-            }, 130);
-
-            setTimeout(function() {
-                preloader.classList.add('hidden');
-                mainSite.classList.add('visible');
-            }, 3000);
-        })();
-    </script>
+    <!-- Конец архитектуры доминирования -->
 </body>
 </html>
