@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Денис Строй | Стильный лендинг строительства</title>
+  <!-- Шрифты Inter и Playfair Display -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
+  <!-- Font Awesome 6 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #faf9f7;
+      color: #1e1e1e;
+      line-height: 1.5;
+      scroll-behavior: smooth;
+    }
+
+    h1, h2, h3 {
+      font-family: 'Playfair Display', serif;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+    }
+
+    .container {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    .accent-text, .accent {
+      color: #a67c4b;
+    }
+
+    .section-title {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      position: relative;
+      display: inline-block;
+    }
+    .section-title:after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 0;
+      width: 70px;
+      height: 3px;
+      background-color: #a67c4b;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 14px 36px;
+      border-radius: 4px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      border: none;
+      cursor: pointer;
+      font-size: 1rem;
+      letter-spacing: 0.5px;
+    }
+
+    .btn-primary {
+      background-color: #1e1e1e;
+      color: white;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.05);
+    }
+    .btn-primary:hover {
+      background-color: #a67c4b;
+      transform: translateY(-3px);
+      box-shadow: 0 15px 25px rgba(166, 124, 75, 0.2);
+    }
+
+    /* Хедер */
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 28px 0;
+      flex-wrap: wrap;
+    }
+
+    .logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.9rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+    .logo span {
+      color: #a67c4b;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 48px;
+      font-weight: 500;
+    }
+    .nav-links a {
+      text-decoration: none;
+      color: #1e1e1e;
+      transition: color 0.2s;
+      font-size: 1.05rem;
+    }
+    .nav-links a:hover {
+      color: #a67c4b;
+    }
+
+    /* Герой */
+    .hero {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 60px 0 80px;
+      gap: 40px;
+      flex-wrap: wrap;
+    }
+    .hero-content {
+      flex: 1 1 45%;
+    }
+    .hero-badge {
+      font-size: 1rem;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      color: #a67c4b;
+      font-weight: 600;
+      margin-bottom: 16px;
+    }
+    .hero-title {
+      font-size: 3.8rem;
+      line-height: 1.1;
+      margin-bottom: 24px;
+      font-weight: 700;
+    }
+    .hero-desc {
+      font-size: 1.2rem;
+      color: #4a4a4a;
+      margin-bottom: 40px;
+      font-weight: 300;
+      max-width: 90%;
+    }
+    .hero-image {
+      flex: 1 1 45%;
+      background: linear-gradient(145deg, #3a3a3a, #2a2a2a);
+      height: 500px;
+      border-radius: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 30px 40px -20px rgba(0,0,0,0.25);
+      overflow: hidden;
+      position: relative;
+    }
+    .hero-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0.85;
+      transition: transform 0.4s;
+    }
+    .hero-image:hover img {
+      transform: scale(1.05);
+    }
+
+    /* Контакт заказчика */
+    .contact-owner {
+      background-color: white;
+      border-radius: 20px;
+      padding: 16px 28px;
+      display: inline-flex;
+      align-items: center;
+      gap: 24px;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.04);
+      margin-top: 16px;
+      flex-wrap: wrap;
+    }
+    .owner-phone {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background-color: #f5f3f0;
+      padding: 10px 22px;
+      border-radius: 40px;
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: #1e1e1e;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+    .owner-phone i {
+      color: #a67c4b;
+      font-size: 1.3rem;
+    }
+    .owner-phone:hover {
+      background-color: #a67c4b;
+      color: white;
+    }
+    .owner-phone:hover i {
+      color: white;
+    }
+    .owner-label {
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: #6b6b6b;
+      font-weight: 500;
+    }
+    .owner-name {
+      font-weight: 700;
+      font-size: 1.2rem;
+    }
+
+    /* УСЛУГИ — ПОЛНЫЙ СПИСОК ОТ ЗАКАЗЧИКА */
+    .services {
+      padding: 100px 0;
+      background-color: white;
+    }
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 30px;
+      margin-top: 60px;
+    }
+    .service-card {
+      background: #faf9f7;
+      border-radius: 24px;
+      overflow: hidden;
+      transition: all 0.3s ease;
+      border: 1px solid #f0eee9;
+      display: flex;
+      flex-direction: column;
+    }
+    .service-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 25px 40px -12px rgba(166,124,75,0.18);
+      border-color: #a67c4b40;
+    }
+    .service-img {
+      height: 200px;
+      overflow: hidden;
+    }
+    .service-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s;
+    }
+    .service-card:hover .service-img img {
+      transform: scale(1.08);
+    }
+    .service-content {
+      padding: 28px 24px 32px;
+    }
+    .service-icon {
+      font-size: 1.8rem;
+      color: #a67c4b;
+      margin-bottom: 16px;
+    }
+    .service-content h3 {
+      font-size: 1.5rem;
+      margin-bottom: 12px;
+      font-weight: 600;
+    }
+    .service-content p {
+      color: #5a5a5a;
+      font-weight: 300;
+      line-height: 1.6;
+      font-size: 0.95rem;
+    }
+
+    /* Портфолио с фото */
+    .portfolio {
+      padding: 100px 0;
+      background-color: #faf9f7;
+    }
+    .portfolio-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 30px;
+      margin-top: 60px;
+    }
+    .project-item {
+      background: white;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.02);
+      transition: all 0.2s;
+    }
+    .project-item:hover {
+      transform: scale(1.02);
+      box-shadow: 0 25px 40px rgba(166,124,75,0.08);
+    }
+    .project-img {
+      height: 260px;
+      overflow: hidden;
+    }
+    .project-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s;
+    }
+    .project-item:hover .project-img img {
+      transform: scale(1.05);
+    }
+    .project-info {
+      padding: 26px 24px;
+    }
+    .project-info h4 {
+      font-size: 1.5rem;
+      margin-bottom: 8px;
+    }
+    .project-info p {
+      color: #5e5e5e;
+    }
+
+    /* Блок заказчика Дениса */
+    .denis-showcase {
+      padding: 80px 0;
+      background: linear-gradient(120deg, #1e1e1e 0%, #2c2c2c 100%);
+      color: white;
+    }
+    .denis-wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 60px;
+      flex-wrap: wrap;
+    }
+    .denis-info {
+      flex: 1 1 45%;
+    }
+    .denis-label {
+      color: #c6ad8c;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 4px;
+      font-size: 0.9rem;
+      margin-bottom: 16px;
+    }
+    .denis-name {
+      font-size: 3.2rem;
+      font-weight: 700;
+      margin-bottom: 24px;
+      line-height: 1.1;
+      font-family: 'Playfair Display', serif;
+    }
+    .denis-name span {
+      color: #a67c4b;
+    }
+    .denis-phone-box {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      margin-top: 40px;
+      background: rgba(255,255,255,0.05);
+      padding: 18px 28px;
+      border-radius: 60px;
+      backdrop-filter: blur(4px);
+      border: 1px solid rgba(255,255,255,0.1);
+      max-width: 400px;
+    }
+    .denis-phone-box i {
+      font-size: 2rem;
+      color: #a67c4b;
+    }
+    .denis-phone-number {
+      font-size: 1.8rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      color: white;
+      text-decoration: none;
+    }
+    .denis-phone-number:hover {
+      color: #c6ad8c;
+    }
+    .denis-quote {
+      font-size: 1.2rem;
+      font-style: italic;
+      color: #dddddd;
+      margin-top: 28px;
+      padding-left: 20px;
+      border-left: 4px solid #a67c4b;
+    }
+    .denis-stats {
+      flex: 1 1 40%;
+      display: flex;
+      gap: 30px;
+      flex-wrap: wrap;
+    }
+    .stat-item {
+      background: rgba(255,255,255,0.03);
+      padding: 32px 24px;
+      border-radius: 24px;
+      text-align: center;
+      flex: 1 1 140px;
+      border-bottom: 4px solid #a67c4b;
+    }
+    .stat-number {
+      font-size: 2.8rem;
+      font-weight: 700;
+      font-family: 'Playfair Display', serif;
+      color: #a67c4b;
+    }
+
+    /* Контакты */
+    .contact-section {
+      padding: 100px 0;
+      background-color: white;
+    }
+    .contact-grid {
+      display: flex;
+      gap: 60px;
+      margin-top: 40px;
+      flex-wrap: wrap;
+    }
+    .contact-info {
+      flex: 1 1 35%;
+    }
+    .contact-details {
+      margin: 40px 0;
+    }
+    .contact-line {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      margin-bottom: 28px;
+      font-size: 1.2rem;
+    }
+    .contact-line i {
+      width: 48px;
+      height: 48px;
+      background: #f5f3f0;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #a67c4b;
+      font-size: 1.3rem;
+    }
+    .big-phone {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #1e1e1e;
+      text-decoration: none;
+    }
+    .big-phone:hover {
+      color: #a67c4b;
+    }
+
+    /* Футер */
+    footer {
+      background: #141414;
+      color: #b3b3b3;
+      padding: 40px 0;
+      text-align: center;
+    }
+    .footer-phone {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: white;
+      text-decoration: none;
+    }
+
+    /* Фикс кнопка */
+    .fixed-phone {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      z-index: 99;
+    }
+    .fixed-phone a {
+      background: #a67c4b;
+      color: white;
+      padding: 18px 24px;
+      border-radius: 50px;
+      text-decoration: none;
+      font-weight: 600;
+      box-shadow: 0 8px 20px rgba(166,124,75,0.4);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    @media (max-width: 900px) {
+      .navbar { flex-direction: column; }
+      .nav-links { gap: 24px; }
+      .hero-title { font-size: 2.8rem; }
+      .portfolio-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 600px) {
+      .hero-title { font-size: 2.4rem; }
+      .section-title { font-size: 2rem; }
+      .portfolio-grid { grid-template-columns: 1fr; }
+      .denis-name { font-size: 2.4rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Навигация -->
+  <div class="container">
+    <div class="navbar">
+      <div class="logo"><span>ДЕНИС</span> СТРОЙ</div>
+      <div class="nav-links">
+        <a href="#">Главная</a>
+        <a href="#services">Услуги</a>
+        <a href="#projects">Проекты</a>
+        <a href="#contact">Контакты</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Герой с красивым фото стройки -->
+  <div class="container">
+    <div class="hero">
+      <div class="hero-content">
+        <div class="hero-badge">СТРОИТЕЛЬСТВО ПОД КЛЮЧ</div>
+        <h1 class="hero-title">Надежность. Стиль. Профессионализм.</h1>
+        <p class="hero-desc">Индивидуальный подход и полный цикл работ — от опалубки до кровли. Личное кураторство Дениса.</p>
+        <div class="contact-owner">
+          <span class="owner-label">ЗАКАЗЧИК</span>
+          <span class="owner-name">Денис</span>
+          <a href="tel:+375297388378" class="owner-phone">
+            <i class="fas fa-phone-alt"></i> +375 29 738-83-78
+          </a>
+        </div>
+      </div>
+      <div class="hero-image">
+        <img src="https://images.pexels.com/photos/236697/pexels-photo-236697.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" alt="Строительство дома">
+      </div>
+    </div>
+  </div>
+
+  <!-- СЕКЦИЯ УСЛУГ — ТОЧНО ПО СПИСКУ ЗАКАЗЧИКА -->
+  <section id="services" class="services">
+    <div class="container">
+      <h2 class="section-title">Комплексные услуги</h2>
+      <div class="services-grid">
+        <!-- 1. Установка опалубки -->
+        <div class="service-card">
+          <div class="service-img">
+            <img src="https://images.pexels.com/photos/157811/pexels-photo-157811.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" alt="Опалубка">
+          </div>
+          <div class="service-content">
+            <div class="service-icon"><i class="fas fa-border-all"></i></div>
+            <h3>Установка опалубки</h3>
+            <p>Щитовые и несъемные системы. Идеальная геометрия, подготовка к бетонированию.</p>
+          </div>
+        </div>
+        <!-- 2. Установка фундамента -->
+        <div class="service-card">
+          <div class="service-img">
+            <img src="https://images.pexels.com/photos/276502/pexels-photo-276502.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" alt="Фундамент">
+          </div>
+          <div class="service-content">
+            <div class="service-icon"><i class="fas fa-archway"></i></div>
+            <h3>Установка фундамента</h3>
+            <p>Ленточные, плитные, свайные — под любые грунты и проектные нагрузки.</p>
+          </div>
+        </div>
+        <!-- 3. Установка арматуры -->
+        <div class="service-card">
+          <div class="service-img">
+            <img src="https://images.pexels.com/photos/1175144/pexels-photo-1175144.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" alt="Арматура">
+          </div>
+          <div class="service-content">
+            <div class="service-icon"><i class="fas fa-draw-polygon"></i></div>
+            <h3>Установка арматуры</h3>
+            <p>Вязка и сварка каркасов по расчетам. Классы А400, А500.</p>
+          </div>
+        </div>
+        <!-- 4. Установка каркаса -->
+        <div class="service-card">
+          <div class="service-img">
+            <img src="https://images.pexels.com/photos/67114/pexels-photo-67114.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" alt="Каркас дома">
+          </div>
+          <div class="service-content">
+            <div class="service-icon"><i class="fas fa-columns"></i></div>
+            <h3>Установка каркаса</h3>
+            <p>Металл и железобетон. Монтаж колонн, балок, перекрытий.</p>
+          </div>
+        </div>
+        <!-- 5. Установка гидроизоляции -->
+        <div class="service-card">
+          <div class="service-img">
+            <img src="https://images.pexels.com/photos/1563382/pexels-photo-1563382.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" alt="Гидроизоляция">
+          </div>
+          <div class="service-content">
+            <div class="service-icon"><i class="fas fa-water"></i></div>
+            <h3>Установка гидроизоляции</h3>
+            <p>Обмазочная, оклеечная, проникающая. Защита фундамента и кровли.</p>
+          </div>
+        </div>
+        <!-- 6. Сантехника -->
+        <div class="service-card">
+          <div class="service-img">
+            <img src="https://images.pexels.com/photos/4107272/pexels-photo-4107272.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" alt="Сантехника">
+          </div>
+          <div class="service-content">
+            <div class="service-icon"><i class="fas fa-wrench"></i></div>
+            <h3>Сантехника</h3>
+            <p>Разводка труб, монтаж санфаянса, радиаторов, теплые полы.</p>
+          </div>
+        </div>
+        <!-- 7. Кровля -->
+        <div class="service-card">
+          <div class="service-img">
+            <img src="https://images.pexels.com/photos/2294870/pexels-photo-2294870.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" alt="Кровля">
+          </div>
+          <div class="service-content">
+            <div class="service-icon"><i class="fas fa-home"></i></div>
+            <h3>Кровля</h3>
+            <p>Любые виды покрытий: металлочерепица, гибкая черепица, фальц.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ПОРТФОЛИО (объекты с фото) -->
+  <section id="projects" class="portfolio">
+    <div class="container">
+      <h2 class="section-title">Реализованные проекты</h2>
+      <div class="portfolio-grid">
+        <div class="project-item">
+          <div class="project-img">
+            <img src="https://images.pexels.com/photos/106399/pexels-photo-106399.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" alt="Современный коттедж">
+          </div>
+          <div class="project-info">
+            <h4>Современный коттедж</h4>
+            <p>Монолит + кирпич, 320 м²</p>
+          </div>
+        </div>
+        <div class="project-item">
+          <div class="project-img">
+            <img src="https://images.pexels.com/photos/280221/pexels-photo-280221.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" alt="Каркасный дом">
+          </div>
+          <div class="project-info">
+            <h4>Каркасный дом</h4>
+            <p>Утепленный фасад, 180 м²</p>
+          </div>
+        </div>
+        <div class="project-item">
+          <div class="project-img">
+            <img src="https://images.pexels.com/photos/258160/pexels-photo-258160.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" alt="Кровля">
+          </div>
+          <div class="project-info">
+            <h4>Дом с плоской кровлей</h4>
+            <p>Эксплуатируемая кровля, терраса</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- БЛОК ЗАКАЗЧИКА ДЕНИСА (КРУПНО) -->
+  <section class="denis-showcase">
+    <div class="container denis-wrapper">
+      <div class="denis-info">
+        <div class="denis-label">ЛИЧНОЕ КУРАТОРСТВО</div>
+        <div class="denis-name">Денис,<br><span>руководитель</span></div>
+        <div class="denis-quote">
+          «Строю с душой. Каждый объект — авторское высказывание. Без посредников, обсуждаю детали лично.»
+        </div>
+        <div class="denis-phone-box">
+          <i class="fas fa-mobile-alt"></i>
+          <a href="tel:+375297388378" class="denis-phone-number">+375 29 738-83-78</a>
+        </div>
+        <p style="margin-top: 20px; color: #d0cfcf;">Прямой номер • Telegram • WhatsApp</p>
+      </div>
+      <div class="denis-stats">
+        <div class="stat-item">
+          <div class="stat-number">15+</div>
+          <p>Лет опыта</p>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number">87</div>
+          <p>Объектов</p>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number">12</div>
+          <p>Наград</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- КОНТАКТЫ -->
+  <section id="contact" class="contact-section">
+    <div class="container">
+      <h2 class="section-title">Связаться с Денисом</h2>
+      <div class="contact-grid">
+        <div class="contact-info">
+          <p style="font-size: 1.2rem; color: #444; margin-bottom: 16px;">Обсудим проект, рассчитаем смету, выедем на объект.</p>
+          <div class="contact-details">
+            <div class="contact-line">
+              <i class="fas fa-phone"></i>
+              <a href="tel:+375297388378" class="big-phone">+375 29 738-83-78</a>
+            </div>
+            <div class="contact-line">
+              <i class="fas fa-envelope"></i>
+              <span style="font-size: 1.2rem;">denis.stroy@example.com</span>
+            </div>
+            <div class="contact-line">
+              <i class="fas fa-map-pin"></i>
+              <span style="font-size: 1.2rem;">Минск, ул. Строительная 15</span>
+            </div>
+          </div>
+        </div>
+        <div style="flex: 1 1 45%; background: #ece9e3; border-radius: 24px; display: flex; align-items: center; justify-content: center; padding: 40px;">
+          <i class="fas fa-phone-volume" style="font-size: 5rem; color: #a67c4b; margin-right: 20px;"></i>
+          <div>
+            <h3 style="font-size: 2rem; font-family: 'Playfair Display';">Прямая связь</h3>
+            <p style="font-size: 1.2rem;">Денис на связи лично</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ФУТЕР -->
+  <footer>
+    <div class="container">
+      <div class="logo" style="color: white; margin-bottom: 16px;"><span>ДЕНИС</span> СТРОЙ</div>
+      <div style="margin-bottom: 24px;">Строительство премиум-класса</div>
+      <div style="font-size: 1.2rem; margin-bottom: 20px;">
+        <span>Денис: </span>
+        <a href="tel:+375297388378" style="color: #a67c4b; text-decoration: none; font-weight: 600;">+375 29 738-83-78</a>
+      </div>
+      <div style="border-top: 1px solid #333; padding-top: 28px; font-size: 0.9rem;">
+        © 2026 Денис Строй — надежное строительство
+      </div>
+    </div>
+  </footer>
+
+  <!-- Фиксированная кнопка с номером -->
+  <div class="fixed-phone">
+    <a href="tel:+375297388378">
+      <i class="fas fa-phone-alt"></i> Денис
+    </a>
+  </div>
+
+</body>
+</html>
