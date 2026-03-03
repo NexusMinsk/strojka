@@ -1,0 +1,2404 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>СЕД-СтройИнвест — бетон и кладка</title>
+    <!-- three.js + vanta (подключаем, но на мобиле отключаем логикой) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vanta@0.5.24/dist/vanta.net.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vanta@0.5.24/dist/vanta.waves.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vanta@0.5.24/dist/vanta.globe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vanta@0.5.24/dist/vanta.rings.min.js"></script>
+    <!-- particles.js -->
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <!-- Шрифты и иконки -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&family=Merriweather:ital,wght@0,300;0,400;1,300&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #0c0e0d;
+            font-family: sans-serif;
+            color: #fff;
+            line-height: 1.5;
+            overflow-x: hidden;
+        }
+
+        /* ===== КАСТОМНЫЙ КУРСОР (ТОЛЬКО ДЛЯ ДЕСКТОПА) ===== */
+        @media (min-width: 1025px) {
+            * {
+                cursor: none !important;
+            }
+
+            .cursor-dot {
+                width: 6px;
+                height: 6px;
+                background: #ff5f1f;
+                position: fixed;
+                border-radius: 50%;
+                pointer-events: none;
+                z-index: 99999;
+                transform: translate(-50%, -50%);
+                transition: width 0.3s cubic-bezier(0.2, 0.9, 0.3, 1.2), height 0.3s cubic-bezier(0.2, 0.9, 0.3, 1.2), background 0.2s ease;
+                box-shadow: 0 0 15px rgba(255, 95, 31, 0.6);
+                will-change: transform, width, height;
+            }
+
+            .cursor-outline {
+                width: 44px;
+                height: 44px;
+                border: 2px solid rgba(255, 95, 31, 0.5);
+                position: fixed;
+                border-radius: 50%;
+                pointer-events: none;
+                z-index: 99998;
+                transform: translate(-50%, -50%);
+                transition: width 0.4s cubic-bezier(0.15, 0.9, 0.25, 1.1), height 0.4s cubic-bezier(0.15, 0.9, 0.25, 1.1), border-color 0.2s ease, box-shadow 0.2s ease;
+                backdrop-filter: blur(2px);
+                box-shadow: 0 0 20px rgba(255, 95, 31, 0.2);
+                will-change: transform, width, height;
+            }
+
+            a:hover~.cursor-dot,
+            button:hover~.cursor-dot,
+            .btn:hover~.cursor-dot,
+            .service-tag:hover~.cursor-dot,
+            .service-card:hover~.cursor-dot,
+            .nav-link:hover~.cursor-dot,
+            .burger-menu:hover~.cursor-dot {
+                width: 14px;
+                height: 14px;
+                background: #ffffff;
+                box-shadow: 0 0 25px #ff5f1f;
+            }
+
+            a:hover~.cursor-outline,
+            button:hover~.cursor-outline,
+            .btn:hover~.cursor-outline,
+            .service-tag:hover~.cursor-outline,
+            .service-card:hover~.cursor-outline,
+            .nav-link:hover~.cursor-outline,
+            .burger-menu:hover~.cursor-outline {
+                width: 60px;
+                height: 60px;
+                border-color: #ffffff;
+                box-shadow: 0 0 30px rgba(255, 95, 31, 0.5);
+                backdrop-filter: blur(4px);
+            }
+        }
+
+        /* ===== ХЕДЕР С НАВИГАЦИЕЙ ===== */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: transparent;
+            backdrop-filter: none;
+            border-bottom: 1px solid transparent;
+            z-index: 1000;
+            padding: 20px 50px;
+            transition: all 0.4s ease;
+            box-shadow: none;
+        }
+
+        .header.scrolled {
+            background: rgba(10, 15, 14, 0.85);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255, 95, 31, 0.2);
+            padding: 15px 50px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .header-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: white;
+            transition: 0.3s;
+            z-index: 1001;
+        }
+
+        .logo span {
+            color: #ff5f1f;
+            font-weight: 700;
+        }
+
+        /* Десктопная навигация */
+        .nav-menu {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+        }
+
+        .nav-link {
+            color: #fff;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: 500;
+            letter-spacing: 1px;
+            padding: 8px 16px;
+            border-radius: 40px;
+            transition: all 0.3s;
+            border: 1px solid transparent;
+            text-transform: uppercase;
+        }
+
+        .nav-link:hover {
+            color: #ff5f1f;
+        }
+
+        .nav-link.active {
+            color: #ff5f1f;
+        }
+
+        .header-phone {
+            font-size: 18px;
+            font-weight: 500;
+            color: white;
+            text-decoration: none;
+            padding: 8px 20px;
+            border: 1px solid rgba(255, 95, 31, 0.5);
+            border-radius: 40px;
+            transition: 0.3s;
+            margin-left: 20px;
+        }
+
+        .header-phone:hover {
+            border-color: #ff5f1f;
+            background: rgba(255, 95, 31, 0.1);
+        }
+
+        /* ===== БУРГЕР МЕНЮ ===== */
+        .burger-menu {
+            display: none;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 30px;
+            height: 21px;
+            cursor: pointer;
+            z-index: 1001;
+            position: relative;
+        }
+
+        .burger-line {
+            width: 100%;
+            height: 3px;
+            background: #fff;
+            transition: all 0.3s ease;
+            border-radius: 3px;
+        }
+
+        .burger-menu.active .burger-line:nth-child(1) {
+            transform: translateY(9px) rotate(45deg);
+            background: #ff5f1f;
+        }
+
+        .burger-menu.active .burger-line:nth-child(2) {
+            opacity: 0;
+        }
+
+        .burger-menu.active .burger-line:nth-child(3) {
+            transform: translateY(-9px) rotate(-45deg);
+            background: #ff5f1f;
+        }
+
+        /* Мобильное меню */
+        .mobile-menu {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 300px;
+            height: 100vh;
+            background: rgba(10, 15, 14, 0.95);
+            backdrop-filter: blur(20px);
+            z-index: 1000;
+            padding: 100px 30px 30px;
+            transition: right 0.4s ease;
+            border-left: 2px solid rgba(255, 95, 31, 0.3);
+            box-shadow: -5px 0 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .mobile-menu.active {
+            right: 0;
+        }
+
+        .mobile-nav {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .mobile-link {
+            color: #fff;
+            text-decoration: none;
+            font-size: 20px;
+            font-weight: 500;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            padding: 15px 20px;
+            border-bottom: 1px solid rgba(255, 95, 31, 0.2);
+            transition: all 0.3s;
+        }
+
+        .mobile-link:hover {
+            color: #ff5f1f;
+            padding-left: 30px;
+            border-bottom-color: #ff5f1f;
+        }
+
+        .mobile-link.active {
+            color: #ff5f1f;
+            border-left: 4px solid #ff5f1f;
+        }
+
+        .mobile-phone {
+            margin-top: 40px;
+            text-align: center;
+        }
+
+        .mobile-phone a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 24px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            padding: 15px 30px;
+            border: 2px solid rgba(255, 95, 31, 0.5);
+            border-radius: 50px;
+            display: inline-block;
+            transition: all 0.3s;
+        }
+
+        .mobile-phone a:hover {
+            border-color: #ff5f1f;
+            background: rgba(255, 95, 31, 0.1);
+        }
+
+        /* Оверлей для мобильного меню */
+        .menu-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(5px);
+            z-index: 999;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .menu-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* ===== АНИМАЦИИ ПОЯВЛЕНИЯ ===== */
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeRight {
+            from {
+                opacity: 0;
+                transform: translateX(-40px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes fadeLeft {
+            from {
+                opacity: 0;
+                transform: translateX(40px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes scaleIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .animate-fade-up {
+            animation: fadeUp 0.8s cubic-bezier(0.2, 0.9, 0.3, 1) forwards;
+        }
+
+        .animate-fade-right {
+            animation: fadeRight 0.8s cubic-bezier(0.2, 0.9, 0.3, 1) forwards;
+        }
+
+        .animate-fade-left {
+            animation: fadeLeft 0.8s cubic-bezier(0.2, 0.9, 0.3, 1) forwards;
+        }
+
+        .animate-scale {
+            animation: scaleIn 0.8s cubic-bezier(0.2, 0.9, 0.3, 1) forwards;
+        }
+
+        .delay-1 {
+            animation-delay: 0.1s;
+            opacity: 0;
+        }
+
+        .delay-2 {
+            animation-delay: 0.2s;
+            opacity: 0;
+        }
+
+        .delay-3 {
+            animation-delay: 0.3s;
+            opacity: 0;
+        }
+
+        .delay-4 {
+            animation-delay: 0.4s;
+            opacity: 0;
+        }
+
+        .delay-5 {
+            animation-delay: 0.5s;
+            opacity: 0;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 50px;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* ===== ГЛАВНАЯ СЕКЦИЯ ===== */
+        .hero {
+            position: relative;
+            height: 100vh;
+            min-height: 800px;
+            display: flex;
+            align-items: center;
+            overflow: hidden;
+            margin-top: 0;
+        }
+
+        #hero-video-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: 0;
+            opacity: 0.4;
+        }
+
+        .hero .container {
+            position: relative;
+            z-index: 2;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .hero-content {
+            max-width: 700px;
+        }
+
+        .hero-label {
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 8px;
+            color: #ff5f1f;
+            margin-bottom: 20px;
+            opacity: 0.8;
+        }
+
+        .hero-title {
+            font-size: 120px;
+            font-weight: 700;
+            line-height: 0.9;
+            text-transform: uppercase;
+            color: white;
+            margin-bottom: 30px;
+        }
+
+        .hero-title-line {
+            display: block;
+            overflow: hidden;
+            height: 0.9em;
+        }
+
+        .hero-title-line:first-child {
+            color: transparent;
+            -webkit-text-stroke: 2px white;
+        }
+
+        .hero-title-line:last-child {
+            color: #ff5f1f;
+            margin-left: 100px;
+        }
+
+        /* Стили для печатающегося текста */
+        #typewriter-line1,
+        #typewriter-line2 {
+            display: inline-block;
+            white-space: nowrap;
+            border-right: 3px solid #ff5f1f;
+            padding-right: 2px;
+            animation: blink-cursor 0.8s infinite;
+        }
+
+        @keyframes blink-cursor {
+
+            0%,
+            100% {
+                border-color: #ff5f1f;
+            }
+
+            50% {
+                border-color: transparent;
+            }
+        }
+
+        .hero-desc {
+            font-size: 20px;
+            max-width: 600px;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 40px;
+            line-height: 1.6;
+            backdrop-filter: blur(4px);
+            background: rgba(0, 0, 0, 0.2);
+            padding: 20px 30px;
+            border-left: 4px solid #ff5f1f;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 18px 50px;
+            font-weight: 600;
+            font-size: 16px;
+            text-transform: uppercase;
+            text-decoration: none;
+            letter-spacing: 2px;
+            transition: 0.3s;
+            border: 1.5px solid transparent;
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background: #ff5f1f;
+            color: #0c0e0d;
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background: transparent;
+            color: #ff5f1f;
+            border: 1.5px solid #ff5f1f;
+        }
+
+        .btn-outline {
+            border-color: white;
+            color: white;
+            background: transparent;
+        }
+
+        .btn-outline:hover {
+            background: white;
+            color: #0c0e0d;
+            border-color: white;
+        }
+
+        .hero-right-column {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            max-width: 350px;
+            width: 100%;
+        }
+
+        .hero-services-preview {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+            /* Увеличен отступ между элементами */
+        }
+
+        /* Обновленный стиль для service-tag с внутренней сноской */
+        .service-tag {
+            position: relative;
+            background: rgba(20, 20, 20, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 95, 31, 0.3);
+            padding: 18px 30px;
+            font-size: 22px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: white;
+            transition: all 0.4s cubic-bezier(0.2, 0.9, 0.3, 1);
+            border-radius: 4px;
+            text-align: right;
+            cursor: pointer;
+            overflow: hidden;
+            /* Скрываем содержимое при схлопывании */
+            min-height: 65px;
+            /* Минимальная высота для заголовка */
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+        }
+
+        .service-tag:hover {
+            border-color: #ff5f1f;
+            background: rgba(255, 95, 31, 0.15);
+            transform: translateX(-5px);
+            padding-bottom: 25px;
+            /* Увеличиваем нижний отступ при раскрытии */
+        }
+
+        .service-tag-title {
+            width: 100%;
+            text-align: right;
+            transition: all 0.3s ease;
+            z-index: 2;
+            position: relative;
+        }
+
+        /* Внутренняя сноска (появляется при ховере) */
+        .service-tag-tooltip-inner {
+            width: 100%;
+            color: #fff;
+            font-size: 14px;
+            font-weight: 400;
+            text-transform: none;
+            letter-spacing: 0.5px;
+            line-height: 1.6;
+            text-align: left;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid rgba(255, 95, 31, 0.5);
+            opacity: 0;
+            transform: translateY(-10px);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            z-index: 1;
+            background: transparent;
+            backdrop-filter: none;
+        }
+
+        .service-tag:hover .service-tag-tooltip-inner {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Специфичные цвета для разных услуг (опционально) */
+        .service-tag[data-service="kladka"]:hover {
+            background: rgba(255, 95, 31, 0.2);
+        }
+
+        .service-tag[data-service="shtukaturka"]:hover {
+            background: rgba(255, 95, 31, 0.2);
+        }
+
+        .service-tag[data-service="styazhka"]:hover {
+            background: rgba(255, 95, 31, 0.2);
+        }
+
+        .service-tooltip-old {
+            display: none;
+            /* Скрываем старый тултип */
+        }
+
+        /* ===== СЕКЦИИ ===== */
+        .section-title {
+            font-size: 56px;
+            font-weight: 600;
+            line-height: 1.1;
+            margin-bottom: 80px;
+            color: #fff;
+            border-left: 6px solid #ff5f1f;
+            padding-left: 30px;
+        }
+
+        .section-title span {
+            color: #ff5f1f;
+        }
+
+        .section-subtitle {
+            font-size: 18px;
+            color: #ff5f1f;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            margin-bottom: 20px;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+            padding: 40px 0;
+        }
+
+        .stat-item {
+            border-left: 4px solid #ff5f1f;
+            padding-left: 25px;
+            position: relative;
+            cursor: help;
+        }
+
+        .stat-num {
+            font-size: 68px;
+            font-weight: 600;
+            color: white;
+        }
+
+        .stat-num sup {
+            color: #ff5f1f;
+            font-size: 32px;
+        }
+
+        .stat-tooltip {
+            position: absolute;
+            bottom: 100%;
+            left: 0;
+            transform: translateY(-10px);
+            background: rgba(255, 95, 31, 0.95);
+            color: #0c0e0d;
+            padding: 10px 15px;
+            font-size: 14px;
+            font-weight: 500;
+            white-space: normal;
+            width: 200px;
+            border-radius: 4px;
+            opacity: 0;
+            transition: opacity 0.3s, transform 0.3s;
+            pointer-events: none;
+            z-index: 20;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.4);
+            line-height: 1.4;
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .stat-item:hover .stat-tooltip {
+            opacity: 1;
+            transform: translateY(-20px);
+        }
+
+        .about {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 70px;
+            padding: 40px 0;
+            padding-bottom: 70px;
+            align-items: center;
+        }
+
+        .about-text p {
+            font-size: 18px;
+            color: #ccc;
+            margin-bottom: 20px;
+        }
+
+        .contact-card {
+            background: rgb(12, 14, 13);
+            backdrop-filter: blur(8px);
+            border: 1px solid #ff5f1f;
+            padding: 50px;
+        }
+
+        .contact-name {
+            font-size: 42px;
+            font-weight: 600;
+            color: white;
+            margin-bottom: 10px;
+        }
+
+        .contact-phone {
+            font-size: 32px;
+            color: white;
+            text-decoration: none;
+            border-bottom: 2px solid #ff5f1f;
+            padding-bottom: 5px;
+            display: inline-block;
+            margin-top: 20px;
+        }
+
+        /* ===== ДЕТАЛЬНАЯ СЕКЦИЯ УСЛУГ С ЧАСТИЦАМИ ===== */
+        .services-detailed {
+            position: relative;
+            padding: 0px 0;
+            background-color: #0c0e0d;
+            overflow: hidden;
+        }
+
+        /* Контейнер для частиц (будет отключен на мобильных через JS) */
+        .services-particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            opacity: 0.6;
+            pointer-events: none;
+        }
+
+        /* На мобильных скрываем particles */
+        @media (max-width: 900px) {
+            .services-particles {
+                display: none;
+            }
+        }
+
+        .services-detailed .container {
+            position: relative;
+            z-index: 2;
+        }
+
+        .service-detail {
+            margin-bottom: 6rem;
+            scroll-margin-top: 100px;
+            display: grid;
+            /* Добавьте это */
+            grid-template-columns: 1fr 1fr;
+            /* Две колонки: заголовок и features */
+            gap: 2rem;
+            /* Отступ между колонками */
+        }
+
+        .service-header {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            
+            grid-column: 1;
+            /* Заголовок в первой колонке */
+        }
+
+ 
+        .service-header h2 {
+            font-size: 2.8rem;
+            font-weight: 700;
+            color: #ff5f1f;
+        }
+
+        .service-content {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr;
+            gap: 3rem;
+            margin-bottom: 2rem;
+            grid-column: 1 / -1;
+            /* Контент на всю ширину */
+        }
+
+        .service-description p {
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+            font-size: 1.1rem;
+        }
+
+        .service-features {
+            background: linear-gradient(145deg, #1a1d24, #0c0e0d);
+            border: 1px solid rgba(255, 95, 31, 0.2);
+            border-radius: 30px;
+            padding: 2rem;
+            grid-column: 2;
+            /* Features во второй колонке */
+            grid-row: 1;
+            /* На одном ряду с заголовком */
+            align-self: start;
+            /* Прижать к верху */
+        }
+
+        .service-features h3 {
+            font-size: 1.5rem;
+            color: #ff5f1f;
+            margin-bottom: 1.5rem;
+        }
+
+
+        .features-list {
+            list-style: none;
+        }
+
+        .features-list li {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.2rem;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .features-list li i {
+            color: #ff5f1f;
+            width: 24px;
+        }
+
+        /* Кнопка "Обсудить" */
+        .discuss-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.8rem;
+            background: transparent;
+            border: 2px solid #ff5f1f;
+            color: #ff5f1f;
+            padding: 1rem 2.5rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 1rem;
+        }
+
+        .discuss-btn:hover {
+            background: #ff5f1f;
+            color: #0c0e0d;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(255, 95, 31, 0.3);
+        }
+
+        .discuss-btn i {
+            font-size: 1.2rem;
+            transition: transform 0.3s;
+        }
+
+        .discuss-btn:hover i {
+            transform: translateX(5px);
+        }
+
+        /* ===== РАСШИРЕННАЯ СЕКЦИЯ ПРИНЦИПОВ ===== */
+        .principles {
+            position: relative;
+            padding: 100px 0 120px;
+            min-height: 800px;
+            display: flex;
+            align-items: center;
+            background-color: #0c0e0d;
+        }
+
+        #vanta-principles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            opacity: 0.35;
+        }
+
+        /* На мобильных отключаем Vanta */
+        @media (max-width: 900px) {
+            #vanta-principles {
+                display: none;
+            }
+        }
+
+        .principles-grid {
+            position: relative;
+            z-index: 2;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 60px 80px;
+            margin-top: 40px;
+        }
+
+        .principle-item {
+            font-size: 28px;
+            display: flex;
+            gap: 20px;
+            border-bottom: 1px solid rgba(255, 95, 31, 0.3);
+            padding-bottom: 25px;
+            font-weight: 450;
+            flex-direction: column;
+            transition: all 0.3s ease;
+            cursor: default;
+        }
+
+        .principle-item:hover {
+            border-bottom-color: #ff5f1f;
+            transform: translateY(-5px);
+        }
+
+        .principle-header {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .principle-num {
+            color: #ff5f1f;
+            font-size: 48px;
+            font-weight: 700;
+            line-height: 1;
+            opacity: 0.9;
+            text-shadow: 0 0 15px rgba(255, 95, 31, 0.3);
+        }
+
+        .principle-title {
+            font-size: 28px;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+        }
+
+        .principle-desc {
+            font-size: 16px;
+            color: #bbb;
+            line-height: 1.7;
+            margin-left: 68px;
+            margin-top: -5px;
+            margin-bottom: 10px;
+            font-weight: 400;
+            transition: color 0.3s ease;
+        }
+
+        .principle-item:hover .principle-desc {
+            color: #fff;
+        }
+
+        /* Добавляем дополнительные принципы для расширения */
+        .principle-item-extended {
+            grid-column: span 2;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-top: 20px;
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .principle-subitem {
+            border-bottom: 1px solid rgba(255, 95, 31, 0.2);
+            padding-bottom: 20px;
+        }
+
+        .principle-subitem .principle-header {
+            margin-bottom: 10px;
+        }
+
+        .principle-subitem .principle-num {
+            font-size: 36px;
+        }
+
+        .principle-subitem .principle-title {
+            font-size: 24px;
+        }
+
+        .principle-subitem .principle-desc {
+            margin-left: 56px;
+        }
+
+        /* ===== УВЕДОМЛЕНИЯ ===== */
+        .notification {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: rgba(18, 22, 21, 0.98);
+            border-left: 4px solid #ff5f1f;
+            padding: 16px 25px;
+            border-radius: 4px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            transform: translateX(400px);
+            transition: transform 0.3s cubic-bezier(0.2, 0.9, 0.3, 1);
+            z-index: 20000;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 95, 31, 0.3);
+            max-width: 350px;
+        }
+
+        .notification.active {
+            transform: translateX(0);
+        }
+
+        .notification-content {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .notification-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: rgba(255, 95, 31, 0.15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ff5f1f;
+            font-size: 18px;
+        }
+
+        .notification.success .notification-icon {
+            color: #4CAF50;
+            background: rgba(76, 175, 80, 0.15);
+        }
+
+        .notification.success {
+            border-left-color: #4CAF50;
+        }
+
+        .notification.error .notification-icon {
+            color: #f44336;
+            background: rgba(244, 67, 54, 0.15);
+        }
+
+        .notification.error {
+            border-left-color: #f44336;
+        }
+
+        .notification-message {
+            color: #fff;
+            font-size: 15px;
+            font-weight: 500;
+            letter-spacing: 0.3px;
+            line-height: 1.4;
+        }
+
+        .notification-close {
+            margin-left: auto;
+            color: rgba(255, 255, 255, 0.5);
+            cursor: pointer;
+            font-size: 18px;
+            transition: color 0.2s;
+            padding: 0 5px;
+        }
+
+        .notification-close:hover {
+            color: #ff5f1f;
+        }
+
+        .footer {
+            padding: 80px 0 60px;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 40px;
+            color: #888;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .footer-left {
+            font-size: 24px;
+            font-weight: 600;
+            color: white;
+        }
+
+        .footer-left span {
+            color: #ff5f1f;
+        }
+
+        .footer-left p {
+            font-size: 14px;
+            color: #888;
+            margin-top: 15px;
+            font-weight: 400;
+        }
+
+        .footer-col h4 {
+            color: white;
+            font-size: 18px;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .footer-col a {
+            display: block;
+            color: #aaa;
+            text-decoration: none;
+            margin-bottom: 12px;
+            font-size: 15px;
+            transition: 0.2s;
+        }
+
+        .footer-col a:hover {
+            color: #ff5f1f;
+            transform: translateX(5px);
+        }
+
+        .footer-col .contact-info {
+            color: #aaa;
+            margin-bottom: 10px;
+            font-size: 15px;
+        }
+
+        .footer-col .contact-info i {
+            color: #ff5f1f;
+            margin-right: 10px;
+        }
+
+        .footer-bottom {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding-top: 40px;
+            margin-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 14px;
+        }
+
+        .footer-bottom .nexus {
+            color: #ff5f1f;
+            font-weight: 500;
+            letter-spacing: 2px;
+        }
+
+        /* ===== МОДАЛЬНОЕ ОКНО (МИНИМАЛИСТИЧНОЕ) ===== */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(8px);
+            z-index: 10000;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .modal-content {
+            background: rgba(18, 22, 21, 0.95);
+            border: 1px solid rgba(255, 95, 31, 0.15);
+            padding: 40px 35px;
+            max-width: 440px;
+            width: 90%;
+            position: relative;
+            border-radius: 0px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5);
+            transform: translateY(10px);
+            transition: transform 0.4s cubic-bezier(0.2, 0.9, 0.3, 1), opacity 0.3s;
+            opacity: 0;
+        }
+
+        .modal.active .modal-content {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 16px;
+            right: 20px;
+            font-size: 26px;
+            color: rgba(255, 95, 31, 0.6);
+            cursor: pointer;
+            transition: 0.2s;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: transparent;
+            border: none;
+            line-height: 1;
+        }
+
+        .modal-close:hover {
+            color: #ff5f1f;
+            background: rgba(255, 95, 31, 0.1);
+        }
+
+        .modal h2 {
+            font-size: 28px;
+            margin-bottom: 30px;
+            color: white;
+            font-weight: 400;
+            letter-spacing: 2px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 95, 31, 0.3);
+            padding-bottom: 20px;
+        }
+
+        .modal h2 span {
+            color: #ff5f1f;
+            font-weight: 600;
+        }
+
+        .form-group {
+            margin-bottom: 22px;
+            position: relative;
+        }
+
+        .form-group i {
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #ff5f1f;
+            font-size: 16px;
+            opacity: 0.6;
+            transition: opacity 0.2s;
+            width: 24px;
+            text-align: center;
+        }
+
+        .form-group.textarea i {
+            top: 18px;
+            transform: none;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 0 12px 32px;
+            background: transparent;
+            border: none;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+            color: white;
+            font-size: 16px;
+            transition: 0.2s;
+            border-radius: 0;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .form-group textarea {
+            padding-left: 32px;
+            min-height: 90px;
+            resize: vertical;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-bottom-color: #ff5f1f;
+        }
+
+        .form-group input:focus+i,
+        .form-group textarea:focus+i {
+            opacity: 1;
+        }
+
+        #serviceName {
+            font-weight: 500;
+            color: #ff5f1f;
+            border-bottom-color: rgba(255, 95, 31, 0.3);
+        }
+
+        .modal .btn {
+            width: 100%;
+            margin-top: 30px;
+            border-radius: 0;
+            padding: 15px;
+            font-size: 16px;
+            background: transparent;
+            border: 1px solid #ff5f1f;
+            color: #ff5f1f;
+            letter-spacing: 3px;
+            font-weight: 500;
+            transition: all 0.25s;
+        }
+
+        .modal .btn:hover {
+            background: #ff5f1f;
+            color: #0c0e0d;
+            border-color: #ff5f1f;
+        }
+
+        /* ===== АДАПТИВНОСТЬ ===== */
+        @media (max-width: 1200px) {
+            .hero-title {
+                font-size: 90px;
+            }
+
+            .hero-title-line:last-child {
+                margin-left: 50px;
+            }
+
+            .principles-grid {
+                gap: 40px 60px;
+            }
+        }
+
+        @media (max-width: 1000px) {
+            .hero .container {
+                flex-direction: column;
+                gap: 50px;
+                align-items: flex-start;
+            }
+
+            .hero-right-column {
+                max-width: 100%;
+            }
+
+            .service-tag {
+                text-align: left;
+            }
+
+            .principle-item-extended {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+        }
+
+        @media (max-width: 900px) {
+            .container {
+                padding: 0 30px;
+            }
+
+            .hero-title {
+                font-size: 70px;
+            }
+
+            .hero-title-line:last-child {
+                margin-left: 0;
+            }
+
+            .stats,
+            .about,
+            .principles-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .footer {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .section-title {
+                font-size: 42px;
+            }
+
+            .service-tag {
+                font-size: 20px;
+            }
+
+            .service-content {
+                grid-template-columns: 1fr;
+            }
+
+            /* Адаптация навигации */
+            .nav-menu {
+                display: none;
+            }
+
+            .burger-menu {
+                display: flex;
+            }
+
+            .header-phone {
+                display: none;
+            }
+
+            .header.scrolled {
+                padding: 15px 30px;
+            }
+
+            .header {
+                padding: 15px 30px;
+            }
+
+            .principles {
+                padding: 60px 0 80px;
+                min-height: auto;
+            }
+
+            .principle-desc {
+                margin-left: 56px;
+            }
+
+            .notification {
+                bottom: 20px;
+                right: 20px;
+                left: 20px;
+                max-width: none;
+            }
+        }
+
+        @media (max-width: 700px) {
+            .service-header {
+                flex-direction: column;
+                text-align: center;
+                gap: 1rem;
+            }
+
+            .discuss-btn {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .principle-num {
+                font-size: 40px;
+            }
+
+            .principle-title {
+                font-size: 24px;
+            }
+
+            .principle-desc {
+                margin-left: 0;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .hero-title {
+                font-size: 50px;
+            }
+
+            .hero-desc {
+                font-size: 16px;
+                padding: 15px 20px;
+            }
+
+            .btn {
+                padding: 14px 30px;
+                font-size: 14px;
+            }
+
+            .service-tag {
+                font-size: 18px;
+                padding: 12px 20px;
+            }
+
+            .service-tag-tooltip-inner {
+                font-size: 12px;
+            }
+
+            .stat-num {
+                font-size: 48px;
+            }
+
+            .section-title {
+                font-size: 36px;
+                padding-left: 20px;
+            }
+
+            .contact-name {
+                font-size: 32px;
+            }
+
+            .contact-phone {
+                font-size: 24px;
+            }
+
+            .footer {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-col {
+                text-align: center;
+            }
+
+            .mobile-menu {
+                width: 280px;
+            }
+
+            .hero-services-preview {
+                display: none;
+            }
+
+            .principles-grid {
+                gap: 30px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-title {
+                font-size: 55px;
+            }
+
+            .hero-label {
+                letter-spacing: 4px;
+            }
+
+            .logo {
+                font-size: 15px;
+            }
+
+            .mobile-menu {
+                width: 260px;
+                padding: 80px 20px 30px;
+            }
+
+            .mobile-link {
+                font-size: 18px;
+                padding: 12px 15px;
+            }
+
+            .mobile-phone a {
+                font-size: 15px;
+                padding: 12px 25px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="cursor-dot" id="cursorDot"></div>
+    <div class="cursor-outline" id="cursorOutline"></div>
+
+    <!-- Оверлей для мобильного меню -->
+    <div class="menu-overlay" id="menuOverlay"></div>
+
+    <!-- Мобильное меню -->
+    <div class="mobile-menu" id="mobileMenu">
+        <div class="mobile-nav">
+            <a href="#hero" class="mobile-link" data-section="hero">Главная</a>
+            <a href="#about" class="mobile-link" data-section="about">О нас</a>
+            <a href="#services" class="mobile-link" data-section="services">Услуги</a>
+            <a href="#principles" class="mobile-link" data-section="principles">Принципы</a>
+        </div>
+        <div class="mobile-phone">
+            <a href="tel:+375336370959">+375 33 637-09-59</a>
+        </div>
+    </div>
+
+    <header class="header" id="mainHeader">
+        <div class="header-container">
+            <div class="logo animate-fade-right"><span>СЕД</span>СТРОЙИНВЕСТ</div>
+
+            <!-- Десктопная навигация -->
+            <nav class="nav-menu">
+                <a href="#hero" class="nav-link active" data-section="hero">Главная</a>
+                <a href="#about" class="nav-link" data-section="about">О нас</a>
+                <a href="#services" class="nav-link" data-section="services">Услуги</a>
+                <a href="#principles" class="nav-link" data-section="principles">Принципы</a>
+                <a href="tel:+375336370959" class="header-phone animate-fade-left">+375 33 637-09-59</a>
+            </nav>
+
+            <!-- Бургер меню -->
+            <div class="burger-menu" id="burgerMenu">
+                <span class="burger-line"></span>
+                <span class="burger-line"></span>
+                <span class="burger-line"></span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Минималистичное модальное окно -->
+    <div class="modal" id="serviceModal">
+        <div class="modal-content">
+            <span class="modal-close" onclick="closeModal()">✕</span>
+            <h2>ЗАКАЗАТЬ <span>УСЛУГУ</span></h2>
+            <div class="form-group">
+                <i class="fas fa-tools"></i>
+                <input type="text" id="serviceName" value="Кладка" readonly>
+            </div>
+            <div class="form-group">
+                <i class="fas fa-user"></i>
+                <input type="text" placeholder="Имя" id="modalName">
+            </div>
+            <div class="form-group">
+                <i class="fas fa-phone"></i>
+                <input type="tel" placeholder="Телефон" id="modalPhone">
+            </div>
+            <div class="form-group textarea">
+                <i class="fas fa-comment"></i>
+                <textarea placeholder="Сообщение (необязательно)" id="modalComment"></textarea>
+            </div>
+            <button class="btn" onclick="submitForm()">ОТПРАВИТЬ</button>
+        </div>
+    </div>
+
+    <!-- Уведомления -->
+    <div class="notification" id="notification">
+        <div class="notification-content">
+            <div class="notification-icon">
+                <i class="fas fa-check"></i>
+            </div>
+            <div class="notification-message" id="notificationMessage">Сообщение</div>
+            <div class="notification-close" onclick="hideNotification()">✕</div>
+        </div>
+    </div>
+
+    <section class="hero" id="hero">
+        <video id="hero-video-bg" autoplay muted loop playsinline>
+            <source src="video-str.mp4" type="video/mp4">
+        </video>
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-label animate-fade-up">С 2014 ГОДА</div>
+                <h1 class="hero-title animate-fade-up delay-1">
+                    <span class="hero-title-line"><span id="typewriter-line1"></span></span>
+                    <span class="hero-title-line"><span id="typewriter-line2"></span></span>
+                </h1>
+                <div class="hero-desc animate-fade-up delay-2">
+                    Кладка, штукатурка, стяжка. Только объекты, где качество — единственный аргумент. Личный контроль —
+                    Егор Сапего.
+                </div>
+                <div style="display: flex; gap: 30px; flex-wrap: wrap;" class="animate-fade-up delay-3">
+                    <a href="#" class="btn btn-primary">УСЛУГИ</a>
+                    <a href="#" class="btn btn-outline">СВЯЗАТЬСЯ</a>
+                </div>
+            </div>
+
+            <div class="hero-right-column animate-fade-left delay-3">
+                <div class="hero-services-preview">
+                    <!-- Кладка - блок с внутренней сноской -->
+                    <div class="service-tag" data-service="kladka">
+                        <span class="service-tag-title">кладка</span>
+                        <div class="service-tag-tooltip-inner">
+                            <i class="fas fa-cube" style="margin-right: 8px;"></i> Кирпич, газосиликат, керамзитоблок. Идеальная геометрия, армирование каждого 3-го ряда. Работаем по СНиП.
+                        </div>
+                    </div>
+                    
+                    <!-- Штукатурка - блок с внутренней сноской -->
+                    <div class="service-tag" data-service="shtukaturka">
+                        <span class="service-tag-title">штукатурка</span>
+                        <div class="service-tag-tooltip-inner">
+                            <i class="fas fa-paint-roller" style="margin-right: 8px;"></i> Механизированная и ручная. Лазерный контроль, отклонение менее 1 мм на метр. Фасады и интерьеры.
+                        </div>
+                    </div>
+                    
+                    <!-- Стяжка - блок с внутренней сноской -->
+                    <div class="service-tag" data-service="styazhka">
+                        <span class="service-tag-title">стяжка</span>
+                        <div class="service-tag-tooltip-inner">
+                            <i class="fas fa-border-all" style="margin-right: 8px;"></i> Полусухая, мокрая, армированная. Промышленные полы, тёплые полы. Идеальная геометрия +/- 2 мм.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="container">
+        <section class="stats" id="stats">
+            <div class="stat-item animate-fade-up">
+                <div class="stat-num" data-target="12">0<sup>+</sup></div>
+                <div class="stat-text">Лет доминирования</div>
+                <span class="stat-tooltip">Непрерывная работа на рынке РБ с 2014 года</span>
+            </div>
+            <div class="stat-item animate-fade-up delay-1">
+                <div class="stat-num" data-target="347">0<sup>+</sup></div>
+                <div class="stat-text">Объектов</div>
+                <span class="stat-tooltip">Жилые комплексы, частные дома, промышленные объекты</span>
+            </div>
+            <div class="stat-item animate-fade-up delay-2">
+                <div class="stat-num" data-target="0">0<sup>%</sup></div>
+                <div class="stat-text">Брака</div>
+                <span class="stat-tooltip">Многоступенчатая система контроля качества</span>
+            </div>
+        </section>
+
+        <section class="about" id="about">
+            <div class="about-text animate-fade-right">
+                <div class="section-subtitle">О КОМПАНИИ</div>
+                <h2 class="section-title" style="border: none; padding: 0; margin-bottom: 30px;">
+                    <span>СЕД-</span>СТРОЙИНВЕСТ
+                </h2>
+                <p>Собственный парк техники, штатные инженеры и философия: «Недостатков не существует, есть только
+                    нарушения технологии».</p>
+                <p>Работаем в парадигме: жёсткие сроки, идеальная геометрия, полная прозрачность.</p>
+            </div>
+            <div class="contact-card animate-scale">
+                <div style="color:#ff5f1f; letter-spacing: 3px; margin-bottom: 10px;">ДИРЕКТОР</div>
+                <div class="contact-name">Сапего Егор</div>
+                <div style="color: #aaa; margin-bottom: 20px;">Основатель // главный инженер</div>
+                <a href="tel:+375336370959" class="contact-phone">+375 33 637-09-59</a>
+                <div style="margin-top: 20px; color: #888; font-size: 14px;">Личная гарантия на каждый миллиметр</div>
+            </div>
+        </section>
+    </div>
+
+    <!-- СЕКЦИЯ УСЛУГ С ЧАСТИЦАМИ -->
+    <section class="services-detailed" id="services">
+        <div class="services-particles" id="services-particles"></div>
+
+        <div class="container">
+            <div class="section-subtitle animate-fade-up">ЧТО МЫ ДЕЛАЕМ</div>
+            <h2 class="section-title animate-fade-up delay-1"><span>НАШИ</span> УСЛУГИ</h2>
+
+            <div id="kladka" class="service-detail">
+                <div class="service-header animate-fade-right">
+                    
+                    <h2>Кладка</h2>
+                </div>
+
+                <div class="service-content">
+                    <div class="service-description animate-fade-up">
+                        <p>Кирпич, газосиликат, керамзитоблок — любой формат. Идеальная перевязка швов, армирование
+                            каждого 3-го ряда. Работаем как по готовым проектам, так и помогаем с расчётами.</p>
+                        <p>Лично контролирую геометрию, толщину шва, перевязку. Никаких щелей и кривых углов — только
+                            СНиПы и здравый смысл. Используем современный инструмент: лазерные нивелиры, расшивки,
+                            уровень на каждом этапе.</p>
+                        <p>За 10+ лет ни одного обрушения или брака. Каждый объект принимаю лично.</p>
+
+                        <button class="discuss-btn" onclick="openModal('Кладка')">
+                            Обсудить <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </div>
+
+                    <div class="service-features animate-fade-left">
+                        <h3>Что входит</h3>
+                        <ul class="features-list">
+                            <li><i class="fas fa-check-circle"></i> Кирпич (керамический, силикатный)</li>
+                            <li><i class="fas fa-check-circle"></i> Газосиликатные блоки</li>
+                            <li><i class="fas fa-check-circle"></i> Керамзитобетонные блоки</li>
+                            <li><i class="fas fa-check-circle"></i> Армопояса и перемычки</li>
+                            <li><i class="fas fa-check-circle"></i> Облицовочная кладка</li>
+                            <li><i class="fas fa-check-circle"></i> Сложные архитектурные элементы</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div id="shtukaturka" class="service-detail" style="margin-top: 5rem;">
+                <div class="service-header animate-fade-right">
+                    
+                    <h2>Штукатурка</h2>
+                </div>
+
+                <div class="service-content">
+                    <div class="service-description animate-fade-up">
+                        <p>Механизированная и ручная штукатурка стен. Работаем на маяках с лазерным контролем.
+                            Отклонение менее 1 мм на метр — обычное дело.</p>
+                        <p>Используем качественные смеси (Knauf, Ceresit, Волма). Фасады, внутренние работы, цоколи.
+                            Подготавливаем под покраску, обои, плитку или декоративные покрытия.</p>
+                        <p>Никаких трещин, высолов и отслоений. Каждый этап сушки контролируем.</p>
+
+                        <button class="discuss-btn" onclick="openModal('Штукатурка')">
+                            Обсудить <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </div>
+
+                    <div class="service-features animate-fade-left">
+                        <h3>Виды штукатурки</h3>
+                        <ul class="features-list">
+                            <li><i class="fas fa-check-circle"></i> Механизированная (гипсовая)</li>
+                            <li><i class="fas fa-check-circle"></i> Ручная цементная</li>
+                            <li><i class="fas fa-check-circle"></i> Фасадная</li>
+                            <li><i class="fas fa-check-circle"></i> Высококачественная под правило</li>
+                            <li><i class="fas fa-check-circle"></i> Декоративная (короед, шуба)</li>
+                            <li><i class="fas fa-check-circle"></i> Ремонт старой штукатурки</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div id="styazhka" class="service-detail" style="margin-top: 5rem;">
+                <div class="service-header animate-fade-right">
+                   
+                    <h2>Стяжка</h2>
+                </div>
+
+                <div class="service-content">
+                    <div class="service-description animate-fade-up">
+                        <p>Полусухая, мокрая, армированная — любой тип стяжки под ваши задачи. Идеально ровный пол без
+                            трещин, с геометрией +/- 2 мм.</p>
+                        <p>Промышленные полы под высокие нагрузки, тёплые полы, звукоизоляция. Используем фиброволокно,
+                            пластификаторы, демпферную ленту. Контроль влажности и прочности.</p>
+                        <p>Лично проверяю каждый квадратный метр перед сдачей.</p>
+
+                        <button class="discuss-btn" onclick="openModal('Стяжка')">
+                            Обсудить <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </div>
+
+                    <div class="service-features animate-fade-left">
+                        <h3>Виды стяжек</h3>
+                        <ul class="features-list">
+                            <li><i class="fas fa-check-circle"></i> Полусухая (до 100 мм)</li>
+                            <li><i class="fas fa-check-circle"></i> Мокрая (цементно-песчаная)</li>
+                            <li><i class="fas fa-check-circle"></i> Армированная сеткой/фиброй</li>
+                            <li><i class="fas fa-check-circle"></i> Промышленные полы</li>
+                            <li><i class="fas fa-check-circle"></i> Стяжка по тёплому полу</li>
+                            <li><i class="fas fa-check-circle"></i> Наливные полы (финиш)</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- РАСШИРЕННАЯ СЕКЦИЯ ПРИНЦИПОВ С ГЛОБУСОМ -->
+    <section class="principles" id="principles">
+        <div id="vanta-principles"></div>
+        <div class="container">
+            <div class="section-subtitle animate-fade-up">КОДЕКС ЧЕСТИ</div>
+            <h2 class="section-title animate-fade-up delay-1"><span>ПРИНЦИПЫ</span> РАБОТЫ</h2>
+            <div class="principles-grid">
+                <div class="principle-item animate-fade-right delay-2">
+                    <div class="principle-header">
+                        <span class="principle-num">01</span>
+                        <span class="principle-title">Технологичность</span>
+                    </div>
+                    <div class="principle-desc">Только проверенные технологии и материалы. Каждый этап работ выполняется
+                        строго по СНиП и ТКП. Лазерный контроль на всех этапах. Используем современное оборудование и
+                        инструменты ведущих мировых брендов.</div>
+                </div>
+                <div class="principle-item animate-fade-left delay-2">
+                    <div class="principle-header">
+                        <span class="principle-num">02</span>
+                        <span class="principle-title">Железобетонные сроки</span>
+                    </div>
+                    <div class="principle-desc">Соблюдение сроков — абсолютный закон. Штрафные санкции за просрочку
+                        прописаны в договоре. Работаем 24/7 при необходимости. Календарное планирование с точностью до
+                        дня.</div>
+                </div>
+                <div class="principle-item animate-fade-right delay-3">
+                    <div class="principle-header">
+                        <span class="principle-num">03</span>
+                        <span class="principle-title">Архитектурный надзор</span>
+                    </div>
+                    <div class="principle-desc">Личный контроль каждого объекта директором компании. Еженедельные
+                        фотоотчеты и выезды на объект. Прозрачность на всех этапах строительства. Вы всегда знаете, что
+                        происходит на площадке.</div>
+                </div>
+                <div class="principle-item animate-fade-left delay-3">
+                    <div class="principle-header">
+                        <span class="principle-num">04</span>
+                        <span class="principle-title">Эстетика бетона</span>
+                    </div>
+                    <div class="principle-desc">Даже черновые работы должны выглядеть эстетично. Идеальные швы, ровные
+                        углы, чистота на объекте. Мы уверены, что строительство может быть красивым на каждом этапе.
+                    </div>
+                </div>
+
+                <!-- Дополнительные принципы для расширения -->
+                <div class="principle-item animate-fade-right delay-1">
+                    <div class="principle-header">
+                        <span class="principle-num">05</span>
+                        <span class="principle-title">Экологичность</span>
+                    </div>
+                    <div class="principle-desc">Используем только сертифицированные материалы с минимальным воздействием
+                        на окружающую среду. Контролируем утилизацию отходов. Безопасность для людей и природы.</div>
+                </div>
+                <div class="principle-item animate-fade-left delay-1">
+                    <div class="principle-header">
+                        <span class="principle-num">06</span>
+                        <span class="principle-title">Прозрачная смета</span>
+                    </div>
+                    <div class="principle-desc">Никаких скрытых платежей и неожиданных расходов. Детализированная смета
+                        с разбивкой по этапам и материалам. Фиксированная стоимость договора.</div>
+                </div>
+                <div class="principle-item animate-fade-right delay-2">
+                    <div class="principle-header">
+                        <span class="principle-num">07</span>
+                        <span class="principle-title">Гарантия качества</span>
+                    </div>
+                    <div class="principle-desc">Предоставляем письменную гарантию на все виды работ до 5 лет. Бесплатное
+                        устранение недочетов в гарантийный период. Каждый объект страхуем.</div>
+                </div>
+                <div class="principle-item animate-fade-left delay-2">
+                    <div class="principle-header">
+                        <span class="principle-num">08</span>
+                        <span class="principle-title">Командная работа</span>
+                    </div>
+                    <div class="principle-desc">Только штатные сотрудники с опытом от 7 лет. Регулярное повышение
+                        квалификации. Слаженная работа бригад без простоев и нестыковок.</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="container">
+        <footer class="footer" id="footer">
+            <div class="footer-left animate-fade-right">
+                <span>СЕД</span>СТРОЙИНВЕСТ
+                <p>Черновые работы премиум-класса<br>с 2014 года</p>
+            </div>
+            <div class="footer-col animate-fade-up">
+                <h4>Услуги</h4>
+                <a href="#" onclick="openModal('Кладка')">Кладка</a>
+                <a href="#" onclick="openModal('Штукатурка')">Штукатурка</a>
+                <a href="#" onclick="openModal('Стяжка')">Стяжка</a>
+                <a href="#" onclick="openModal('Проектирование')">Проектирование</a>
+            </div>
+            <div class="footer-col animate-fade-up delay-1">
+                <h4>Компания</h4>
+                <a href="#about">О нас</a>
+                <a href="#services">Услуги</a>
+                <a href="#principles">Принципы</a>
+            </div>
+            <div class="footer-col animate-fade-left">
+                <h4>Контакты</h4>
+                <div class="contact-info"> +375 33 637-09-59</div>
+                <div class="contact-info"> info@sed-stroy.by</div>
+                <div class="contact-info"> Минск, ул. Строителей 12</div>
+                <div class="contact-info"> Пн-Пт: 9:00 - 19:00</div>
+            </div>
+            <div class="footer-bottom">
+                <span class="nexus">NEXUS.BY</span> © 2026 Все права защищены
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // Глобальные переменные для координат мыши (для частиц)
+        let customMouseX = 0;
+        let customMouseY = 0;
+        let particleUpdateInterval;
+        let vantaEffect = null;
+        let particlesInitialized = false;
+
+        // Определяем, мобильное ли устройство (ширина < 900px)
+        function isMobile() {
+            return window.innerWidth < 900;
+        }
+
+        // Бургер меню
+        const burgerMenu = document.getElementById('burgerMenu');
+        const mobileMenu = document.getElementById('mobileMenu');
+        const menuOverlay = document.getElementById('menuOverlay');
+        const mobileLinks = document.querySelectorAll('.mobile-link');
+        const header = document.getElementById('mainHeader');
+
+        function toggleMenu() {
+            burgerMenu.classList.toggle('active');
+            mobileMenu.classList.toggle('active');
+            menuOverlay.classList.toggle('active');
+            document.body.style.overflow = mobileMenu.classList.contains('active') ? 'hidden' : '';
+        }
+
+        function closeMenu() {
+            burgerMenu.classList.remove('active');
+            mobileMenu.classList.remove('active');
+            menuOverlay.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        burgerMenu.addEventListener('click', toggleMenu);
+        menuOverlay.addEventListener('click', closeMenu);
+
+        // Закрытие меню при клике на ссылку
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const sectionId = link.getAttribute('href').substring(1);
+                const section = document.getElementById(sectionId);
+                if (section) {
+                    closeMenu();
+                    setTimeout(() => {
+                        section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }, 300);
+                }
+            });
+        });
+
+        // Кастомный курсор (только десктоп)
+        if (window.innerWidth >= 1025) {
+            const dot = document.getElementById('cursorDot');
+            const outline = document.getElementById('cursorOutline');
+            let mouseX = 0, mouseY = 0;
+            let dotX = 0, dotY = 0;
+            let outlineX = 0, outlineY = 0;
+
+            document.addEventListener('mousemove', (e) => {
+                mouseX = e.clientX;
+                mouseY = e.clientY;
+                customMouseX = e.clientX;
+                customMouseY = e.clientY;
+            });
+
+            function animateCursor() {
+                dotX += (mouseX - dotX) * 0.25;
+                dotY += (mouseY - dotY) * 0.25;
+                outlineX += (mouseX - outlineX) * 0.12;
+                outlineY += (mouseY - outlineY) * 0.12;
+
+                dot.style.left = dotX + 'px';
+                dot.style.top = dotY + 'px';
+                outline.style.left = outlineX + 'px';
+                outline.style.top = outlineY + 'px';
+
+                requestAnimationFrame(animateCursor);
+            }
+            animateCursor();
+        }
+
+        // ЭФФЕКТ ПЕЧАТНОЙ МАШИНКИ
+        document.addEventListener('DOMContentLoaded', function () {
+            const line1 = document.getElementById('typewriter-line1');
+            const line2 = document.getElementById('typewriter-line2');
+
+            const text1 = 'ЧЕРНОВАЯ';
+            const text2 = 'ВЛАСТЬ';
+
+            let i = 0;
+            let j = 0;
+
+            line1.textContent = '';
+            line2.textContent = '';
+
+            const typeInterval1 = setInterval(() => {
+                if (i < text1.length) {
+                    line1.textContent += text1.charAt(i);
+                    i++;
+                } else {
+                    clearInterval(typeInterval1);
+
+                    setTimeout(() => {
+                        const typeInterval2 = setInterval(() => {
+                            if (j < text2.length) {
+                                line2.textContent += text2.charAt(j);
+                                j++;
+                            } else {
+                                clearInterval(typeInterval2);
+                                line2.style.borderRight = 'none';
+                            }
+                        }, 150);
+                    }, 300);
+                }
+            }, 150);
+        });
+
+        function animateNumbers() {
+            const statNumbers = document.querySelectorAll('.stat-num');
+            statNumbers.forEach(statNum => {
+                const target = parseInt(statNum.getAttribute('data-target'));
+                let current = 0;
+                const increment = target > 100 ? Math.ceil(target / 100) : 1;
+                const updateNumber = () => {
+                    if (current < target) {
+                        current = Math.min(current + increment, target);
+                        statNum.childNodes[0].nodeValue = current;
+                        requestAnimationFrame(updateNumber);
+                    }
+                };
+                updateNumber();
+            });
+        }
+        setTimeout(animateNumbers, 500);
+
+        // Vanta эффекты — ГЛОБУС вместо рингс
+        if (!isMobile() && typeof VANTA !== 'undefined') {
+            // Максимально отдаленный глобус
+            vantaEffect = VANTA.GLOBE({
+                el: "#vanta-principles",
+                color: 0xff5f1f,
+                backgroundColor: 0x0c0e0d,
+                scale: 0.5,           // Очень мелкий масштаб
+                size: 0.4,            // Маленький размер
+                separation: 5.0,       // Очень разреженные точки
+                maxDistance: 30.0,     // Дальние соединения
+                spacing: 25.0         // Большое пространство
+            });
+        }
+
+        // Инициализация particles.js для секции услуг — только если не мобилка
+        if (!isMobile() && typeof particlesJS !== 'undefined' && !particlesInitialized) {
+            particlesJS("services-particles", {
+                "particles": {
+                    "number": {
+                        "value": 40,
+                        "density": {
+                            "enable": true,
+                            "value_area": 800
+                        }
+                    },
+                    "color": {
+                        "value": "#ff5f1f"
+                    },
+                    "shape": {
+                        "type": "circle"
+                    },
+                    "opacity": {
+                        "value": 0.6,
+                        "random": false,
+                        "anim": {
+                            "enable": true,
+                            "speed": 0.5,
+                            "opacity_min": 0.3,
+                            "sync": false
+                        }
+                    },
+                    "size": {
+                        "value": 2,
+                        "random": true,
+                        "anim": {
+                            "enable": true,
+                            "speed": 2,
+                            "size_min": 0.3,
+                            "sync": false
+                        }
+                    },
+                    "line_linked": {
+                        "enable": true,
+                        "distance": 150,
+                        "color": "#ff5f1f",
+                        "opacity": 0.8,
+                        "width": 1
+                    },
+                    "move": {
+                        "enable": true,
+                        "speed": 1,
+                        "direction": "none",
+                        "random": true,
+                        "straight": false,
+                        "out_mode": "out",
+                        "bounce": false,
+                        "attract": {
+                            "enable": true,
+                            "rotateX": 800,
+                            "rotateY": 800
+                        }
+                    }
+                },
+                "interactivity": {
+                    "detect_on": "window",
+                    "events": {
+                        "onhover": {
+                            "enable": false,
+                            "mode": "grab"
+                        },
+                        "onclick": {
+                            "enable": true,
+                            "mode": "push"
+                        },
+                        "resize": true
+                    },
+                    "modes": {
+                        "grab": {
+                            "distance": 400,
+                            "line_linked": {
+                                "opacity": 1
+                            }
+                        },
+                        "push": {
+                            "particles_nb": 4
+                        }
+                    }
+                },
+                "retina_detect": true,
+                "smooth": true
+            });
+
+            particlesInitialized = true;
+
+            function startParticleTracking() {
+                if (particleUpdateInterval) clearInterval(particleUpdateInterval);
+
+                particleUpdateInterval = setInterval(function () {
+                    if (window.pJSDom && window.pJSDom[0] && window.pJSDom[0].pJS) {
+                        const pJS = window.pJSDom[0].pJS;
+                        const servicesSection = document.getElementById('services');
+
+                        if (servicesSection) {
+                            const rect = servicesSection.getBoundingClientRect();
+                            const isVisible = rect.top < window.innerHeight && rect.bottom > 0;
+
+                            if (isVisible) {
+                                pJS.interactivity.mouse.posX = customMouseX;
+                                pJS.interactivity.mouse.posY = customMouseY;
+                                pJS.interactivity.mouse.inside = true;
+                            } else {
+                                pJS.interactivity.mouse.inside = false;
+                            }
+                        }
+                    }
+                }, 30);
+            }
+
+            startParticleTracking();
+
+            document.addEventListener('mouseleave', function () {
+                if (window.pJSDom && window.pJSDom[0] && window.pJSDom[0].pJS) {
+                    window.pJSDom[0].pJS.interactivity.mouse.inside = false;
+                }
+            });
+
+            window.addEventListener('beforeunload', function () {
+                if (particleUpdateInterval) clearInterval(particleUpdateInterval);
+            });
+        }
+
+        const modal = document.getElementById('serviceModal');
+        const serviceInput = document.getElementById('serviceName');
+
+        window.openModal = function (service) {
+            serviceInput.value = service;
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        window.closeModal = function () {
+            modal.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        // Уведомления
+        const notification = document.getElementById('notification');
+        const notificationMessage = document.getElementById('notificationMessage');
+        let notificationTimeout;
+
+        function showNotification(message, isSuccess = true) {
+            // Очищаем предыдущий таймаут
+            if (notificationTimeout) {
+                clearTimeout(notificationTimeout);
+            }
+
+            // Убираем все классы и добавляем нужный
+            notification.classList.remove('success', 'error', 'active');
+
+            if (isSuccess) {
+                notification.classList.add('success');
+                notification.querySelector('.notification-icon i').className = 'fas fa-check';
+            } else {
+                notification.classList.add('error');
+                notification.querySelector('.notification-icon i').className = 'fas fa-exclamation';
+            }
+
+            notificationMessage.textContent = message;
+            notification.classList.add('active');
+
+            // Автоматически скрываем через 5 секунд
+            notificationTimeout = setTimeout(() => {
+                notification.classList.remove('active');
+            }, 5000);
+        }
+
+        window.hideNotification = function () {
+            notification.classList.remove('active');
+            if (notificationTimeout) {
+                clearTimeout(notificationTimeout);
+            }
+        }
+
+        window.submitForm = function () {
+            const name = document.getElementById('modalName').value.trim();
+            const phone = document.getElementById('modalPhone').value.trim();
+            const service = serviceInput.value;
+
+            if (!name || !phone) {
+                showNotification('Пожалуйста, заполните имя и телефон', false);
+                return;
+            }
+
+            // Валидация телефона (простая)
+            const phoneRegex = /^[+\d\s-]{5,20}$/;
+            if (!phoneRegex.test(phone)) {
+                showNotification('Введите корректный номер телефона', false);
+                return;
+            }
+
+            // Здесь можно добавить отправку на сервер
+            // Для демонстрации показываем успех
+            showNotification(`Заявка на ${service} отправлена! С вами свяжутся в ближайшее время.`, true);
+
+            closeModal();
+
+            // Очищаем форму
+            document.getElementById('modalName').value = '';
+            document.getElementById('modalPhone').value = '';
+            document.getElementById('modalComment').value = '';
+        }
+
+        window.addEventListener('click', (e) => {
+            if (e.target === modal) closeModal();
+        });
+
+        const sections = document.querySelectorAll('section');
+        const navLinks = document.querySelectorAll('.nav-link, .mobile-link');
+
+        function updateActiveNav() {
+            let current = '';
+            const scrollPos = window.scrollY + 150;
+
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionBottom = sectionTop + section.offsetHeight;
+                if (scrollPos >= sectionTop && scrollPos < sectionBottom) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('data-section') === current) {
+                    link.classList.add('active');
+                }
+            });
+        }
+
+        window.addEventListener('scroll', updateActiveNav);
+        window.addEventListener('load', updateActiveNav);
+
+        navLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                if (!link.classList.contains('mobile-link')) {
+                    e.preventDefault();
+                }
+                const sectionId = link.getAttribute('data-section');
+                const section = document.getElementById(sectionId);
+                if (section) {
+                    section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+        function updateHeaderOnScroll() {
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        }
+
+        window.addEventListener('scroll', updateHeaderOnScroll);
+        window.addEventListener('load', updateHeaderOnScroll);
+
+        function handleResize() {
+            if (window.innerWidth < 1025) {
+                document.body.style.cursor = 'auto';
+            } else {
+                document.body.style.cursor = 'none';
+            }
+
+            // Закрываем меню при ресайзе на десктоп
+            if (window.innerWidth > 900) {
+                closeMenu();
+            }
+        }
+        window.addEventListener('resize', handleResize);
+        handleResize();
+    </script>
+</body>
+
+</html>
