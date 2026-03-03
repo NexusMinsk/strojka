@@ -1038,6 +1038,206 @@
             margin-left: 56px;
         }
 
+        /* ===== НОВАЯ СЕКЦИЯ КОНТАКТЫ ===== */
+        .contacts-section {
+            padding: 100px 0;
+            background: linear-gradient(145deg, #0c0e0d, #1a1d24);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .contacts-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 30% 50%, rgba(255, 95, 31, 0.05) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .contacts-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            margin-top: 40px;
+        }
+
+        .contact-info-block {
+            background: rgba(18, 22, 21, 0.6);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 95, 31, 0.2);
+            padding: 40px;
+            border-radius: 20px;
+            transition: transform 0.3s ease;
+        }
+
+        .contact-info-block:hover {
+            transform: translateY(-5px);
+            border-color: rgba(255, 95, 31, 0.5);
+            box-shadow: 0 15px 30px rgba(255, 95, 31, 0.15);
+        }
+
+        .contact-info-item {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 30px;
+            align-items: flex-start;
+        }
+
+        .contact-info-icon {
+            width: 50px;
+            height: 50px;
+            background: rgba(255, 95, 31, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            color: #ff5f1f;
+            border: 1px solid rgba(255, 95, 31, 0.3);
+            flex-shrink: 0;
+        }
+
+        .contact-info-text h4 {
+            font-size: 18px;
+            color: #ff5f1f;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .contact-info-text p,
+        .contact-info-text a {
+            color: #fff;
+            font-size: 18px;
+            text-decoration: none;
+            transition: color 0.3s;
+            line-height: 1.5;
+        }
+
+        .contact-info-text a:hover {
+            color: #ff5f1f;
+        }
+
+        .contact-social {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .contact-social a {
+            width: 45px;
+            height: 45px;
+            background: rgba(255, 95, 31, 0.1);
+            border: 1px solid rgba(255, 95, 31, 0.3);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 18px;
+            transition: all 0.3s;
+            text-decoration: none;
+        }
+
+        .contact-social a:hover {
+            background: #ff5f1f;
+            color: #0c0e0d;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(255, 95, 31, 0.4);
+        }
+
+        .contact-form-block {
+            background: rgba(18, 22, 21, 0.6);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 95, 31, 0.2);
+            padding: 40px;
+            border-radius: 20px;
+        }
+
+        .contact-form-block h3 {
+            font-size: 28px;
+            color: #ff5f1f;
+            margin-bottom: 30px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .contact-form .form-group {
+            margin-bottom: 20px;
+        }
+
+        .contact-form .form-group input,
+        .contact-form .form-group textarea {
+            width: 100%;
+            padding: 15px 20px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 95, 31, 0.2);
+            color: #fff;
+            font-size: 16px;
+            border-radius: 8px;
+            transition: all 0.3s;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .contact-form .form-group input:focus,
+        .contact-form .form-group textarea:focus {
+            outline: none;
+            border-color: #ff5f1f;
+            background: rgba(0, 0, 0, 0.5);
+            box-shadow: 0 0 15px rgba(255, 95, 31, 0.2);
+        }
+
+        .contact-form .form-group textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .contact-form .btn-submit {
+            background: transparent;
+            border: 2px solid #ff5f1f;
+            color: #ff5f1f;
+            padding: 15px 30px;
+            font-size: 16px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 100%;
+        }
+
+        .contact-form .btn-submit:hover {
+            background: #ff5f1f;
+            color: #0c0e0d;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(255, 95, 31, 0.3);
+        }
+
+        .map-container {
+            margin-top: 50px;
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 95, 31, 0.2);
+            height: 400px;
+        }
+
+        .map-container iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            filter: grayscale(1) invert(0.9) brightness(0.8);
+            transition: filter 0.3s;
+        }
+
+        .map-container:hover iframe {
+            filter: grayscale(0) invert(0) brightness(1);
+        }
+
         /* ===== УВЕДОМЛЕНИЯ ===== */
         .notification {
             position: fixed;
@@ -1386,6 +1586,11 @@
                 grid-template-columns: 1fr;
                 gap: 20px;
             }
+            
+            .contacts-grid {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
         }
 
         @media (max-width: 900px) {
@@ -1459,6 +1664,10 @@
                 left: 20px;
                 max-width: none;
             }
+            
+            .map-container {
+                height: 300px;
+            }
         }
 
         @media (max-width: 700px) {
@@ -1483,6 +1692,32 @@
 
             .principle-desc {
                 margin-left: 0;
+            }
+            
+            .contact-info-item {
+                flex-direction: column;
+                gap: 10px;
+                align-items: flex-start;
+            }
+            
+            .contact-info-icon {
+                width: 40px;
+                height: 40px;
+                font-size: 16px;
+            }
+            
+            .contact-info-text p,
+            .contact-info-text a {
+                font-size: 16px;
+            }
+            
+            .contact-form-block h3 {
+                font-size: 24px;
+            }
+            
+            .contact-info-block,
+            .contact-form-block {
+                padding: 25px;
             }
         }
 
@@ -1593,6 +1828,7 @@
             <a href="#about" class="mobile-link" data-section="about">О нас</a>
             <a href="#services" class="mobile-link" data-section="services">Услуги</a>
             <a href="#principles" class="mobile-link" data-section="principles">Принципы</a>
+            <a href="#contacts" class="mobile-link" data-section="contacts">Контакты</a>
         </div>
         <div class="mobile-phone">
             <a href="tel:+375336370959">+375 33 637-09-59</a>
@@ -1609,6 +1845,7 @@
                 <a href="#about" class="nav-link" data-section="about">О нас</a>
                 <a href="#services" class="nav-link" data-section="services">Услуги</a>
                 <a href="#principles" class="nav-link" data-section="principles">Принципы</a>
+                <a href="#contacts" class="nav-link" data-section="contacts">Контакты</a>
                 <a href="tel:+375336370959" class="header-phone animate-fade-left">+375 33 637-09-59</a>
             </nav>
 
@@ -1673,8 +1910,8 @@
                     Егор Сапего.
                 </div>
                 <div style="display: flex; gap: 30px; flex-wrap: wrap;" class="animate-fade-up delay-3">
-                    <a href="#" class="btn btn-primary">УСЛУГИ</a>
-                    <a href="#" class="btn btn-outline">СВЯЗАТЬСЯ</a>
+                    <a href="#services" class="btn btn-primary">УСЛУГИ</a>
+                    <a href="#contacts" class="btn btn-outline">СВЯЗАТЬСЯ</a>
                 </div>
             </div>
 
@@ -1918,22 +2155,96 @@
                     <div class="principle-desc">Никаких скрытых платежей и неожиданных расходов. Детализированная смета
                         с разбивкой по этапам и материалам. Фиксированная стоимость договора.</div>
                 </div>
-                <div class="principle-item animate-fade-right delay-2">
-                    <div class="principle-header">
-                        <span class="principle-num">07</span>
-                        <span class="principle-title">Гарантия качества</span>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- НОВАЯ СЕКЦИЯ КОНТАКТЫ -->
+    <section class="contacts-section" id="contacts">
+        <div class="container">
+            <div class="section-subtitle animate-fade-up">СВЯЖИТЕСЬ С НАМИ</div>
+            <h2 class="section-title animate-fade-up delay-1"><span>КОНТАКТЫ</span></h2>
+            
+            <div class="contacts-grid">
+                <!-- Левая колонка с информацией -->
+                <div class="contact-info-block animate-fade-right">
+                    <div class="contact-info-item">
+                        <div class="contact-info-icon">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <div class="contact-info-text">
+                            <h4>Адрес</h4>
+                            <p>г. Минск, ул. Строителей 12<br>офис 415, БЦ "СтройПлаза"</p>
+                        </div>
                     </div>
-                    <div class="principle-desc">Предоставляем письменную гарантию на все виды работ до 5 лет. Бесплатное
-                        устранение недочетов в гарантийный период. Каждый объект страхуем.</div>
-                </div>
-                <div class="principle-item animate-fade-left delay-2">
-                    <div class="principle-header">
-                        <span class="principle-num">08</span>
-                        <span class="principle-title">Командная работа</span>
+                    
+                    <div class="contact-info-item">
+                        <div class="contact-info-icon">
+                            <i class="fas fa-phone-alt"></i>
+                        </div>
+                        <div class="contact-info-text">
+                            <h4>Телефон</h4>
+                            <p><a href="tel:+375336370959">+375 33 637-09-59</a></p>
+                            <p><a href="tel:+375173369595">+375 17 336-95-95</a></p>
+                        </div>
                     </div>
-                    <div class="principle-desc">Только штатные сотрудники с опытом от 7 лет. Регулярное повышение
-                        квалификации. Слаженная работа бригад без простоев и нестыковок.</div>
+                    
+                    <div class="contact-info-item">
+                        <div class="contact-info-icon">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <div class="contact-info-text">
+                            <h4>Email</h4>
+                            <p><a href="mailto:info@sed-stroy.by">info@sed-stroy.by</a></p>
+                            <p><a href="mailto:egor@sed-stroy.by">egor@sed-stroy.by</a></p>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-info-item">
+                        <div class="contact-info-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="contact-info-text">
+                            <h4>Режим работы</h4>
+                            <p>Пн-Пт: 9:00 - 19:00</p>
+                            <p>Сб-Вс: по предварительной записи</p>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-social">
+                        <a href="#" target="_blank"><i class="fab fa-instagram"></i></a>
+                        <a href="#" target="_blank"><i class="fab fa-telegram"></i></a>
+                        <a href="#" target="_blank"><i class="fab fa-viber"></i></a>
+                        <a href="#" target="_blank"><i class="fab fa-whatsapp"></i></a>
+                    </div>
                 </div>
+                
+                <!-- Правая колонка с формой -->
+                <div class="contact-form-block animate-fade-left">
+                    <h3>Быстрая связь</h3>
+                    <form class="contact-form" id="quickContactForm">
+                        <div class="form-group">
+                            <input type="text" placeholder="Ваше имя" id="contactName">
+                        </div>
+                        <div class="form-group">
+                            <input type="tel" placeholder="Номер телефона" id="contactPhone">
+                        </div>
+                        <div class="form-group">
+                            <input type="email" placeholder="Email (необязательно)" id="contactEmail">
+                        </div>
+                        <div class="form-group">
+                            <textarea placeholder="Сообщение" id="contactMessage"></textarea>
+                        </div>
+                        <button type="button" class="btn-submit" onclick="submitContactForm()">ОТПРАВИТЬ</button>
+                    </form>
+                </div>
+            </div>
+            
+            <!-- Карта -->
+            <div class="map-container animate-fade-up">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2351.718877452393!2d27.561853315867806!3d53.89263258009744!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x46dbcfd35b1e6ad3%3A0xb91b6e2e7f9b3c0!2z0YPQuy4g0KHRgtGA0L7QuNGC0LXQu9C10LkgMTIsINCc0LjQvdGB0LosINCR0LXQu9Cw0YDRg9GB0Yw!5e0!3m2!1sru!2sru!4v1647890123456!5m2!1sru!2sru" 
+                        allowfullscreen="" loading="lazy"></iframe>
             </div>
         </div>
     </section>
@@ -1956,13 +2267,14 @@
                 <a href="#about">О нас</a>
                 <a href="#services">Услуги</a>
                 <a href="#principles">Принципы</a>
+                <a href="#contacts">Контакты</a>
             </div>
             <div class="footer-col animate-fade-left">
                 <h4>Контакты</h4>
-                <div class="contact-info"> +375 33 637-09-59</div>
-                <div class="contact-info"> info@sed-stroy.by</div>
-                <div class="contact-info"> Минск, ул. Строителей 12</div>
-                <div class="contact-info"> Пн-Пт: 9:00 - 19:00</div>
+                <div class="contact-info"><i class="fas fa-phone"></i> +375 33 637-09-59</div>
+                <div class="contact-info"><i class="fas fa-envelope"></i> info@sed-stroy.by</div>
+                <div class="contact-info"><i class="fas fa-map-marker-alt"></i> Минск, ул. Строителей 12</div>
+                <div class="contact-info"><i class="fas fa-clock"></i> Пн-Пт: 9:00 - 19:00</div>
             </div>
             <div class="footer-bottom">
                 <span class="nexus">NEXUS.BY</span> © 2026 Все права защищены
@@ -2328,6 +2640,33 @@
             document.getElementById('modalName').value = '';
             document.getElementById('modalPhone').value = '';
             document.getElementById('modalComment').value = '';
+        }
+
+        // Функция отправки формы из секции контактов
+        window.submitContactForm = function () {
+            const name = document.getElementById('contactName').value.trim();
+            const phone = document.getElementById('contactPhone').value.trim();
+            const email = document.getElementById('contactEmail').value.trim();
+            const message = document.getElementById('contactMessage').value.trim();
+
+            if (!name || !phone) {
+                showNotification('Пожалуйста, заполните имя и телефон', false);
+                return;
+            }
+
+            const phoneRegex = /^[+\d\s-]{5,20}$/;
+            if (!phoneRegex.test(phone)) {
+                showNotification('Введите корректный номер телефона', false);
+                return;
+            }
+
+            showNotification('Сообщение отправлено! Мы свяжемся с вами в ближайшее время.', true);
+
+            // Очищаем форму
+            document.getElementById('contactName').value = '';
+            document.getElementById('contactPhone').value = '';
+            document.getElementById('contactEmail').value = '';
+            document.getElementById('contactMessage').value = '';
         }
 
         window.addEventListener('click', (e) => {
