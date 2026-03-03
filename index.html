@@ -1,234 +1,445 @@
 <!DOCTYPE html>
 <html lang="ru">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Прелоадер — строительство домика</title>
+    <title>Прелоадер — стройка с эффектами</title>
     <style>
-        /* Базовый фон как на сайте */
-        body {
+        * {
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
             background-color: #0c0e0d;
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
             font-family: 'Inter', sans-serif;
+            overflow: hidden;
         }
 
-        /* ===== ПРЕЛОАДЕР (ДОМИК СОБИРАЕТСЯ) ===== */
         #preloader {
-            width: 100%;
-            max-width: 400px;
-            padding: 20px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            transition: opacity 0.5s ease;
-        }
-
-        .house-container {
-            width: 260px;
-            height: 260px;
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-        }
-
-        /* строительные линии / арматура (фон) — медленное вращение */
-        .construction-lines {
-            position: absolute;
+            position: fixed;
+            top: 0;
+            left: 0;
             width: 100%;
             height: 100%;
-            border: 2px dashed rgba(255, 95, 31, 0.2);
-            border-radius: 4px;
-            animation: rotateSlow 24s infinite linear;
+            background-color: #0c0e0d;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+            transition: opacity 0.6s ease;
         }
 
-        @keyframes rotateSlow {
-            0% {
-                transform: rotate(0deg);
-            }
-
-            100% {
-                transform: rotate(360deg);
-            }
-        }
-
-        /* SVG домика */
-        .house-svg {
-            width: 200px;
-            height: 200px;
+        .canvas-container {
             position: relative;
+            width: 600px;
+            height: 500px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 20px;
+            filter: drop-shadow(0 0 15px rgba(255, 95, 31, 0.3));
+            animation: float 3s infinite alternate ease-in-out;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            100% { transform: translateY(-8px); }
+        }
+
+        canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+
+        #houseCanvas {
             z-index: 2;
-            filter: drop-shadow(0 0 20px rgba(255, 95, 31, 0.4));
+            filter: drop-shadow(0 0 8px #ff5f1f);
         }
 
-        /* Все элементы изначально невидимы */
-        .house-svg .house-base,
-        .house-svg .house-wall,
-        .house-svg .house-roof,
-        .house-svg .house-door,
-        .house-svg .house-window,
-        .house-svg .house-chimney {
-            opacity: 0;
-            transition: opacity 0.5s cubic-bezier(0.2, 0.9, 0.3, 1.2);
+        #linesCanvas {
+            z-index: 1;
         }
 
-        /* Классы для поэтапного показа */
-        .house-svg.show-base .house-base {
-            opacity: 1;
+        #glowCanvas {
+            z-index: 0;
+            opacity: 0.6;
         }
 
-        .house-svg.show-wall .house-wall {
-            opacity: 1;
+        .loader-content {
+            text-align: center;
+            position: relative;
+            z-index: 5;
         }
 
-        .house-svg.show-roof .house-roof {
-            opacity: 1;
-        }
-
-        .house-svg.show-door .house-door {
-            opacity: 1;
-        }
-
-        .house-svg.show-window .house-window {
-            opacity: 1;
-        }
-
-        .house-svg.show-chimney .house-chimney {
-            opacity: 1;
-        }
-
-        /* Текст загрузки */
         .loader-text {
-            margin-top: 30px;
-            font-size: 16px;
-            letter-spacing: 6px;
+            font-size: 18px;
+            letter-spacing: 8px;
             text-transform: uppercase;
             color: #888;
             font-weight: 400;
+            margin-bottom: 15px;
+            text-shadow: 0 0 10px rgba(255,95,31,0.3);
         }
 
         .loader-text span {
             color: #ff5f1f;
             font-weight: 600;
-            margin-left: 5px;
-            animation: pulse 2s infinite;
+            animation: pulse 1.8s infinite;
         }
 
         @keyframes pulse {
-
-            0%,
-            100% {
-                opacity: 1;
-            }
-
-            50% {
-                opacity: 0.4;
-            }
+            0%, 100% { opacity: 1; text-shadow: 0 0 10px #ff5f1f; }
+            50% { opacity: 0.6; text-shadow: 0 0 20px #ff5f1f; }
         }
 
-        /* Прогресс */
         .loader-progress {
-            margin-top: 12px;
-            font-size: 14px;
+            font-size: 16px;
             color: #ff5f1f;
-            font-family: 'Inter', monospace;
+            font-family: monospace;
             letter-spacing: 3px;
-            font-weight: 300;
-            background: rgba(255, 95, 31, 0.1);
-            padding: 6px 16px;
+            background: rgba(255,95,31,0.1);
+            padding: 8px 24px;
             border-radius: 40px;
-            border: 1px solid rgba(255, 95, 31, 0.3);
+            border: 1px solid rgba(255,95,31,0.3);
+            display: inline-block;
+            backdrop-filter: blur(2px);
+            box-shadow: 0 0 15px rgba(255,95,31,0.2);
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: #ff5f1f;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 3;
+            opacity: 0;
         }
     </style>
 </head>
-
 <body>
     <div id="preloader">
-        <div class="house-container">
-            <div class="construction-lines"></div>
-            <svg class="house-svg" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <!-- Фундамент (плита) -->
-                <rect class="house-base" x="40" y="150" width="120" height="8" fill="#ff5f1f" rx="2" />
-                <!-- Основная стена (коробка) -->
-                <rect class="house-wall" x="50" y="80" width="100" height="70" fill="#2a2e33" stroke="#ff5f1f"
-                    stroke-width="2" />
-                <!-- Крыша (два ската) -->
-                <polygon class="house-roof" points="100,30 150,80 50,80 100,30" fill="#3a3029" stroke="#ff5f1f"
-                    stroke-width="2" />
-                <!-- Дверь -->
-                <rect class="house-door" x="80" y="115" width="25" height="35" fill="#1e1e1e" stroke="#ff5f1f"
-                    stroke-width="1.5" />
-                <!-- Окно -->
-                <rect class="house-window" x="110" y="105" width="20" height="20" fill="#0c0e0d" stroke="#ff5f1f"
-                    stroke-width="1.5" />
-                <!-- Труба на крыше -->
-                <rect class="house-chimney" x="115" y="45" width="15" height="25" fill="#4a3e35" stroke="#ff5f1f"
-                    stroke-width="1.5" />
-            </svg>
-            <div class="loader-text">СТРОИМ<span></span></div>
+        <div class="canvas-container">
+            <canvas id="glowCanvas"></canvas>
+            <canvas id="linesCanvas"></canvas>
+            <canvas id="houseCanvas"></canvas>
+        </div>
+
+        <div class="loader-content">
+            <div class="loader-text">СТРОИМ<span>//</span></div>
             <div class="loader-progress" id="progressPercent">0%</div>
         </div>
     </div>
 
     <script>
-        (function () {
-            const houseSvg = document.querySelector('.house-svg');
+        (function() {
+            const houseCanvas = document.getElementById('houseCanvas');
+            const linesCanvas = document.getElementById('linesCanvas');
+            const glowCanvas = document.getElementById('glowCanvas');
+            const ctx = houseCanvas.getContext('2d');
+            const linesCtx = linesCanvas.getContext('2d');
+            const glowCtx = glowCanvas.getContext('2d');
             const progressSpan = document.getElementById('progressPercent');
             const preloader = document.getElementById('preloader');
+            const container = document.querySelector('.canvas-container');
 
-            // Порядок строительства (6 этапов)
-            const stages = ['show-base', 'show-wall', 'show-roof', 'show-door', 'show-window', 'show-chimney'];
-            let currentStage = 0;
+            // Размеры
+            const w = 600, h = 500;
+            houseCanvas.width = w;
+            houseCanvas.height = h;
+            linesCanvas.width = w;
+            linesCanvas.height = h;
+            glowCanvas.width = w;
+            glowCanvas.height = h;
 
-            // Удаляем все классы на всякий случай
-            houseSvg.classList.remove(...stages);
+            // Центр дома
+            const cx = w / 2;
+            const cy = h / 2 - 20;
 
-            // Функция добавления следующей части
-            function buildNext() {
-                if (currentStage < stages.length) {
-                    // Добавляем текущий этап
-                    houseSvg.classList.add(stages[currentStage]);
+            // ---- ВСЕ ЛИНИИ ДОМА (32 штуки) ----
+            const lines = [
+                // Фундамент (2 линии) - снизу
+                { id: 0, x1: cx - 90, y1: cy + 70, x2: cx - 10, y2: cy + 70, side: 'bottom' },
+                { id: 1, x1: cx + 10, y1: cy + 70, x2: cx + 90, y2: cy + 70, side: 'bottom' },
+                
+                // Левая стена (вертикаль) - слева
+                { id: 2, x1: cx - 90, y1: cy + 70, x2: cx - 90, y2: cy - 40, side: 'left' },
+                
+                // Правая стена (вертикаль) - справа
+                { id: 3, x1: cx + 90, y1: cy + 70, x2: cx + 90, y2: cy - 40, side: 'right' },
+                
+                // Потолок (горизонталь) - сверху
+                { id: 4, x1: cx - 90, y1: cy - 40, x2: cx + 90, y2: cy - 40, side: 'top' },
+                
+                // Крыша левая - сверху
+                { id: 5, x1: cx - 90, y1: cy - 40, x2: cx, y2: cy - 130, side: 'top' },
+                
+                // Крыша правая - сверху
+                { id: 6, x1: cx + 90, y1: cy - 40, x2: cx, y2: cy - 130, side: 'top' },
+                
+                // Перекладина под крышей
+                { id: 7, x1: cx - 60, y1: cy - 70, x2: cx + 60, y2: cy - 70, side: 'left' },
+                
+                // Дверь
+                { id: 8, x1: cx - 30, y1: cy + 40, x2: cx - 30, y2: cy - 10, side: 'left' },
+                { id: 9, x1: cx + 30, y1: cy + 40, x2: cx + 30, y2: cy - 10, side: 'right' },
+                { id: 10, x1: cx - 30, y1: cy - 10, x2: cx + 30, y2: cy - 10, side: 'top' },
+                { id: 11, x1: cx - 15, y1: cy + 15, x2: cx - 10, y2: cy + 15, side: 'left' },
+                
+                // Окно левое
+                { id: 12, x1: cx - 70, y1: cy, x2: cx - 70, y2: cy - 35, side: 'left' },
+                { id: 13, x1: cx - 40, y1: cy, x2: cx - 40, y2: cy - 35, side: 'right' },
+                { id: 14, x1: cx - 70, y1: cy - 35, x2: cx - 40, y2: cy - 35, side: 'top' },
+                { id: 15, x1: cx - 70, y1: cy, x2: cx - 40, y2: cy, side: 'bottom' },
+                { id: 16, x1: cx - 70, y1: cy - 17, x2: cx - 40, y2: cy - 17, side: 'left' },
+                { id: 17, x1: cx - 55, y1: cy, x2: cx - 55, y2: cy - 35, side: 'bottom' },
+                
+                // Окно правое
+                { id: 18, x1: cx + 40, y1: cy - 5, x2: cx + 40, y2: cy - 40, side: 'left' },
+                { id: 19, x1: cx + 70, y1: cy - 5, x2: cx + 70, y2: cy - 40, side: 'right' },
+                { id: 20, x1: cx + 40, y1: cy - 40, x2: cx + 70, y2: cy - 40, side: 'top' },
+                { id: 21, x1: cx + 40, y1: cy - 5, x2: cx + 70, y2: cy - 5, side: 'bottom' },
+                { id: 22, x1: cx + 40, y1: cy - 22, x2: cx + 70, y2: cy - 22, side: 'right' },
+                { id: 23, x1: cx + 55, y1: cy - 5, x2: cx + 55, y2: cy - 40, side: 'bottom' },
+                
+                // Труба
+                { id: 24, x1: cx + 20, y1: cy - 100, x2: cx + 20, y2: cy - 140, side: 'top' },
+                { id: 25, x1: cx + 50, y1: cy - 100, x2: cx + 50, y2: cy - 140, side: 'top' },
+                { id: 26, x1: cx + 20, y1: cy - 140, x2: cx + 50, y2: cy - 140, side: 'top' },
+                { id: 27, x1: cx + 20, y1: cy - 100, x2: cx + 50, y2: cy - 100, side: 'top' },
+                
+                // Чердачное окно
+                { id: 28, x1: cx - 10, y1: cy - 70, x2: cx + 10, y2: cy - 70, side: 'top' },
+                { id: 29, x1: cx, y1: cy - 80, x2: cx, y2: cy - 60, side: 'top' },
+                
+                // Конёк крыши
+                { id: 30, x1: cx - 5, y1: cy - 130, x2: cx + 5, y2: cy - 130, side: 'top' },
+                
+                // Земля
+                { id: 31, x1: cx - 120, y1: cy + 80, x2: cx + 120, y2: cy + 80, side: 'bottom' }
+            ];
 
-                    // Обновляем процент
-                    let percent = Math.min(100, Math.round((currentStage + 1) / stages.length * 100));
-                    if (progressSpan) progressSpan.textContent = percent + '%';
+            // Состояние линий
+            const progressMap = {};
+            lines.forEach(l => progressMap[l.id] = 0);
 
-                    currentStage++;
-                }
+            const lineOrder = lines.map(l => l.id);
+            let activatedCount = 0;
+            const totalLines = lines.length;
 
-                // Если всё построено
-                if (currentStage >= stages.length) {
-                    clearInterval(buildInterval);
-                    progressSpan.textContent = 'ГОТОВО';
-
-                    // Плавно скрываем прелоадер и делаем редирект
-                    setTimeout(() => {
-                        preloader.style.opacity = '0';
-                        setTimeout(() => {
-                            window.location.href = 'home34.html';
-                        }, 500);
-                    }, 600);
+            // Создание искр при появлении линий
+            function createSparks(x, y) {
+                for (let i = 0; i < 6; i++) {
+                    const particle = document.createElement('div');
+                    particle.className = 'particle';
+                    particle.style.left = x + 'px';
+                    particle.style.top = y + 'px';
+                    particle.style.background = i % 2 === 0 ? '#ff5f1f' : '#ffaa00';
+                    particle.style.boxShadow = '0 0 10px currentColor';
+                    
+                    const angle = (i / 6) * Math.PI * 2 + Math.random();
+                    const speed = 2 + Math.random() * 3;
+                    const vx = Math.cos(angle) * speed;
+                    const vy = Math.sin(angle) * speed;
+                    
+                    container.appendChild(particle);
+                    
+                    let opacity = 1;
+                    let posX = x;
+                    let posY = y;
+                    
+                    const animate = () => {
+                        posX += vx;
+                        posY += vy;
+                        opacity -= 0.02;
+                        
+                        particle.style.transform = `translate(${posX - x}px, ${posY - y}px)`;
+                        particle.style.opacity = opacity;
+                        
+                        if (opacity > 0) {
+                            requestAnimationFrame(animate);
+                        } else {
+                            particle.remove();
+                        }
+                    };
+                    
+                    requestAnimationFrame(animate);
                 }
             }
 
-            // Интервал строительства 400 мс
-            let buildInterval = setInterval(buildNext, 400);
+            // Запуск очереди
+            lineOrder.forEach((lineId, index) => {
+                setTimeout(() => {
+                    const line = lines.find(l => l.id === lineId);
+                    
+                    // Искра в точке старта линии
+                    if (line) {
+                        let sparkX, sparkY;
+                        switch(line.side) {
+                            case 'left': sparkX = 50; sparkY = line.y1; break;
+                            case 'right': sparkX = w - 50; sparkY = line.y1; break;
+                            case 'top': sparkX = line.x1; sparkY = 50; break;
+                            case 'bottom': sparkX = line.x1; sparkY = h - 50; break;
+                            default: sparkX = cx; sparkY = cy;
+                        }
+                        createSparks(sparkX, sparkY);
+                    }
+                    
+                    let startTime = Date.now();
+                    const duration = 450;
+                    
+                    const updateInterval = setInterval(() => {
+                        const elapsed = Date.now() - startTime;
+                        const p = Math.min(1, elapsed / duration);
+                        
+                        let eased = p;
+                        if (p < 1) {
+                            eased = p + (1 - p) * 0.4 * Math.sin(p * Math.PI * 3);
+                        } else {
+                            eased = 1;
+                        }
+                        
+                        progressMap[lineId] = Math.min(1, Math.max(0, eased));
+                        
+                        if (p >= 1) {
+                            clearInterval(updateInterval);
+                            activatedCount++;
+                            
+                            const percent = Math.round((activatedCount / totalLines) * 100);
+                            progressSpan.textContent = percent + '%';
+                            
+                            if (activatedCount === totalLines) {
+                                progressSpan.textContent = 'ГОТОВО';
+                                
+                                // Финальная вспышка
+                                for (let i = 0; i < 20; i++) {
+                                    setTimeout(() => {
+                                        createSparks(cx + (Math.random() - 0.5) * 200, cy - 40 + (Math.random() - 0.5) * 150);
+                                    }, i * 30);
+                                }
+                                
+                                setTimeout(() => {
+                                    preloader.style.opacity = '0';
+                                    setTimeout(() => {
+                                        window.location.href = 'home34.html';
+                                    }, 600);
+                                }, 1000);
+                            }
+                        }
+                    }, 20);
+                    
+                }, index * 80); // Чуть быстрее
+            });
 
-            // Страховка: если вдруг что-то пойдет не так, редирект через 5 секунд
+            // Рисование с эффектами
+            function draw() {
+                // Основной дом
+                ctx.clearRect(0, 0, w, h);
+                
+                // Добавляем эффект свечения
+                ctx.shadowColor = '#ff5f1f';
+                ctx.shadowBlur = 10;
+                
+                ctx.strokeStyle = '#ff5f1f';
+                ctx.lineWidth = 2.5;
+                ctx.lineCap = 'round';
+                
+                lines.forEach(line => {
+                    const prog = progressMap[line.id];
+                    if (prog <= 0) return;
+                    
+                    // Динамическое свечение в зависимости от прогресса
+                    ctx.shadowBlur = 5 + prog * 10;
+                    
+                    const side = line.side || 'bottom';
+                    
+                    let startX = line.x1;
+                    let startY = line.y1;
+                    
+                    switch(side) {
+                        case 'left': startX = -50; startY = line.y1; break;
+                        case 'right': startX = w + 50; startY = line.y1; break;
+                        case 'top': startX = line.x1; startY = -50; break;
+                        case 'bottom': startX = line.x1; startY = h + 50; break;
+                    }
+                    
+                    const currX1 = startX + (line.x1 - startX) * prog;
+                    const currY1 = startY + (line.y1 - startY) * prog;
+                    
+                    let startX2, startY2;
+                    switch(side) {
+                        case 'left': startX2 = -50; startY2 = line.y2; break;
+                        case 'right': startX2 = w + 50; startY2 = line.y2; break;
+                        case 'top': startX2 = line.x2; startY2 = -50; break;
+                        case 'bottom': startX2 = line.x2; startY2 = h + 50; break;
+                        default: startX2 = line.x2; startY2 = line.y2;
+                    }
+                    
+                    const currX2 = startX2 + (line.x2 - startX2) * prog;
+                    const currY2 = startY2 + (line.y2 - startY2) * prog;
+                    
+                    ctx.beginPath();
+                    ctx.moveTo(currX1, currY1);
+                    ctx.lineTo(currX2, currY2);
+                    ctx.stroke();
+                });
+                
+                // Сбрасываем тень
+                ctx.shadowBlur = 0;
+                
+                // Фоновая сетка
+                linesCtx.clearRect(0, 0, w, h);
+                linesCtx.strokeStyle = 'rgba(255, 95, 31, 0.15)';
+                linesCtx.lineWidth = 1;
+                linesCtx.setLineDash([5, 8]);
+                
+                for (let x = 50; x < w; x += 50) {
+                    linesCtx.beginPath();
+                    linesCtx.moveTo(x, 20);
+                    linesCtx.lineTo(x, h - 20);
+                    linesCtx.stroke();
+                }
+                
+                for (let y = 50; y < h; y += 50) {
+                    linesCtx.beginPath();
+                    linesCtx.moveTo(20, y);
+                    linesCtx.lineTo(w - 20, y);
+                    linesCtx.stroke();
+                }
+                
+                // Свечение вокруг центра (glow)
+                glowCtx.clearRect(0, 0, w, h);
+                const gradient = glowCtx.createRadialGradient(cx, cy - 20, 50, cx, cy - 20, 250);
+                gradient.addColorStop(0, 'rgba(255, 95, 31, 0.15)');
+                gradient.addColorStop(1, 'rgba(255, 95, 31, 0)');
+                
+                glowCtx.fillStyle = gradient;
+                glowCtx.fillRect(0, 0, w, h);
+                
+                requestAnimationFrame(draw);
+            }
+            
+            draw();
+
+            // Страховочный редирект
             setTimeout(() => {
                 if (window.location.href.indexOf('home34.html') === -1) {
                     window.location.href = 'home34.html';
                 }
-            }, 5000);
+            }, 12000);
         })();
     </script>
 </body>
-
 </html>
