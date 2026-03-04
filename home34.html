@@ -652,7 +652,7 @@
             font-size: 56px;
             font-weight: 600;
             line-height: 1.1;
-            margin-bottom: 80px;
+            margin-bottom: 40px;
             color: #fff;
             border-left: 6px solid #ff5f1f;
             padding-left: 30px;
@@ -664,17 +664,18 @@
 
         .section-subtitle {
             font-size: 18px;
-            color: #ff5f1f;
+            color: #fdfdfd;
             text-transform: uppercase;
             letter-spacing: 4px;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
         }
 
         .stats {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 40px;
-            padding: 40px 0;
+            padding: 10px 0;
+            padding-bottom: 90px;
         }
 
         .stat-item {
@@ -727,7 +728,8 @@
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 70px;
-            padding: 40px 0;
+            padding: 20px 0;
+            padding-top: 80px;
             padding-bottom: 70px;
             align-items: center;
         }
@@ -748,7 +750,7 @@
         .contact-name {
             font-size: 28px;
             font-weight: 600;
-            color: #ff5f1f;
+            color: #ffffff;
             margin-bottom: 20px;
         }
 
@@ -824,8 +826,8 @@
         }
 
         .service-detail:hover {
-            border-color: rgba(255, 95, 31, 0.5);
-            box-shadow: 0 20px 40px rgba(255, 95, 31, 0.15);
+            border-color: rgba(255, 122, 70, 0.307);
+            box-shadow: 0 20px 20px rgba(253, 113, 58, 0.07);
         }
 
         .service-info {
@@ -835,25 +837,9 @@
         }
 
         .service-header {
-            display: flex;
-            align-items: center;
-            gap: 1.5rem;
+            
             border-bottom: 2px solid rgba(255, 95, 31, 0.3);
             padding-bottom: 1.5rem;
-        }
-
-        .service-icon {
-            width: 60px;
-            height: 60px;
-            background: rgba(255, 95, 31, 0.1);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 28px;
-            color: #ff5f1f;
-            border: 1px solid rgba(255, 95, 31, 0.3);
-            flex-shrink: 0;
         }
 
         .service-header h2 {
@@ -872,8 +858,8 @@
         }
 
         .service-highlight {
-            background: rgba(255, 95, 31, 0.08);
-            border-left: 4px solid #ff5f1f;
+            background: rgba(148, 148, 148, 0.08);
+            border-left: 4px solid #e0e0e0b0;
             padding: 1rem 1.5rem;
             margin: 1.5rem 0;
             border-radius: 0 10px 10px 0;
@@ -900,7 +886,7 @@
 
         .service-features-panel h3 {
             font-size: 1.5rem;
-            color: #ff5f1f;
+            color: #ffffff;
             margin-bottom: 1.8rem;
             display: flex;
             align-items: center;
@@ -1209,8 +1195,8 @@
 
         .contact-info-block:hover {
             transform: translateY(-5px);
-            border-color: rgba(255, 95, 31, 0.5);
-            box-shadow: 0 15px 30px rgba(255, 95, 31, 0.15);
+            border-color: rgba(255, 111, 54, 0.24);
+            box-shadow: 0 15px 20px rgba(255, 107, 49, 0.112);
         }
 
         .contact-info-item {
@@ -1293,7 +1279,7 @@
 
         .contact-form-block h3 {
             font-size: 28px;
-            color: #ff5f1f;
+            color: #ffffff;
             margin-bottom: 30px;
             font-weight: 600;
             text-transform: uppercase;
@@ -2059,23 +2045,7 @@
     </section>
 
     <div class="container">
-        <section class="stats" id="stats">
-            <div class="stat-item animate-fade-up">
-                <div class="stat-num" data-target="12">0<sup>+</sup></div>
-                <div class="stat-text">Лет работы</div>
-                <span class="stat-tooltip">Непрерывная работа на рынке РБ с 2014 года</span>
-            </div>
-            <div class="stat-item animate-fade-up delay-1">
-                <div class="stat-num" data-target="347">0<sup>+</sup></div>
-                <div class="stat-text">Объектов</div>
-                <span class="stat-tooltip">От квартир и коттеджей до многоэтажных застроек и жилых кварталов</span>
-            </div>
-            <div class="stat-item animate-fade-up delay-2">
-                <div class="stat-num" data-target="0">0<sup>%</sup></div>
-                <div class="stat-text">Брака</div>
-                <span class="stat-tooltip">Многоступенчатая система контроля качества</span>
-            </div>
-        </section>
+        
 
         <section class="about" id="about">
             <div class="about-text animate-fade-right">
@@ -2109,6 +2079,24 @@
                 <a href="tel:+375336370959" class="contact-phone">+375 33 637-09-59</a>
             </div>
         </section>
+
+        <section class="stats" id="stats">
+            <div class="stat-item animate-fade-up">
+                <div class="stat-num" data-target="12">0<sup>+</sup></div>
+                <div class="stat-text">Лет работы</div>
+                <span class="stat-tooltip">Непрерывная работа на рынке РБ с 2014 года</span>
+            </div>
+            <div class="stat-item animate-fade-up delay-1">
+                <div class="stat-num" data-target="347">0<sup>+</sup></div>
+                <div class="stat-text">Объектов</div>
+                <span class="stat-tooltip">От квартир и коттеджей до многоэтажных застроек и жилых кварталов</span>
+            </div>
+            <div class="stat-item animate-fade-up delay-2">
+                <div class="stat-num" data-target="0">0<sup>%</sup></div>
+                <div class="stat-text">Брака</div>
+                <span class="stat-tooltip">Многоступенчатая система контроля качества</span>
+            </div>
+        </section>
     </div>
 
     <!-- СЕКЦИЯ УСЛУГ -->
@@ -2127,7 +2115,7 @@
                         <div class="swiper-slide">
                             <div class="service-info">
                                 <div class="service-header">
-                                    <div class="service-icon"><i class="fas fa-cubes"></i></div>
+                                    <div class="service-icon"></div>
                                     <h2>Кладка</h2>
                                 </div>
                                 <div class="service-description">
@@ -2178,7 +2166,7 @@
                         <div class="swiper-slide">
                             <div class="service-info">
                                 <div class="service-header">
-                                    <div class="service-icon"><i class="fas fa-paint-roller"></i></div>
+                                    <div class="service-icon"></div>
                                     <h2>Штукатурка</h2>
                                 </div>
                                 <div class="service-description">
@@ -2226,7 +2214,7 @@
                         <div class="swiper-slide">
                             <div class="service-info">
                                 <div class="service-header">
-                                    <div class="service-icon"><i class="fas fa-border-all"></i></div>
+                                    <div class="service-icon"></div>
                                     <h2>Стяжка</h2>
                                 </div>
                                 <div class="service-description">
@@ -2962,7 +2950,7 @@
                         
                         const glareX = x * 100;
                         const glareY = y * 100;
-                        this.style.background = `radial-gradient(circle at ${glareX}% ${glareY}%, rgba(255,95,31,0.25) 0%, rgba(20,20,20,0.7) 70%)`;
+                        this.style.background = `radial-gradient(circle at ${glareX}% ${glareY}%, rgba(255,95,31,0.1) 0%, rgba(20,20,20,0.7) 70%)`;
                     });
                     
                     card.addEventListener('mouseleave', function() {
