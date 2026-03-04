@@ -570,7 +570,7 @@
             /* Увеличен отступ между элементами */
         }
 
-        /* Обновленный стиль для service-tag с внутренней сноской */
+        /* Обновленный стиль для service-tag с 3D-эффектом при наведении */
         .service-tag {
             position: relative;
             background: rgba(20, 20, 20, 0.7);
@@ -593,14 +593,19 @@
             display: flex;
             flex-direction: column;
             align-items: flex-end;
+            transform-style: preserve-3d;
+            transform: perspective(1000px) rotateX(0deg) rotateY(0deg);
+            transition: transform 0.1s ease, border-color 0.4s ease, background 0.4s ease, padding-bottom 0.4s ease;
+            will-change: transform;
         }
 
         .service-tag:hover {
             border-color: #ff5f1f;
             background: rgba(255, 95, 31, 0.15);
-            transform: translateX(-5px);
+            transform: perspective(1000px) rotateX(var(--rotateX, 0deg)) rotateY(var(--rotateY, 0deg)) translateZ(10px);
             padding-bottom: 25px;
             /* Увеличиваем нижний отступ при раскрытии */
+            box-shadow: 0 15px 30px rgba(255, 95, 31, 0.3);
         }
 
         .service-tag-title {
@@ -609,6 +614,7 @@
             transition: all 0.3s ease;
             z-index: 2;
             position: relative;
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
         }
 
         /* Внутренняя сноска (появляется при ховере) */
@@ -625,7 +631,7 @@
             padding-top: 15px;
             border-top: 1px solid rgba(255, 95, 31, 0.5);
             opacity: 0;
-            transform: translateY(-10px);
+            transform: translateY(-10px) translateZ(20px);
             transition: opacity 0.3s ease, transform 0.3s ease;
             z-index: 1;
             background: transparent;
@@ -634,7 +640,7 @@
 
         .service-tag:hover .service-tag-tooltip-inner {
             opacity: 1;
-            transform: translateY(0);
+            transform: translateY(0) translateZ(20px);
         }
 
         /* Специфичные цвета для разных услуг (опционально) */
@@ -2768,6 +2774,52 @@
         }
         window.addEventListener('resize', handleResize);
         handleResize();
+
+        // 3D TILT EFFECT ДЛЯ КАРТОЧЕК ПРИ НАВЕДЕНИИ
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.service-tag');
+            
+            if (cards.length > 0 && !isMobile()) {
+                cards.forEach(card => {
+                    card.addEventListener('mousemove', function(e) {
+                        const rect = this.getBoundingClientRect();
+                        
+                        // Вычисляем позицию мыши относительно карточки (0 до 1)
+                        const x = (e.clientX - rect.left) / rect.width; // 0 to 1
+                        const y = (e.clientY - rect.top) / rect.height; // 0 to 1
+                        
+                        // Преобразуем в угол наклона (-15deg до 15deg)
+                        const rotateX = (y - 0.5) * -30; // -15 до 15
+                        const rotateY = (x - 0.5) * 30;  // -15 до 15
+                        
+                        // Применяем трансформацию через CSS переменные
+                        this.style.setProperty('--rotateX', rotateX + 'deg');
+                        this.style.setProperty('--rotateY', rotateY + 'deg');
+                        
+                        // Добавляем эффект свечения, которое двигается за курсором
+                        const glareX = x * 100;
+                        const glareY = y * 100;
+                        this.style.background = `radial-gradient(circle at ${glareX}% ${glareY}%, rgba(255,95,31,0.25) 0%, rgba(20,20,20,0.7) 70%)`;
+                    });
+                    
+                    card.addEventListener('mouseleave', function() {
+                        // Сбрасываем наклон
+                        this.style.setProperty('--rotateX', '0deg');
+                        this.style.setProperty('--rotateY', '0deg');
+                        
+                        // Возвращаем обычный фон
+                        this.style.background = 'rgba(20,20,20,0.7)';
+                        
+                        // Убираем backdrop-filter для восстановления
+                        setTimeout(() => {
+                            if (!this.matches(':hover')) {
+                                this.style.background = '';
+                            }
+                        }, 100);
+                    });
+                });
+            }
+        });
     </script>
 </body>
 
