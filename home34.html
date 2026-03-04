@@ -791,7 +791,7 @@
             margin-top: 20px;
         }
 
-        /* ===== ДЕТАЛЬНАЯ СЕКЦИЯ УСЛУГ С ЧАСТИЦАМИ ===== */
+        /* ===== ПЕРЕРАБОТАННАЯ СЕКЦИЯ УСЛУГ (только изменения внутри) ===== */
         .services-detailed {
             position: relative;
             padding: 0px 0;
@@ -823,119 +823,208 @@
             z-index: 2;
         }
 
+        /* Новый стиль для service-detail — более современная сетка */
         .service-detail {
             margin-bottom: 6rem;
             scroll-margin-top: 100px;
             display: grid;
-            /* Добавьте это */
-            grid-template-columns: 1fr 1fr;
-            /* Две колонки: заголовок и features */
-            gap: 2rem;
-            /* Отступ между колонками */
+            grid-template-columns: 1fr 1.2fr;
+            gap: 3rem;
+            align-items: start;
+            background: linear-gradient(145deg, rgba(26, 29, 36, 0.5) 0%, rgba(12, 14, 13, 0.8) 100%);
+            border: 1px solid rgba(255, 95, 31, 0.15);
+            border-radius: 30px;
+            padding: 3rem;
+            backdrop-filter: blur(5px);
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .service-detail:hover {
+            border-color: rgba(255, 95, 31, 0.5);
+            box-shadow: 0 20px 40px rgba(255, 95, 31, 0.15);
+        }
+
+        /* Левая колонка (заголовок + описание) */
+        .service-info {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
         }
 
         .service-header {
             display: flex;
             align-items: center;
-            gap: 2rem;
-            
-            grid-column: 1;
-            /* Заголовок в первой колонке */
+            gap: 1.5rem;
+            border-bottom: 2px solid rgba(255, 95, 31, 0.3);
+            padding-bottom: 1.5rem;
         }
 
- 
+        .service-icon {
+            width: 60px;
+            height: 60px;
+            background: rgba(255, 95, 31, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            color: #ff5f1f;
+            border: 1px solid rgba(255, 95, 31, 0.3);
+            flex-shrink: 0;
+        }
+
         .service-header h2 {
-            font-size: 2.8rem;
+            font-size: 3rem;
             font-weight: 700;
             color: #ff5f1f;
-        }
-
-        .service-content {
-            display: grid;
-            grid-template-columns: 1.5fr 1fr;
-            gap: 3rem;
-            margin-bottom: 2rem;
-            grid-column: 1 / -1;
-            /* Контент на всю ширину */
+            line-height: 1.1;
+            letter-spacing: 2px;
         }
 
         .service-description p {
             color: rgba(255, 255, 255, 0.8);
             line-height: 1.8;
-            margin-bottom: 1.5rem;
-            font-size: 1.1rem;
+            margin-bottom: 1.2rem;
+            font-size: 1rem;
         }
 
-        .service-features {
-            background: linear-gradient(145deg, #1a1d24, #0c0e0d);
+        .service-highlight {
+            background: rgba(255, 95, 31, 0.08);
+            border-left: 4px solid #ff5f1f;
+            padding: 1rem 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 0 10px 10px 0;
+        }
+
+        .service-highlight p {
+            margin: 0;
+            font-weight: 500;
+            color: #fff;
+        }
+
+        .service-highlight i {
+            color: #ff5f1f;
+            margin-right: 8px;
+        }
+
+        /* Правая колонка (фичи + кнопка) */
+        .service-features-panel {
+            background: rgba(0, 0, 0, 0.3);
             border: 1px solid rgba(255, 95, 31, 0.2);
-            border-radius: 30px;
+            border-radius: 24px;
             padding: 2rem;
-            grid-column: 2;
-            /* Features во второй колонке */
-            grid-row: 1;
-            /* На одном ряду с заголовком */
-            align-self: start;
-            /* Прижать к верху */
+            backdrop-filter: blur(5px);
         }
 
-        .service-features h3 {
+        .service-features-panel h3 {
             font-size: 1.5rem;
             color: #ff5f1f;
-            margin-bottom: 1.5rem;
-        }
-
-
-        .features-list {
-            list-style: none;
-        }
-
-        .features-list li {
+            margin-bottom: 1.8rem;
             display: flex;
             align-items: center;
-            gap: 1rem;
-            margin-bottom: 1.2rem;
-            color: rgba(255, 255, 255, 0.8);
+            gap: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
-        .features-list li i {
+        .service-features-panel h3 i {
+            font-size: 1.3rem;
+            opacity: 0.9;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 0.95rem;
+            padding: 0.5rem 0;
+            border-bottom: 1px dashed rgba(255, 95, 31, 0.15);
+        }
+
+        .feature-item i {
             color: #ff5f1f;
-            width: 24px;
+            width: 20px;
+            font-size: 1rem;
+            flex-shrink: 0;
         }
 
-        /* Кнопка "Обсудить" */
-        .discuss-btn {
+        .discuss-btn-modern {
             display: inline-flex;
             align-items: center;
+            justify-content: center;
             gap: 0.8rem;
             background: transparent;
             border: 2px solid #ff5f1f;
             color: #ff5f1f;
-            padding: 1rem 2.5rem;
-            font-size: 1.1rem;
+            padding: 1rem 2rem;
+            font-size: 1rem;
             font-weight: 600;
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 2px;
             border-radius: 50px;
             cursor: pointer;
             transition: all 0.3s;
+            width: 100%;
             margin-top: 1rem;
+            text-decoration: none;
         }
 
-        .discuss-btn:hover {
+        .discuss-btn-modern:hover {
             background: #ff5f1f;
             color: #0c0e0d;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 20px rgba(255, 95, 31, 0.3);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(255, 95, 31, 0.3);
         }
 
-        .discuss-btn i {
-            font-size: 1.2rem;
+        .discuss-btn-modern i {
             transition: transform 0.3s;
         }
 
-        .discuss-btn:hover i {
+        .discuss-btn-modern:hover i {
             transform: translateX(5px);
+        }
+
+        @media (max-width: 1100px) {
+            .service-detail {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            
+            .features-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 700px) {
+            .service-detail {
+                padding: 2rem 1.5rem;
+            }
+            
+            .service-header {
+                flex-wrap: wrap;
+            }
+            
+            .service-header h2 {
+                font-size: 2.5rem;
+            }
+            
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .service-icon {
+                width: 50px;
+                height: 50px;
+                font-size: 24px;
+            }
         }
 
         /* ===== РАСШИРЕННАЯ СЕКЦИЯ ПРИНЦИПОВ ===== */
@@ -1645,10 +1734,6 @@
                 font-size: 20px;
             }
 
-            .service-content {
-                grid-template-columns: 1fr;
-            }
-
             /* Адаптация навигации */
             .nav-menu {
                 display: none;
@@ -1692,17 +1777,6 @@
         }
 
         @media (max-width: 700px) {
-            .service-header {
-                flex-direction: column;
-                text-align: center;
-                gap: 1rem;
-            }
-
-            .discuss-btn {
-                width: 100%;
-                justify-content: center;
-            }
-
             .principle-num {
                 font-size: 40px;
             }
@@ -2019,7 +2093,7 @@
         </section>
     </div>
 
-    <!-- СЕКЦИЯ УСЛУГ С ЧАСТИЦАМИ -->
+    <!-- ПЕРЕРАБОТАННАЯ СЕКЦИЯ УСЛУГ С ЧАСТИЦАМИ (дизайн обновлен, контент тот же) -->
     <section class="services-detailed" id="services">
         <div class="services-particles" id="services-particles"></div>
 
@@ -2027,104 +2101,97 @@
             <div class="section-subtitle animate-fade-up">ЧТО МЫ ДЕЛАЕМ</div>
             <h2 class="section-title animate-fade-up delay-1"><span>НАШИ</span> УСЛУГИ</h2>
 
-            <div id="kladka" class="service-detail">
-                <div class="service-header animate-fade-right">
-                    
-                    <h2>Кладка</h2>
+            <!-- Кладка -->
+            <div id="kladka" class="service-detail animate-fade-up">
+                <div class="service-info">
+                    <div class="service-header">
+                        <div class="service-icon"><i class="fas fa-cubes"></i></div>
+                        <h2>Кладка</h2>
+                    </div>
+                    <div class="service-description">
+                        <p>Кирпич, газосиликат, керамзитоблок, фундамент — любой формат. Идеальная перевязка швов, армирование каждого 3-го ряда. Работаем как по готовым проектам, так и помогаем с расчётами.</p>
+                        <p>Контролируем геометрию, толщину шва, перевязку. Никаких щелей и кривых углов — только СНиПы и здравый смысл. Используем современный инструмент: лазерные нивелиры, расшивки, уровень на каждом этапе.</p>
+                        <div class="service-highlight">
+                            <p><i class="fas fa-medal"></i> За 10+ лет ни одного обрушения или брака. Каждый объект принимаем лично.</p>
+                        </div>
+                    </div>
                 </div>
-
-                <div class="service-content">
-                    <div class="service-description animate-fade-up">
-                        <p>Кирпич, газосиликат, керамзитоблок, фундамент — любой формат. Идеальная перевязка швов, армирование
-                            каждого 3-го ряда. Работаем как по готовым проектам, так и помогаем с расчётами.</p>
-                        <p>Контролируем геометрию, толщину шва, перевязку. Никаких щелей и кривых углов — только
-                            СНиПы и здравый смысл. Используем современный инструмент: лазерные нивелиры, расшивки,
-                            уровень на каждом этапе.</p>
-                        <p>За 10+ лет ни одного обрушения или брака. Каждый объект принимаем лично.</p>
-
-                        <button class="discuss-btn" onclick="openModal('Кладка')">
-                            Обсудить <i class="fas fa-arrow-right"></i>
-                        </button>
+                <div class="service-features-panel">
+                    <h3><i class="fas fa-tasks"></i> Виды работ</h3>
+                    <div class="features-grid">
+                        <div class="feature-item"><i class="fas fa-check-circle"></i> Фундамент (ленточный, плитный, свайный)</div>
+                        <div class="feature-item"><i class="fas fa-check-circle"></i> Кирпич керамический, силикатный, клинкерный</div>
+                        <div class="feature-item"><i class="fas fa-check-circle"></i> Блоки газосиликатные, газобетонные</div>
+                        <div class="feature-item"><i class="fas fa-check-circle"></i> Керамзитобетонные, шлакоблоки</div>
+                        <div class="feature-item"><i class="fas fa-check-circle"></i> Армопояса, перемычки, усиление</div>
+                        <div class="feature-item"><i class="fas fa-check-circle"></i> Облицовочная кладка, вентилируемые фасады</div>
+                        <div class="feature-item"><i class="fas fa-check-circle"></i> Сложные архитектурные элементы</div>
                     </div>
-
-                    <div class="service-features animate-fade-left">
-                        <h3>Виды работ</h3>
-                        <ul class="features-list">
-                            <li><i class="fas fa-check-circle"></i> Фундамент (ленточный, плитный, свайный)</li>
-                            <li><i class="fas fa-check-circle"></i> Кирпич керамический, силикатный, клинкерный</li>
-                            <li><i class="fas fa-check-circle"></i> Блоки газосиликатные, газобетонные</li>
-                            <li><i class="fas fa-check-circle"></i> Керамзитобетонные, шлакоблоки</li>
-                            <li><i class="fas fa-check-circle"></i> Армопояса, перемычки, усиление</li>
-                            <li><i class="fas fa-check-circle"></i> Облицовочная кладка, вентилируемые фасады</li>
-                            <li><i class="fas fa-check-circle"></i> Сложные архитектурные элементы</li>
-                        </ul>
-                    </div>
+                    <button class="discuss-btn-modern" onclick="openModal('Кладка')">
+                        Обсудить <i class="fas fa-arrow-right"></i>
+                    </button>
                 </div>
             </div>
 
-            <div id="shtukaturka" class="service-detail" style="margin-top: 5rem;">
-                <div class="service-header animate-fade-right">
-                    
-                    <h2>Штукатурка</h2>
+            <!-- Штукатурка -->
+            <div id="shtukaturka" class="service-detail animate-fade-up">
+                <div class="service-info">
+                    <div class="service-header">
+                        <div class="service-icon"><i class="fas fa-paint-roller"></i></div>
+                        <h2>Штукатурка</h2>
+                    </div>
+                    <div class="service-description">
+                        <p>Механизированная и ручная штукатурка стен. Работаем на маяках с лазерным контролем. Отклонение менее 1 мм на метр — обычное дело.</p>
+                        <p>Используем качественные смеси (Knauf, Ceresit, Волма). Фасады, внутренние работы, цоколи. Подготавливаем под покраску, обои, плитку или декоративные покрытия.</p>
+                        <div class="service-highlight">
+                            <p><i class="fas fa-shield-alt"></i> Никаких трещин, высолов и отслоений. Каждый этап сушки контролируем.</p>
+                        </div>
+                    </div>
                 </div>
-
-                <div class="service-content">
-                    <div class="service-description animate-fade-up">
-                        <p>Механизированная и ручная штукатурка стен. Работаем на маяках с лазерным контролем.
-                            Отклонение менее 1 мм на метр — обычное дело.</p>
-                        <p>Используем качественные смеси (Knauf, Ceresit, Волма). Фасады, внутренние работы, цоколи.
-                            Подготавливаем под покраску, обои, плитку или декоративные покрытия.</p>
-                        <p>Никаких трещин, высолов и отслоений. Каждый этап сушки контролируем.</p>
-
-                        <button class="discuss-btn" onclick="openModal('Штукатурка')">
-                            Обсудить <i class="fas fa-arrow-right"></i>
-                        </button>
+                <div class="service-features-panel">
+                    <h3><i class="fas fa-tasks"></i> Виды штукатурки</h3>
+                    <div class="features-grid">
+                        <div class="feature-item"><i class="fas fa-check-circle"></i> Механизированная (гипсовая)</div>
+                        <div class="feature-item"><i class="fas fa-check-circle"></i> Ручная цементная</div>
+                        <div class="feature-item"><i class="fas fa-check-circle"></i> Фасадная</div>
+                        <div class="feature-item"><i class="fas fa-check-circle"></i> Высококачественная под правило</div>
+                        <div class="feature-item"><i class="fas fa-check-circle"></i> Декоративная (короед, шуба)</div>
+                        <div class="feature-item"><i class="fas fa-check-circle"></i> Ремонт старой штукатурки</div>
                     </div>
-
-                    <div class="service-features animate-fade-left">
-                        <h3>Виды штукатурки</h3>
-                        <ul class="features-list">
-                            <li><i class="fas fa-check-circle"></i> Механизированная (гипсовая)</li>
-                            <li><i class="fas fa-check-circle"></i> Ручная цементная</li>
-                            <li><i class="fas fa-check-circle"></i> Фасадная</li>
-                            <li><i class="fas fa-check-circle"></i> Высококачественная под правило</li>
-                            <li><i class="fas fa-check-circle"></i> Декоративная (короед, шуба)</li>
-                            <li><i class="fas fa-check-circle"></i> Ремонт старой штукатурки</li>
-                        </ul>
-                    </div>
+                    <button class="discuss-btn-modern" onclick="openModal('Штукатурка')">
+                        Обсудить <i class="fas fa-arrow-right"></i>
+                    </button>
                 </div>
             </div>
 
-            <div id="styazhka" class="service-detail" style="margin-top: 5rem;">
-                <div class="service-header animate-fade-right">
-                   
-                    <h2>Стяжка</h2>
+            <!-- Стяжка -->
+            <div id="styazhka" class="service-detail animate-fade-up">
+                <div class="service-info">
+                    <div class="service-header">
+                        <div class="service-icon"><i class="fas fa-border-all"></i></div>
+                        <h2>Стяжка</h2>
+                    </div>
+                    <div class="service-description">
+                        <p>Полусухая, мокрая, армированная — любой тип стяжки под ваши задачи. Идеально ровный пол без трещин, с геометрией +/- 2 мм.</p>
+                        <p>Промышленные полы под высокие нагрузки, тёплые полы, звукоизоляция. Используем фиброволокно, пластификаторы, демпферную ленту. Контроль влажности и прочности.</p>
+                        <div class="service-highlight">
+                            <p><i class="fas fa-ruler-vertical"></i> Лично проверяем каждый квадратный метр перед сдачей.</p>
+                        </div>
+                    </div>
                 </div>
-
-                <div class="service-content">
-                    <div class="service-description animate-fade-up">
-                        <p>Полусухая, мокрая, армированная — любой тип стяжки под ваши задачи. Идеально ровный пол без
-                            трещин, с геометрией +/- 2 мм.</p>
-                        <p>Промышленные полы под высокие нагрузки, тёплые полы, звукоизоляция. Используем фиброволокно,
-                            пластификаторы, демпферную ленту. Контроль влажности и прочности.</p>
-                        <p>Лично проверяем каждый квадратный метр перед сдачей.</p>
-
-                        <button class="discuss-btn" onclick="openModal('Стяжка')">
-                            Обсудить <i class="fas fa-arrow-right"></i>
-                        </button>
+                <div class="service-features-panel">
+                    <h3><i class="fas fa-tasks"></i> Виды стяжек</h3>
+                    <div class="features-grid">
+                        <div class="feature-item"><i class="fas fa-check-circle"></i> Полусухая (до 100 мм)</div>
+                        <div class="feature-item"><i class="fas fa-check-circle"></i> Мокрая (цементно-песчаная)</div>
+                        <div class="feature-item"><i class="fas fa-check-circle"></i> Армированная сеткой/фиброй</div>
+                        <div class="feature-item"><i class="fas fa-check-circle"></i> Промышленные полы</div>
+                        <div class="feature-item"><i class="fas fa-check-circle"></i> Стяжка по тёплому полу</div>
+                        <div class="feature-item"><i class="fas fa-check-circle"></i> Наливные полы (финиш)</div>
                     </div>
-
-                    <div class="service-features animate-fade-left">
-                        <h3>Виды стяжек</h3>
-                        <ul class="features-list">
-                            <li><i class="fas fa-check-circle"></i> Полусухая (до 100 мм)</li>
-                            <li><i class="fas fa-check-circle"></i> Мокрая (цементно-песчаная)</li>
-                            <li><i class="fas fa-check-circle"></i> Армированная сеткой/фиброй</li>
-                            <li><i class="fas fa-check-circle"></i> Промышленные полы</li>
-                            <li><i class="fas fa-check-circle"></i> Стяжка по тёплому полу</li>
-                            <li><i class="fas fa-check-circle"></i> Наливные полы (финиш)</li>
-                        </ul>
-                    </div>
+                    <button class="discuss-btn-modern" onclick="openModal('Стяжка')">
+                        Обсудить <i class="fas fa-arrow-right"></i>
+                    </button>
                 </div>
             </div>
         </div>
@@ -2823,4 +2890,4 @@
     </script>
 </body>
 
-</html>
+</html> 
