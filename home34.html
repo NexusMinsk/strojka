@@ -13,6 +13,8 @@
     <script src="https://cdn.jsdelivr.net/npm/vanta@0.5.24/dist/vanta.rings.min.js"></script>
     <!-- particles.js -->
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <!-- Swiper CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
     <!-- Шрифты и иконки -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -365,6 +367,12 @@
             }
         }
 
+        @keyframes swipeHint {
+            0% { transform: translateX(0); opacity: 0.5; }
+            50% { transform: translateX(5px); opacity: 1; }
+            100% { transform: translateX(0); opacity: 0.5; }
+        }
+
         .animate-fade-up {
             animation: fadeUp 0.8s cubic-bezier(0.2, 0.9, 0.3, 1) forwards;
         }
@@ -567,7 +575,6 @@
             display: flex;
             flex-direction: column;
             gap: 25px;
-            /* Увеличен отступ между элементами */
         }
 
         /* Обновленный стиль для service-tag с 3D-эффектом при наведении */
@@ -587,9 +594,7 @@
             text-align: right;
             cursor: pointer;
             overflow: hidden;
-            /* Скрываем содержимое при схлопывании */
             min-height: 65px;
-            /* Минимальная высота для заголовка */
             display: flex;
             flex-direction: column;
             align-items: flex-end;
@@ -604,7 +609,6 @@
             background: rgba(255, 95, 31, 0.15);
             transform: perspective(1000px) rotateX(var(--rotateX, 0deg)) rotateY(var(--rotateY, 0deg)) translateZ(10px);
             padding-bottom: 25px;
-            /* Увеличиваем нижний отступ при раскрытии */
             box-shadow: 0 15px 30px rgba(255, 95, 31, 0.3);
         }
 
@@ -641,24 +645,6 @@
         .service-tag:hover .service-tag-tooltip-inner {
             opacity: 1;
             transform: translateY(0) translateZ(20px);
-        }
-
-        /* Специфичные цвета для разных услуг (опционально) */
-        .service-tag[data-service="kladka"]:hover {
-            background: rgba(255, 95, 31, 0.2);
-        }
-
-        .service-tag[data-service="shtukaturka"]:hover {
-            background: rgba(255, 95, 31, 0.2);
-        }
-
-        .service-tag[data-service="styazhka"]:hover {
-            background: rgba(255, 95, 31, 0.2);
-        }
-
-        .service-tooltip-old {
-            display: none;
-            /* Скрываем старый тултип */
         }
 
         /* ===== СЕКЦИИ ===== */
@@ -791,7 +777,7 @@
             margin-top: 20px;
         }
 
-        /* ===== ПЕРЕРАБОТАННАЯ СЕКЦИЯ УСЛУГ (только изменения внутри) ===== */
+        /* ===== ДЕСКТОПНАЯ ВЕРСИЯ УСЛУГ (ПОЛНОСТЬЮ ВОССТАНОВЛЕНА) ===== */
         .services-detailed {
             position: relative;
             padding: 0px 0;
@@ -799,7 +785,6 @@
             overflow: hidden;
         }
 
-        /* Контейнер для частиц (будет отключен на мобильных через JS) */
         .services-particles {
             position: absolute;
             top: 0;
@@ -811,7 +796,6 @@
             pointer-events: none;
         }
 
-        /* На мобильных скрываем particles */
         @media (max-width: 900px) {
             .services-particles {
                 display: none;
@@ -823,7 +807,7 @@
             z-index: 2;
         }
 
-        /* Новый стиль для service-detail — более современная сетка */
+        /* ОРИГИНАЛЬНЫЙ ДЕСКТОПНЫЙ ДИЗАЙН (ВОССТАНОВЛЕН) */
         .service-detail {
             margin-bottom: 6rem;
             scroll-margin-top: 100px;
@@ -844,7 +828,6 @@
             box-shadow: 0 20px 40px rgba(255, 95, 31, 0.15);
         }
 
-        /* Левая колонка (заголовок + описание) */
         .service-info {
             display: flex;
             flex-direction: column;
@@ -907,7 +890,6 @@
             margin-right: 8px;
         }
 
-        /* Правая колонка (фичи + кнопка) */
         .service-features-panel {
             background: rgba(0, 0, 0, 0.3);
             border: 1px solid rgba(255, 95, 31, 0.2);
@@ -925,11 +907,6 @@
             gap: 10px;
             text-transform: uppercase;
             letter-spacing: 1px;
-        }
-
-        .service-features-panel h3 i {
-            font-size: 1.3rem;
-            opacity: 0.9;
         }
 
         .features-grid {
@@ -984,46 +961,126 @@
             box-shadow: 0 10px 25px rgba(255, 95, 31, 0.3);
         }
 
-        .discuss-btn-modern i {
-            transition: transform 0.3s;
-        }
-
-        .discuss-btn-modern:hover i {
-            transform: translateX(5px);
-        }
-
-        @media (max-width: 1100px) {
+        /* ===== МОБИЛЬНАЯ ВЕРСИЯ (ТОЛЬКО СВАЙП БЛОКОВ) ===== */
+        @media (max-width: 900px) {
+            /* Полностью скрываем десктопную структуру и показываем мобильную */
             .service-detail {
-                grid-template-columns: 1fr;
-                gap: 2rem;
+                display: block;
+                margin-bottom: 3rem;
+                padding: 0;
+                background: transparent;
+                border: none;
+                box-shadow: none;
             }
-            
-            .features-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
 
-        @media (max-width: 700px) {
-            .service-detail {
-                padding: 2rem 1.5rem;
+            /* Свайпер для каждой услуги */
+            .service-swiper {
+                background: linear-gradient(145deg, rgba(26, 29, 36, 0.5) 0%, rgba(12, 14, 13, 0.8) 100%);
+                border: 1px solid rgba(255, 95, 31, 0.15);
+                border-radius: 30px;
+                padding: 1.5rem;
+                overflow: hidden;
             }
-            
-            .service-header {
-                flex-wrap: wrap;
+
+            .service-swiper .swiper-slide {
+                height: auto;
             }
-            
+
+            /* Уменьшаем размеры текста для мобильных */
             .service-header h2 {
-                font-size: 2.5rem;
+                font-size: 2.2rem;
             }
-            
+
+            .service-description p {
+                font-size: 0.9rem;
+                line-height: 1.5;
+                margin-bottom: 0.8rem;
+            }
+
+            .service-highlight {
+                padding: 0.8rem 1rem;
+                margin: 1rem 0;
+            }
+
+            .service-highlight p {
+                font-size: 0.85rem;
+            }
+
+            .service-features-panel {
+                padding: 1.2rem;
+            }
+
+            .service-features-panel h3 {
+                font-size: 1.3rem;
+                margin-bottom: 1.2rem;
+            }
+
             .features-grid {
                 grid-template-columns: 1fr;
+                gap: 0.6rem;
+            }
+
+            .feature-item {
+                font-size: 0.85rem;
+                padding: 0.5rem 0.8rem;
+            }
+
+            .discuss-btn-modern {
+                padding: 0.8rem 1.5rem;
+                font-size: 0.9rem;
+                margin-top: 0.8rem;
+            }
+
+            /* Пагинация */
+            .service-swiper .swiper-pagination {
+                position: relative;
+                margin-top: 1.2rem;
+                bottom: 0 !important;
+            }
+
+            .service-swiper .swiper-pagination-bullet {
+                background: rgba(255, 95, 31, 0.3);
+                opacity: 1;
+            }
+
+            .service-swiper .swiper-pagination-bullet-active {
+                background: #ff5f1f;
+            }
+
+            /* Подсказка для свайпа */
+            .swipe-hint {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 10px;
+                margin-top: 0.8rem;
+                font-size: 0.8rem;
+                color: rgba(255, 95, 31, 0.7);
+                animation: swipeHint 2s ease-in-out infinite;
+            }
+
+            .swipe-hint i {
+                font-size: 1rem;
+            }
+        }
+
+        @media (min-width: 901px) {
+            /* На десктопе скрываем мобильные элементы */
+            .service-swiper {
+                display: contents;
             }
             
-            .service-icon {
-                width: 50px;
-                height: 50px;
-                font-size: 24px;
+            .service-swiper .swiper-wrapper {
+                display: contents;
+            }
+            
+            .service-swiper .swiper-slide {
+                display: contents;
+            }
+            
+            .service-swiper .swiper-pagination,
+            .swipe-hint {
+                display: none;
             }
         }
 
@@ -1047,7 +1104,6 @@
             opacity: 0.35;
         }
 
-        /* На мобильных отключаем Vanta */
         @media (max-width: 900px) {
             #vanta-principles {
                 display: none;
@@ -1114,38 +1170,6 @@
 
         .principle-item:hover .principle-desc {
             color: #fff;
-        }
-
-        /* Добавляем дополнительные принципы для расширения */
-        .principle-item-extended {
-            grid-column: span 2;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 40px;
-            margin-top: 20px;
-            border-bottom: none;
-            padding-bottom: 0;
-        }
-
-        .principle-subitem {
-            border-bottom: 1px solid rgba(255, 95, 31, 0.2);
-            padding-bottom: 20px;
-        }
-
-        .principle-subitem .principle-header {
-            margin-bottom: 10px;
-        }
-
-        .principle-subitem .principle-num {
-            font-size: 36px;
-        }
-
-        .principle-subitem .principle-title {
-            font-size: 24px;
-        }
-
-        .principle-subitem .principle-desc {
-            margin-left: 56px;
         }
 
         /* ===== НОВАЯ СЕКЦИЯ КОНТАКТЫ ===== */
@@ -1501,7 +1525,7 @@
             letter-spacing: 2px;
         }
 
-        /* ===== МОДАЛЬНОЕ ОКНО (МИНИМАЛИСТИЧНОЕ) ===== */
+        /* ===== МОДАЛЬНОЕ ОКНО ===== */
         .modal {
             display: none;
             position: fixed;
@@ -1691,11 +1715,6 @@
             .service-tag {
                 text-align: left;
             }
-
-            .principle-item-extended {
-                grid-template-columns: 1fr;
-                gap: 20px;
-            }
             
             .contacts-grid {
                 grid-template-columns: 1fr;
@@ -1734,7 +1753,6 @@
                 font-size: 20px;
             }
 
-            /* Адаптация навигации */
             .nav-menu {
                 display: none;
             }
@@ -2093,7 +2111,7 @@
         </section>
     </div>
 
-    <!-- ПЕРЕРАБОТАННАЯ СЕКЦИЯ УСЛУГ С ЧАСТИЦАМИ (дизайн обновлен, контент тот же) -->
+    <!-- СЕКЦИЯ УСЛУГ -->
     <section class="services-detailed" id="services">
         <div class="services-particles" id="services-particles"></div>
 
@@ -2102,96 +2120,149 @@
             <h2 class="section-title animate-fade-up delay-1"><span>НАШИ</span> УСЛУГИ</h2>
 
             <!-- Кладка -->
-            <div id="kladka" class="service-detail animate-fade-up">
-                <div class="service-info">
-                    <div class="service-header">
-                        <div class="service-icon"><i class="fas fa-cubes"></i></div>
-                        <h2>Кладка</h2>
-                    </div>
-                    <div class="service-description">
-                        <p>Кирпич, газосиликат, керамзитоблок, фундамент — любой формат. Идеальная перевязка швов, армирование каждого 3-го ряда. Работаем как по готовым проектам, так и помогаем с расчётами.</p>
-                        <p>Контролируем геометрию, толщину шва, перевязку. Никаких щелей и кривых углов — только СНиПы и здравый смысл. Используем современный инструмент: лазерные нивелиры, расшивки, уровень на каждом этапе.</p>
-                        <div class="service-highlight">
-                            <p><i class="fas fa-medal"></i> За 10+ лет ни одного обрушения или брака. Каждый объект принимаем лично.</p>
+            <div id="kladka" class="service-detail">
+                <div class="swiper service-swiper">
+                    <div class="swiper-wrapper">
+                        <!-- Слайд 1: Описание услуги -->
+                        <div class="swiper-slide">
+                            <div class="service-info">
+                                <div class="service-header">
+                                    <div class="service-icon"><i class="fas fa-cubes"></i></div>
+                                    <h2>Кладка</h2>
+                                </div>
+                                <div class="service-description">
+                                    <p>Кирпич, газосиликат, керамзитоблок, фундамент — любой формат. Идеальная перевязка швов, армирование каждого 3-го ряда. Работаем как по готовым проектам, так и помогаем с расчётами.</p>
+                                    <p>Контролируем геометрию, толщину шва, перевязку. Никаких щелей и кривых углов — только СНиПы и здравый смысл. Используем современный инструмент: лазерные нивелиры, расшивки, уровень на каждом этапе.</p>
+                                    <div class="service-highlight">
+                                        <p><i class="fas fa-medal"></i> За 10+ лет ни одного обрушения или брака. Каждый объект принимаем лично.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Слайд 2: Виды работ -->
+                        <div class="swiper-slide">
+                            <div class="service-features-panel">
+                                <h3><i class="fas fa-tasks"></i> Виды работ</h3>
+                                <div class="features-grid">
+                                    <div class="feature-item"><i class="fas fa-check-circle"></i> Фундамент (ленточный, плитный, свайный)</div>
+                                    <div class="feature-item"><i class="fas fa-check-circle"></i> Кирпич керамический, силикатный, клинкерный</div>
+                                    <div class="feature-item"><i class="fas fa-check-circle"></i> Блоки газосиликатные, газобетонные</div>
+                                    <div class="feature-item"><i class="fas fa-check-circle"></i> Керамзитобетонные, шлакоблоки</div>
+                                    <div class="feature-item"><i class="fas fa-check-circle"></i> Армопояса, перемычки, усиление</div>
+                                    <div class="feature-item"><i class="fas fa-check-circle"></i> Облицовочная кладка, вентилируемые фасады</div>
+                                    <div class="feature-item"><i class="fas fa-check-circle"></i> Сложные архитектурные элементы</div>
+                                </div>
+                                <button class="discuss-btn-modern" onclick="openModal('Кладка')">
+                                    Обсудить <i class="fas fa-arrow-right"></i>
+                                </button>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="service-features-panel">
-                    <h3><i class="fas fa-tasks"></i> Виды работ</h3>
-                    <div class="features-grid">
-                        <div class="feature-item"><i class="fas fa-check-circle"></i> Фундамент (ленточный, плитный, свайный)</div>
-                        <div class="feature-item"><i class="fas fa-check-circle"></i> Кирпич керамический, силикатный, клинкерный</div>
-                        <div class="feature-item"><i class="fas fa-check-circle"></i> Блоки газосиликатные, газобетонные</div>
-                        <div class="feature-item"><i class="fas fa-check-circle"></i> Керамзитобетонные, шлакоблоки</div>
-                        <div class="feature-item"><i class="fas fa-check-circle"></i> Армопояса, перемычки, усиление</div>
-                        <div class="feature-item"><i class="fas fa-check-circle"></i> Облицовочная кладка, вентилируемые фасады</div>
-                        <div class="feature-item"><i class="fas fa-check-circle"></i> Сложные архитектурные элементы</div>
+                    <!-- Пагинация (точки) -->
+                    <div class="swiper-pagination"></div>
+                    <!-- Подсказка для свайпа (только на мобильных) -->
+                    <div class="swipe-hint">
+                        <i class="fas fa-arrow-left"></i>
+                        <span>Листайте для видов работ</span>
+                        <i class="fas fa-arrow-right"></i>
                     </div>
-                    <button class="discuss-btn-modern" onclick="openModal('Кладка')">
-                        Обсудить <i class="fas fa-arrow-right"></i>
-                    </button>
                 </div>
             </div>
 
             <!-- Штукатурка -->
-            <div id="shtukaturka" class="service-detail animate-fade-up">
-                <div class="service-info">
-                    <div class="service-header">
-                        <div class="service-icon"><i class="fas fa-paint-roller"></i></div>
-                        <h2>Штукатурка</h2>
-                    </div>
-                    <div class="service-description">
-                        <p>Механизированная и ручная штукатурка стен. Работаем на маяках с лазерным контролем. Отклонение менее 1 мм на метр — обычное дело.</p>
-                        <p>Используем качественные смеси (Knauf, Ceresit, Волма). Фасады, внутренние работы, цоколи. Подготавливаем под покраску, обои, плитку или декоративные покрытия.</p>
-                        <div class="service-highlight">
-                            <p><i class="fas fa-shield-alt"></i> Никаких трещин, высолов и отслоений. Каждый этап сушки контролируем.</p>
+            <div id="shtukaturka" class="service-detail">
+                <div class="swiper service-swiper">
+                    <div class="swiper-wrapper">
+                        <!-- Слайд 1: Описание услуги -->
+                        <div class="swiper-slide">
+                            <div class="service-info">
+                                <div class="service-header">
+                                    <div class="service-icon"><i class="fas fa-paint-roller"></i></div>
+                                    <h2>Штукатурка</h2>
+                                </div>
+                                <div class="service-description">
+                                    <p>Механизированная и ручная штукатурка стен. Работаем на маяках с лазерным контролем. Отклонение менее 1 мм на метр — обычное дело.</p>
+                                    <p>Используем качественные смеси (Knauf, Ceresit, Волма). Фасады, внутренние работы, цоколи. Подготавливаем под покраску, обои, плитку или декоративные покрытия.</p>
+                                    <div class="service-highlight">
+                                        <p><i class="fas fa-shield-alt"></i> Никаких трещин, высолов и отслоений. Каждый этап сушки контролируем.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Слайд 2: Виды работ -->
+                        <div class="swiper-slide">
+                            <div class="service-features-panel">
+                                <h3><i class="fas fa-tasks"></i> Виды штукатурки</h3>
+                                <div class="features-grid">
+                                    <div class="feature-item"><i class="fas fa-check-circle"></i> Механизированная (гипсовая)</div>
+                                    <div class="feature-item"><i class="fas fa-check-circle"></i> Ручная цементная</div>
+                                    <div class="feature-item"><i class="fas fa-check-circle"></i> Фасадная</div>
+                                    <div class="feature-item"><i class="fas fa-check-circle"></i> Высококачественная под правило</div>
+                                    <div class="feature-item"><i class="fas fa-check-circle"></i> Декоративная (короед, шуба)</div>
+                                    <div class="feature-item"><i class="fas fa-check-circle"></i> Ремонт старой штукатурки</div>
+                                </div>
+                                <button class="discuss-btn-modern" onclick="openModal('Штукатурка')">
+                                    Обсудить <i class="fas fa-arrow-right"></i>
+                                </button>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="service-features-panel">
-                    <h3><i class="fas fa-tasks"></i> Виды штукатурки</h3>
-                    <div class="features-grid">
-                        <div class="feature-item"><i class="fas fa-check-circle"></i> Механизированная (гипсовая)</div>
-                        <div class="feature-item"><i class="fas fa-check-circle"></i> Ручная цементная</div>
-                        <div class="feature-item"><i class="fas fa-check-circle"></i> Фасадная</div>
-                        <div class="feature-item"><i class="fas fa-check-circle"></i> Высококачественная под правило</div>
-                        <div class="feature-item"><i class="fas fa-check-circle"></i> Декоративная (короед, шуба)</div>
-                        <div class="feature-item"><i class="fas fa-check-circle"></i> Ремонт старой штукатурки</div>
+                    <div class="swiper-pagination"></div>
+                    <div class="swipe-hint">
+                        <i class="fas fa-arrow-left"></i>
+                        <span>Листайте для видов работ</span>
+                        <i class="fas fa-arrow-right"></i>
                     </div>
-                    <button class="discuss-btn-modern" onclick="openModal('Штукатурка')">
-                        Обсудить <i class="fas fa-arrow-right"></i>
-                    </button>
                 </div>
             </div>
 
             <!-- Стяжка -->
-            <div id="styazhka" class="service-detail animate-fade-up">
-                <div class="service-info">
-                    <div class="service-header">
-                        <div class="service-icon"><i class="fas fa-border-all"></i></div>
-                        <h2>Стяжка</h2>
-                    </div>
-                    <div class="service-description">
-                        <p>Полусухая, мокрая, армированная — любой тип стяжки под ваши задачи. Идеально ровный пол без трещин, с геометрией +/- 2 мм.</p>
-                        <p>Промышленные полы под высокие нагрузки, тёплые полы, звукоизоляция. Используем фиброволокно, пластификаторы, демпферную ленту. Контроль влажности и прочности.</p>
-                        <div class="service-highlight">
-                            <p><i class="fas fa-ruler-vertical"></i> Лично проверяем каждый квадратный метр перед сдачей.</p>
+            <div id="styazhka" class="service-detail">
+                <div class="swiper service-swiper">
+                    <div class="swiper-wrapper">
+                        <!-- Слайд 1: Описание услуги -->
+                        <div class="swiper-slide">
+                            <div class="service-info">
+                                <div class="service-header">
+                                    <div class="service-icon"><i class="fas fa-border-all"></i></div>
+                                    <h2>Стяжка</h2>
+                                </div>
+                                <div class="service-description">
+                                    <p>Полусухая, мокрая, армированная — любой тип стяжки под ваши задачи. Идеально ровный пол без трещин, с геометрией +/- 2 мм.</p>
+                                    <p>Промышленные полы под высокие нагрузки, тёплые полы, звукоизоляция. Используем фиброволокно, пластификаторы, демпферную ленту. Контроль влажности и прочности.</p>
+                                    <div class="service-highlight">
+                                        <p><i class="fas fa-ruler-vertical"></i> Лично проверяем каждый квадратный метр перед сдачей.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Слайд 2: Виды работ -->
+                        <div class="swiper-slide">
+                            <div class="service-features-panel">
+                                <h3><i class="fas fa-tasks"></i> Виды стяжек</h3>
+                                <div class="features-grid">
+                                    <div class="feature-item"><i class="fas fa-check-circle"></i> Полусухая (до 100 мм)</div>
+                                    <div class="feature-item"><i class="fas fa-check-circle"></i> Мокрая (цементно-песчаная)</div>
+                                    <div class="feature-item"><i class="fas fa-check-circle"></i> Армированная сеткой/фиброй</div>
+                                    <div class="feature-item"><i class="fas fa-check-circle"></i> Промышленные полы</div>
+                                    <div class="feature-item"><i class="fas fa-check-circle"></i> Стяжка по тёплому полу</div>
+                                    <div class="feature-item"><i class="fas fa-check-circle"></i> Наливные полы (финиш)</div>
+                                </div>
+                                <button class="discuss-btn-modern" onclick="openModal('Стяжка')">
+                                    Обсудить <i class="fas fa-arrow-right"></i>
+                                </button>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="service-features-panel">
-                    <h3><i class="fas fa-tasks"></i> Виды стяжек</h3>
-                    <div class="features-grid">
-                        <div class="feature-item"><i class="fas fa-check-circle"></i> Полусухая (до 100 мм)</div>
-                        <div class="feature-item"><i class="fas fa-check-circle"></i> Мокрая (цементно-песчаная)</div>
-                        <div class="feature-item"><i class="fas fa-check-circle"></i> Армированная сеткой/фиброй</div>
-                        <div class="feature-item"><i class="fas fa-check-circle"></i> Промышленные полы</div>
-                        <div class="feature-item"><i class="fas fa-check-circle"></i> Стяжка по тёплому полу</div>
-                        <div class="feature-item"><i class="fas fa-check-circle"></i> Наливные полы (финиш)</div>
+                    <div class="swiper-pagination"></div>
+                    <div class="swipe-hint">
+                        <i class="fas fa-arrow-left"></i>
+                        <span>Листайте для видов работ</span>
+                        <i class="fas fa-arrow-right"></i>
                     </div>
-                    <button class="discuss-btn-modern" onclick="openModal('Стяжка')">
-                        Обсудить <i class="fas fa-arrow-right"></i>
-                    </button>
                 </div>
             </div>
         </div>
@@ -2346,7 +2417,7 @@
             
             <!-- Карта -->
             <div class="map-container animate-fade-up">
-                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2351.718877452393!2d27.561853315867806!3d53.89263258009744!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x46dbcfd35b1e6ad3%3A0xb91b6e2e7f9b3c0!2z0YPQuy4g0KHRgtGA0L7QuNGC0LXQu9C10LkgMTIsINCc0LjQvdGB0LosINCR0LXQu9Cw0YDRg9GB0Yw!5e0!3m2!1sru!2sru!4v1647890123456!5m2!1sru!2sru" 
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2351.718877452393!2d27.561853315867806!3d53.89263258009744!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x46dbcfd35b1e6ad3%3A0xb91b6e2e7f9b3c0!2z0YPQuy4g0KHRgtGA0L7QuNGC0LXQu9C5IDEyLCDQnNC40L3RgdC6LCDQkdC10LvQsNGA0YPRgdGM!5e0!3m2!1sru!2sru!4v1647890123456!5m2!1sru!2sru" 
                         allowfullscreen="" loading="lazy"></iframe>
             </div>
         </div>
@@ -2386,6 +2457,9 @@
         </footer>
     </div>
 
+    <!-- Swiper JS -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
     <script>
         // Глобальные переменные для координат мыши (для частиц)
         let customMouseX = 0;
@@ -2393,10 +2467,40 @@
         let particleUpdateInterval;
         let vantaEffect = null;
         let particlesInitialized = false;
+        let serviceSwipers = [];
 
         // Определяем, мобильное ли устройство (ширина < 900px)
         function isMobile() {
             return window.innerWidth < 900;
+        }
+
+        // Инициализация Swiper для каждой услуги (только на мобильных)
+        function initServiceSwipers() {
+            // Уничтожаем предыдущие экземпляры
+            serviceSwipers.forEach(swiper => {
+                if (swiper) swiper.destroy(true, true);
+            });
+            serviceSwipers = [];
+
+            // Если мобильное устройство, инициализируем Swiper
+            if (isMobile()) {
+                const swiperContainers = document.querySelectorAll('.service-swiper');
+                swiperContainers.forEach((container, index) => {
+                    const swiper = new Swiper(container, {
+                        slidesPerView: 1,
+                        spaceBetween: 20,
+                        pagination: {
+                            el: container.querySelector('.swiper-pagination'),
+                            clickable: true,
+                        },
+                        speed: 400,
+                        grabCursor: true,
+                        resistance: true,
+                        resistanceRatio: 0.7,
+                    });
+                    serviceSwipers.push(swiper);
+                });
+            }
         }
 
         // Бургер меню
@@ -2523,18 +2627,17 @@
         }
         setTimeout(animateNumbers, 500);
 
-        // Vanta эффекты — ГЛОБУС вместо рингс
+        // Vanta эффекты — ГЛОБУС
         if (!isMobile() && typeof VANTA !== 'undefined') {
-            // Максимально отдаленный глобус
             vantaEffect = VANTA.GLOBE({
                 el: "#vanta-principles",
                 color: 0xff5f1f,
                 backgroundColor: 0x0c0e0d,
-                scale: 0.5,           // Очень мелкий масштаб
-                size: 0.4,            // Маленький размер
-                separation: 5.0,       // Очень разреженные точки
-                maxDistance: 30.0,     // Дальние соединения
-                spacing: 25.0         // Большое пространство
+                scale: 0.5,
+                size: 0.4,
+                separation: 5.0,
+                maxDistance: 30.0,
+                spacing: 25.0
             });
         }
 
@@ -2685,12 +2788,10 @@
         let notificationTimeout;
 
         function showNotification(message, isSuccess = true) {
-            // Очищаем предыдущий таймаут
             if (notificationTimeout) {
                 clearTimeout(notificationTimeout);
             }
 
-            // Убираем все классы и добавляем нужный
             notification.classList.remove('success', 'error', 'active');
 
             if (isSuccess) {
@@ -2704,7 +2805,6 @@
             notificationMessage.textContent = message;
             notification.classList.add('active');
 
-            // Автоматически скрываем через 5 секунд
             notificationTimeout = setTimeout(() => {
                 notification.classList.remove('active');
             }, 5000);
@@ -2727,26 +2827,21 @@
                 return;
             }
 
-            // Валидация телефона (простая)
             const phoneRegex = /^[+\d\s-]{5,20}$/;
             if (!phoneRegex.test(phone)) {
                 showNotification('Введите корректный номер телефона', false);
                 return;
             }
 
-            // Здесь можно добавить отправку на сервер
-            // Для демонстрации показываем успех
             showNotification(`Заявка на ${service} отправлена! С вами свяжутся в ближайшее время.`, true);
 
             closeModal();
 
-            // Очищаем форму
             document.getElementById('modalName').value = '';
             document.getElementById('modalPhone').value = '';
             document.getElementById('modalComment').value = '';
         }
 
-        // Функция отправки формы из секции контактов
         window.submitContactForm = function () {
             const name = document.getElementById('contactName').value.trim();
             const phone = document.getElementById('contactPhone').value.trim();
@@ -2766,7 +2861,6 @@
 
             showNotification('Сообщение отправлено! Мы свяжемся с вами в ближайшее время.', true);
 
-            // Очищаем форму
             document.getElementById('contactName').value = '';
             document.getElementById('contactPhone').value = '';
             document.getElementById('contactEmail').value = '';
@@ -2834,13 +2928,19 @@
                 document.body.style.cursor = 'none';
             }
 
-            // Закрываем меню при ресайзе на десктоп
             if (window.innerWidth > 900) {
                 closeMenu();
             }
+
+            // Переинициализируем Swiper для услуг при изменении размера окна
+            initServiceSwipers();
         }
         window.addEventListener('resize', handleResize);
-        handleResize();
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            handleResize();
+            setTimeout(initServiceSwipers, 100);
+        });
 
         // 3D TILT EFFECT ДЛЯ КАРТОЧЕК ПРИ НАВЕДЕНИИ
         document.addEventListener('DOMContentLoaded', function() {
@@ -2851,33 +2951,25 @@
                     card.addEventListener('mousemove', function(e) {
                         const rect = this.getBoundingClientRect();
                         
-                        // Вычисляем позицию мыши относительно карточки (0 до 1)
-                        const x = (e.clientX - rect.left) / rect.width; // 0 to 1
-                        const y = (e.clientY - rect.top) / rect.height; // 0 to 1
+                        const x = (e.clientX - rect.left) / rect.width;
+                        const y = (e.clientY - rect.top) / rect.height;
                         
-                        // Преобразуем в угол наклона (-15deg до 15deg)
-                        const rotateX = (y - 0.5) * -30; // -15 до 15
-                        const rotateY = (x - 0.5) * 30;  // -15 до 15
+                        const rotateX = (y - 0.5) * -30;
+                        const rotateY = (x - 0.5) * 30;
                         
-                        // Применяем трансформацию через CSS переменные
                         this.style.setProperty('--rotateX', rotateX + 'deg');
                         this.style.setProperty('--rotateY', rotateY + 'deg');
                         
-                        // Добавляем эффект свечения, которое двигается за курсором
                         const glareX = x * 100;
                         const glareY = y * 100;
                         this.style.background = `radial-gradient(circle at ${glareX}% ${glareY}%, rgba(255,95,31,0.25) 0%, rgba(20,20,20,0.7) 70%)`;
                     });
                     
                     card.addEventListener('mouseleave', function() {
-                        // Сбрасываем наклон
                         this.style.setProperty('--rotateX', '0deg');
                         this.style.setProperty('--rotateY', '0deg');
-                        
-                        // Возвращаем обычный фон
                         this.style.background = 'rgba(20,20,20,0.7)';
                         
-                        // Убираем backdrop-filter для восстановления
                         setTimeout(() => {
                             if (!this.matches(':hover')) {
                                 this.style.background = '';
@@ -2890,4 +2982,4 @@
     </script>
 </body>
 
-</html> 
+</html>
