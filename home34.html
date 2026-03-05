@@ -21,7 +21,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-        href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&family=Merriweather:ital,wght@0,300;0,400;1,300&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..500;600;700&family=Merriweather:ital,wght@0,300;0,400;1,300&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -80,7 +80,8 @@
             .service-tag:hover~.cursor-dot,
             .service-card:hover~.cursor-dot,
             .nav-link:hover~.cursor-dot,
-            .burger-menu:hover~.cursor-dot {
+            .burger-menu:hover~.cursor-dot,
+            .contact-card:hover~.cursor-dot {
                 width: 14px;
                 height: 14px;
                 background: #ffffff;
@@ -93,7 +94,8 @@
             .service-tag:hover~.cursor-outline,
             .service-card:hover~.cursor-outline,
             .nav-link:hover~.cursor-outline,
-            .burger-menu:hover~.cursor-outline {
+            .burger-menu:hover~.cursor-outline,
+            .contact-card:hover~.cursor-outline {
                 width: 60px;
                 height: 60px;
                 border-color: #ffffff;
@@ -134,6 +136,12 @@
             position: relative;
         }
 
+        .logo-wrapper {
+            display: flex;
+            flex-direction: column;
+            z-index: 1001;
+        }
+
         .logo {
             font-size: 24px;
             font-weight: 600;
@@ -141,12 +149,26 @@
             letter-spacing: 2px;
             color: white;
             transition: 0.3s;
-            z-index: 1001;
         }
 
         .logo span {
             color: #ff5f1f;
             font-weight: 700;
+        }
+
+        .company-slogan {
+            font-size: 11px;
+            letter-spacing: 2.5px;
+            color: rgba(255, 255, 255, 0.6);
+            text-transform: uppercase;
+            margin-top: 4px;
+            order: 2;
+        }
+        
+        .company-slogan span {
+            color: #ff5f1f;
+            font-weight: 600;
+            margin: 0 2px;
         }
 
         /* Десктопная навигация */
@@ -576,7 +598,7 @@
         .hero-services-preview {
             display: flex;
             flex-direction: column;
-            gap: 25px;
+            gap: 15px;
         }
 
         /* Обновленный стиль для service-tag с 3D-эффектом при наведении */
@@ -585,8 +607,8 @@
             background: rgba(20, 20, 20, 0.7);
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 95, 31, 0.3);
-            padding: 18px 30px;
-            font-size: 22px;
+            padding: 15px 25px;
+            font-size: 20px;
             font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 2px;
@@ -596,7 +618,7 @@
             text-align: right;
             cursor: pointer;
             overflow: hidden;
-            min-height: 65px;
+            min-height: 60px;
             display: flex;
             flex-direction: column;
             align-items: flex-end;
@@ -610,7 +632,7 @@
             border-color: #ff5f1f;
             background: rgba(255, 95, 31, 0.15);
             transform: perspective(1000px) rotateX(var(--rotateX, 0deg)) rotateY(var(--rotateY, 0deg)) translateZ(10px);
-            padding-bottom: 25px;
+            padding-bottom: 20px;
             box-shadow: 0 15px 30px rgba(255, 95, 31, 0.3);
         }
 
@@ -627,14 +649,14 @@
         .service-tag-tooltip-inner {
             width: 100%;
             color: #fff;
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 400;
             text-transform: none;
             letter-spacing: 0.5px;
-            line-height: 1.6;
+            line-height: 1.5;
             text-align: left;
-            margin-top: 15px;
-            padding-top: 15px;
+            margin-top: 10px;
+            padding-top: 10px;
             border-top: 1px solid rgba(255, 95, 31, 0.5);
             opacity: 0;
             transform: translateY(-10px) translateZ(20px);
@@ -743,10 +765,21 @@
         }
 
         .contact-card {
+            position: relative;
             background: rgb(12, 14, 13);
             backdrop-filter: blur(8px);
             border: 1px solid #ff5f1f;
             padding: 40px;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            transform-style: preserve-3d;
+            transform: perspective(1000px) rotateX(var(--rotateX, 0deg)) rotateY(var(--rotateY, 0deg));
+            will-change: transform;
+            overflow: hidden;
+        }
+
+        .contact-card:hover {
+            border-color: #ff5f1f;
+            box-shadow: 0 20px 30px rgba(255, 95, 31, 0.2);
         }
 
         .contact-name {
@@ -754,6 +787,10 @@
             font-weight: 600;
             color: #ffffff;
             margin-bottom: 20px;
+            transition: all 0.3s ease;
+            z-index: 2;
+            position: relative;
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
         }
 
         .contact-feature {
@@ -763,12 +800,20 @@
             margin-bottom: 20px;
             color: #ccc;
             font-size: 16px;
+            transition: all 0.3s ease;
+            z-index: 2;
+            position: relative;
         }
 
         .contact-feature i {
             color: #ff5f1f;
             width: 24px;
             font-size: 18px;
+            transition: color 0.3s ease;
+        }
+
+        .contact-card:hover .contact-feature i {
+            color: #fff;
         }
 
         .contact-phone {
@@ -779,6 +824,14 @@
             padding-bottom: 5px;
             display: inline-block;
             margin-top: 20px;
+            transition: all 0.3s ease;
+            z-index: 2;
+            position: relative;
+        }
+
+        .contact-card:hover .contact-phone {
+            border-bottom-color: #fff;
+            color: #ff5f1f;
         }
 
         /* ===== ДЕСКТОПНАЯ ВЕРСИЯ УСЛУГ (ПОЛНОСТЬЮ ВОССТАНОВЛЕНА) ===== */
@@ -1072,7 +1125,7 @@
             }
         }
 
-        /* ===== КАРДИНАЛЬНО ИЗМЕНЕННАЯ СЕКЦИЯ ПРИНЦИПОВ (кинетика + WebGL) ===== */
+        /* ===== КАРДИНАЛЬНО ИЗМЕНЕННАЯ СЕКЦИЯ ПРИНЦИПОВ (АДАПТИВ ПОД МОБИЛКУ) ===== */
         .principles {
             position: relative;
             padding: 140px 0 180px;
@@ -1098,7 +1151,7 @@
             z-index: 5;
         }
 
-        /* Кинетический заголовок (буквы реагируют на мышь) */
+        /* Кинетический заголовок (буквы реагируют на мышь — ТОЛЬКО ДЛЯ ДЕСКТОПА) */
         .principles-title {
             margin-bottom: 80px;
             user-select: none;
@@ -1159,6 +1212,7 @@
             will-change: transform, opacity, border-color;
         }
 
+        /* Асимметричные отступы (только для десктопа) */
         .principle-block:nth-child(2) {
             margin-top: 80px;
         }
@@ -1208,23 +1262,107 @@
             font-weight: 400;
         }
 
-        /* мобильная адаптация анти-сетки */
+        /* ========== МОБИЛЬНАЯ АДАПТАЦИЯ ========== */
         @media (max-width: 900px) {
+            .principles {
+                padding: 80px 0 100px; /* Уменьшаем отступы */
+                min-height: auto; /* Убираем минимальную высоту */
+            }
+
+            /* Отключаем WebGL канвас на мобилке */
+            #principles-webgl-canvas {
+                display: none;
+            }
+
+            .principles-title {
+                margin-bottom: 40px;
+            }
+
+            .principles-title .section-subtitle {
+                font-size: 14px;
+                letter-spacing: 4px;
+                margin-bottom: 10px;
+            }
+
+            /* Уменьшаем размер кинетического заголовка */
+            .kinetic-word {
+                font-size: 48px;
+                padding-left: 15px;
+                border-left-width: 4px;
+                gap: 0.1em;
+            }
+
+            /* Отключаем кинетический эффект на мобилке (буквы не двигаются) */
+            .kinetic-letter {
+                transition: none;
+                transform: none !important;
+            }
+
+            /* Сетка становится одноколоночной */
             .principles-grid-advanced {
                 grid-template-columns: 1fr;
                 gap: 20px;
+                margin-top: 20px;
             }
+
+            /* Убираем все асимметричные отступы */
             .principle-block:nth-child(2),
             .principle-block:nth-child(3),
             .principle-block:nth-child(4) {
                 margin-top: 0;
             }
-            .principle-title-adv {
-                font-size: 28px;
+
+            /* Уменьшаем размеры блоков */
+            .principle-block {
+                padding: 25px 25px 30px 25px;
             }
+
+            .principle-num-adv {
+                font-size: 48px;
+                margin-bottom: 10px;
+                -webkit-text-stroke-width: 1px;
+            }
+
+            .principle-title-adv {
+                font-size: 24px;
+                margin-bottom: 15px;
+                padding-bottom: 10px;
+                letter-spacing: 1px;
+            }
+
+            .principle-desc-adv {
+                font-size: 15px;
+                line-height: 1.5;
+            }
+
+            /* Отключаем hover-эффекты на мобилке (они не работают с touch) */
+            .principle-block:hover {
+                transform: none;
+                box-shadow: 0 20px 30px -20px rgba(0,0,0,0.8);
+                background: rgba(18, 22, 21, 0.65);
+            }
+        }
+
+        /* Для очень маленьких экранов (до 480px) */
+        @media (max-width: 480px) {
             .kinetic-word {
-                padding-left: 20px;
-                font-size: 64px;
+                font-size: 36px;
+            }
+
+            .principle-block {
+                padding: 20px;
+            }
+
+            .principle-num-adv {
+                font-size: 40px;
+            }
+
+            .principle-title-adv {
+                font-size: 20px;
+            }
+
+            .principle-desc-adv {
+                font-size: 14px;
             }
         }
 
@@ -1801,7 +1939,8 @@
             }
 
             .service-tag {
-                font-size: 20px;
+                font-size: 18px;
+                padding: 12px 20px;
             }
 
             .nav-menu {
@@ -1833,6 +1972,12 @@
             
             .map-container {
                 height: 300px;
+            }
+
+            /* Уменьшаем слоган на мобилке */
+            .company-slogan {
+                font-size: 8px;
+                letter-spacing: 2px;
             }
         }
 
@@ -1880,12 +2025,12 @@
             }
 
             .service-tag {
-                font-size: 18px;
-                padding: 12px 20px;
+                font-size: 16px;
+                padding: 10px 15px;
             }
 
             .service-tag-tooltip-inner {
-                font-size: 12px;
+                font-size: 11px;
             }
 
             .stat-num {
@@ -1975,7 +2120,12 @@
 
     <header class="header" id="mainHeader">
         <div class="header-container">
-            <div class="logo animate-fade-right"><span>СЕД</span>СТРОЙИНВЕСТ</div>
+            <div class="logo-wrapper animate-fade-right">
+                <div class="logo"><span>СЕД</span>СТРОЙИНВЕСТ</div>
+                <div class="company-slogan">
+                    <span>СОВРЕМЕННО.</span> <span>ЕСТЕСТВЕННО.</span> <span>ДОЛГОВЕЧНО.</span>
+                </div>
+            </div>
 
             <!-- Десктопная навигация -->
             <nav class="nav-menu">
@@ -2055,11 +2205,11 @@
 
             <div class="hero-right-column animate-fade-left delay-3">
                 <div class="hero-services-preview">
-                    <!-- Кладка - блок с внутренней сноской -->
+                    <!-- Кладка - блок с внутренней сноской (ОБНОВЛЕНО: убран фундамент) -->
                     <div class="service-tag" data-service="kladka">
                         <span class="service-tag-title">кладка</span>
                         <div class="service-tag-tooltip-inner">
-                            <i class="fas fa-cube" style="margin-right: 8px;"></i> Кирпич, газосиликат, керамзитоблок, фундамент. Идеальная геометрия, армирование каждого 3-го ряда. Работаем по СНиП.
+                            <i class="fas fa-cube" style="margin-right: 8px;"></i> Кирпич, газосиликат, керамзитоблок. Идеальная геометрия, армирование согласно рассчитываемых нагрузок. Работаем по СНиП.
                         </div>
                     </div>
                     
@@ -2076,6 +2226,14 @@
                         <span class="service-tag-title">стяжка</span>
                         <div class="service-tag-tooltip-inner">
                             <i class="fas fa-border-all" style="margin-right: 8px;"></i> Полусухая, мокрая, армированная. Промышленные полы, тёплые полы. Идеальная геометрия +/- 2 мм.
+                        </div>
+                    </div>
+
+                    <!-- НОВАЯ УСЛУГА: Фундамент - блок с внутренней сноской -->
+                    <div class="service-tag" data-service="fundament">
+                        <span class="service-tag-title">фундамент</span>
+                        <div class="service-tag-tooltip-inner">
+                            <i class="fas fa-draw-polygon" style="margin-right: 8px;"></i> Ленточный, плитный, свайный. Гидроизоляция, армирование, опалубка. Работаем с любыми грунтами.
                         </div>
                     </div>
                 </div>
@@ -2095,15 +2253,16 @@
                 <p>Работаем на объектах разных типов: от квартир и коттеджей до многоэтажных застроек и жилых кварталов.</p>
                 <p>Работаем в парадигме: жёсткие сроки, идеальная геометрия, полная прозрачность.</p>
             </div>
-            <div class="contact-card animate-scale">
+            <!-- Карточка прораба с таким же 3D-эффектом, как у карточек услуг -->
+            <div class="contact-card animate-scale" id="prorabCard">
                 <div class="contact-name">ПРОРАБ</div>
                 <div class="contact-feature">
                     <i class="fas fa-check-circle"></i>
-                    <span>Личный контроль каждого объекта</span>
+                    <span>Комплексный подход к строительству</span>
                 </div>
                 <div class="contact-feature">
                     <i class="fas fa-check-circle"></i>
-                    <span>Выезд на замер    </span>
+                    <span>Выезд на замер</span>
                 </div>
                 <div class="contact-feature">
                     <i class="fas fa-check-circle"></i>
@@ -2144,7 +2303,7 @@
             <div class="section-subtitle animate-fade-up">ЧТО МЫ ДЕЛАЕМ</div>
             <h2 class="section-title animate-fade-up delay-1"><span>НАШИ</span> УСЛУГИ</h2>
 
-            <!-- Кладка -->
+            <!-- Кладка (ОБНОВЛЕНО: убран фундамент из списка) -->
             <div id="kladka" class="service-detail">
                 <div class="swiper service-swiper">
                     <div class="swiper-wrapper">
@@ -2156,7 +2315,7 @@
                                     <h2>Кладка</h2>
                                 </div>
                                 <div class="service-description">
-                                    <p>Кирпич, газосиликат, керамзитоблок, фундамент — любой формат. Идеальная перевязка швов, армирование каждого 3-го ряда. Работаем как по готовым проектам, так и помогаем с расчётами.</p>
+                                    <p>Кирпич, газосиликат, керамзитоблок — любой формат. Идеальная перевязка швов, армирование согласно рассчитываемых нагрузок. Работаем как по готовым проектам, так и помогаем с расчётами.</p>
                                     <p>Контролируем геометрию, толщину шва, перевязку. Никаких щелей и кривых углов — только СНиПы и здравый смысл. Используем современный инструмент: лазерные нивелиры, расшивки, уровень на каждом этапе.</p>
                                     <div class="service-highlight">
                                         <p><i class="fas fa-medal"></i> За 10+ лет ни одного обрушения или брака. Каждый объект принимаем лично.</p>
@@ -2165,18 +2324,18 @@
                             </div>
                         </div>
                         
-                        <!-- Слайд 2: Виды работ -->
+                        <!-- Слайд 2: Виды работ (ОБНОВЛЕНО: убран фундамент) -->
                         <div class="swiper-slide">
                             <div class="service-features-panel">
                                 <h3><i class="fas fa-tasks"></i> Виды работ</h3>
                                 <div class="features-grid">
-                                    <div class="feature-item"><i class="fas fa-check-circle"></i> Фундамент (ленточный, плитный, свайный)</div>
                                     <div class="feature-item"><i class="fas fa-check-circle"></i> Кирпич керамический, силикатный, клинкерный</div>
                                     <div class="feature-item"><i class="fas fa-check-circle"></i> Блоки газосиликатные, газобетонные</div>
                                     <div class="feature-item"><i class="fas fa-check-circle"></i> Керамзитобетонные, шлакоблоки</div>
                                     <div class="feature-item"><i class="fas fa-check-circle"></i> Армопояса, перемычки, усиление</div>
-                                    <div class="feature-item"><i class="fas fa-check-circle"></i> Облицовочная кладка, вентилируемые фасады</div>
-                                    <div class="feature-item"><i class="fas fa-check-circle"></i> Сложные архитектурные элементы</div>
+                                    <div class="feature-item"><i class="fas fa-check-circle"></i> Перегородки из кирпича и блоков</div>
+                                    <div class="feature-item"><i class="fas fa-check-circle"></i> Заполнение проемов</div>
+                                    <div class="feature-item"><i class="fas fa-check-circle"></i> Облицовочная кладка</div>
                                 </div>
                                 <button class="discuss-btn-modern" onclick="openModal('Кладка')">
                                     Обсудить <i class="fas fa-arrow-right"></i>
@@ -2290,10 +2449,59 @@
                     </div>
                 </div>
             </div>
+
+            <!-- НОВАЯ УСЛУГА: Фундамент -->
+            <div id="fundament" class="service-detail">
+                <div class="swiper service-swiper">
+                    <div class="swiper-wrapper">
+                        <!-- Слайд 1: Описание услуги -->
+                        <div class="swiper-slide">
+                            <div class="service-info">
+                                <div class="service-header">
+                                    <div class="service-icon"></div>
+                                    <h2>Фундамент</h2>
+                                </div>
+                                <div class="service-description">
+                                    <p>Ленточный, плитный, свайный — любой тип фундамента под ваш проект. Работаем с любыми грунтами, делаем гидроизоляцию, армирование, опалубку.</p>
+                                    <p>Предварительный расчёт нагрузок, строгое соблюдение технологии. Используем бетон высоких марок, виброуплотнение, контроль усадки. Никакой экономии на безопасности.</p>
+                                    <div class="service-highlight">
+                                        <p><i class="fas fa-hard-hat"></i> Основа дома — наша ответственность. Гарантия на фундамент 5 лет.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Слайд 2: Виды работ -->
+                        <div class="swiper-slide">
+                            <div class="service-features-panel">
+                                <h3><i class="fas fa-tasks"></i> Виды фундаментов</h3>
+                                <div class="features-grid">
+                                    <div class="feature-item"><i class="fas fa-check-circle"></i> Ленточный (мелкозаглубленный, заглубленный)</div>
+                                    <div class="feature-item"><i class="fas fa-check-circle"></i> Плитный (утепленная шведская плита)</div>
+                                    <div class="feature-item"><i class="fas fa-check-circle"></i> Свайный (буронабивной, винтовой)</div>
+                                    <div class="feature-item"><i class="fas fa-check-circle"></i> Столбчатый с ростверком</div>
+                                    <div class="feature-item"><i class="fas fa-check-circle"></i> Гидроизоляция и дренаж</div>
+                                    <div class="feature-item"><i class="fas fa-check-circle"></i> Утепление фундамента</div>
+                                    <div class="feature-item"><i class="fas fa-check-circle"></i> Отмостка и подготовка под полы</div>
+                                </div>
+                                <button class="discuss-btn-modern" onclick="openModal('Фундамент')">
+                                    Обсудить <i class="fas fa-arrow-right"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="swiper-pagination"></div>
+                    <div class="swipe-hint">
+                        <i class="fas fa-arrow-left"></i>
+                        <span>Листайте для видов работ</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 
-    <!-- КАРДИНАЛЬНО ИЗМЕНЕННАЯ СЕКЦИЯ ПРИНЦИПЫ (КИНЕТИКА + WEBGL + SCROLL) -->
+    <!-- КАРДИНАЛЬНО ИЗМЕНЕННАЯ СЕКЦИЯ ПРИНЦИПЫ (КИНЕТИКА + WEBGL + АДАПТИВ) -->
     <section class="principles" id="principles">
         <!-- Three.js Canvas (геодезическая сфера) -->
         <canvas id="principles-webgl-canvas"></canvas>
@@ -2312,7 +2520,7 @@
                 </div>
             </div>
 
-            <!-- Анти-сетка принципов (3 основных + дополнительные, но сфокусируемся на трёх) -->
+            <!-- Анти-сетка принципов -->
             <div class="principles-grid-advanced">
                 <!-- 01 -->
                 <div class="principle-block" data-gsap="fade">
@@ -2332,7 +2540,7 @@
                     <div class="principle-title-adv">Архитектурный надзор</div>
                     <div class="principle-desc-adv">Личный контроль прораба на каждом объекте. Еженедельные фотоотчёты, прозрачность и открытость. Мы не исчезаем после получения денег.</div>
                 </div>
-                <!-- 04 (доп, но пусть будет, можно оставить три, но для антисетки оставим четыре) -->
+                <!-- 04 -->
                 <div class="principle-block" data-gsap="fade">
                     <div class="principle-num-adv">04</div>
                     <div class="principle-title-adv">Эстетика бетона</div>
@@ -2940,10 +3148,11 @@
 
         // 3D TILT EFFECT ДЛЯ КАРТОЧЕК ПРИ НАВЕДЕНИИ
         document.addEventListener('DOMContentLoaded', function() {
-            const cards = document.querySelectorAll('.service-tag');
+            // Эффект для карточек услуг
+            const serviceCards = document.querySelectorAll('.service-tag');
             
-            if (cards.length > 0 && !isMobile()) {
-                cards.forEach(card => {
+            if (serviceCards.length > 0 && !isMobile()) {
+                serviceCards.forEach(card => {
                     card.addEventListener('mousemove', function(e) {
                         const rect = this.getBoundingClientRect();
                         
@@ -2974,11 +3183,38 @@
                     });
                 });
             }
+
+            // 3D Эффект для карточки прораба
+            const prorabCard = document.getElementById('prorabCard');
+            if (prorabCard && !isMobile()) {
+                prorabCard.addEventListener('mousemove', function(e) {
+                    const rect = this.getBoundingClientRect();
+                    
+                    const x = (e.clientX - rect.left) / rect.width;
+                    const y = (e.clientY - rect.top) / rect.height;
+                    
+                    const rotateX = (y - 0.5) * -20;
+                    const rotateY = (x - 0.5) * 20;
+                    
+                    this.style.setProperty('--rotateX', rotateX + 'deg');
+                    this.style.setProperty('--rotateY', rotateY + 'deg');
+                    
+                    const glareX = x * 100;
+                    const glareY = y * 100;
+                    this.style.background = `radial-gradient(circle at ${glareX}% ${glareY}%, rgba(255,95,31,0.15) 0%, rgb(12,14,13) 80%)`;
+                });
+                
+                prorabCard.addEventListener('mouseleave', function() {
+                    this.style.setProperty('--rotateX', '0deg');
+                    this.style.setProperty('--rotateY', '0deg');
+                    this.style.background = 'rgb(12, 14, 13)';
+                });
+            }
         });
 
-        // ---------- НОВАЯ АНИМАЦИЯ СЕКЦИИ ПРИНЦИПЫ ----------
+        // ---------- АНИМАЦИЯ СЕКЦИИ ПРИНЦИПЫ (КИНЕТИКА ТОЛЬКО ДЛЯ ДЕСКТОПА) ----------
         (function initPrinciplesSection() {
-            // 1. Кинетическая типографика (реакция на мышь)
+            // 1. Кинетическая типографика (реакция на мышь — ТОЛЬКО ДЛЯ ДЕСКТОПА)
             const letters = document.querySelectorAll('.kinetic-letter');
             if (letters.length && !isMobile()) {
                 document.addEventListener('mousemove', (e) => {
@@ -2993,7 +3229,7 @@
                 });
             }
 
-            // 2. Three.js фон — геодезическая сфера (икосаэдр) с неоновым кантом
+            // 2. Three.js фон — ТОЛЬКО ДЛЯ ДЕСКТОПА
             const canvas = document.getElementById('principles-webgl-canvas');
             if (canvas && !isMobile()) {
                 const scene = new THREE.Scene();
@@ -3015,16 +3251,14 @@
                 scene.add(backLight);
 
                 // Икосаэдр (геодезическая сфера)
-                const geometry = new THREE.IcosahedronGeometry(2.5, 1); // радиус 2.5, подразделение 1
+                const geometry = new THREE.IcosahedronGeometry(2.5, 1);
                 const edges = new THREE.EdgesGeometry(geometry);
                 const line = new THREE.LineSegments(edges, new THREE.LineBasicMaterial({ color: 0xff5f1f, linewidth: 1 }));
-                // внутренняя полупрозрачная сфера
                 const innerMat = new THREE.MeshStandardMaterial({ color: 0x1a1e1d, emissive: 0x331100, transparent: true, opacity: 0.3, wireframe: false });
                 const innerMesh = new THREE.Mesh(geometry, innerMat);
                 scene.add(innerMesh);
                 scene.add(line);
 
-                // добавим мелких частиц вокруг
                 const particleGeo = new THREE.BufferGeometry();
                 const particleCount = 400;
                 const positions = new Float32Array(particleCount * 3);
@@ -3041,11 +3275,8 @@
                 const particles = new THREE.Points(particleGeo, particleMat);
                 scene.add(particles);
 
-                let clock = new THREE.Clock();
                 function animate() {
                     requestAnimationFrame(animate);
-                    const delta = clock.getDelta();
-                    const time = performance.now() * 0.001;
                     line.rotation.y += 0.001;
                     line.rotation.x += 0.0005;
                     innerMesh.rotation.copy(line.rotation);
@@ -3061,7 +3292,7 @@
                 });
             }
 
-            // 3. GSAP ScrollTrigger для появления блоков
+            // 3. GSAP ScrollTrigger для появления блоков (работает на всех устройствах)
             if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
                 gsap.registerPlugin(ScrollTrigger);
                 const blocks = document.querySelectorAll('.principle-block');
@@ -3082,7 +3313,6 @@
                     });
                 });
             } else {
-                // fallback
                 document.querySelectorAll('.principle-block').forEach(b => {
                     b.style.opacity = '1';
                     b.style.transform = 'translateY(0) scale(1)';
