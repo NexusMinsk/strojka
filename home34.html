@@ -2096,19 +2096,23 @@
             }
         }
 
-        /* ===== ИСПРАВЛЕНИЕ ДЛЯ МОБИЛЬНОЙ ВЕРСИИ (ФУНДАМЕНТ) ===== */
+ /* ===== МИНИМАЛИСТИЧНАЯ ПОДСКАЗКА ДЛЯ МОБИЛЬНОЙ ВЕРСИИ ===== */
 @media (max-width: 900px) {
     .service-swiper .swiper-slide {
         overflow-y: auto;
         max-height: 500px;
+        position: relative;
     }
     
     .service-features-panel {
         max-height: 400px;
         overflow-y: auto;
+        position: relative;
+        scrollbar-width: thin;
+        scrollbar-color: #ff5f1f rgba(255, 95, 31, 0.1);
     }
     
-    /* Стилизация скроллбара (опционально) */
+    /* Кастомный скроллбар (уже есть, но делаем заметнее) */
     .service-features-panel::-webkit-scrollbar {
         width: 4px;
     }
@@ -2120,6 +2124,40 @@
     .service-features-panel::-webkit-scrollbar-thumb {
         background: #ff5f1f;
         border-radius: 4px;
+    }
+    
+    /* Маленькая стрелочка внизу */
+    .service-features-panel {
+        position: relative;
+    }
+    
+    .service-features-panel::after {
+        content: '↓';
+        position: absolute;
+        bottom: 5px;
+        right: 10px;
+        color: #ff5f1f;
+        font-size: 16px;
+        font-weight: bold;
+        opacity: 0.7;
+        animation: gentleBounce 2s infinite;
+        pointer-events: none;
+        z-index: 5;
+    }
+    
+    @keyframes gentleBounce {
+        0%, 100% {
+            transform: translateY(0);
+        }
+        50% {
+            transform: translateY(3px);
+        }
+    }
+    
+    /* Исчезаем при скролле */
+    .service-features-panel.scrolling::after {
+        opacity: 0;
+        transition: opacity 0.3s;
     }
 }
         
@@ -3349,7 +3387,26 @@
                 });
             }
         })();
+
+                // Прячем стрелочку при скролле
+document.addEventListener('DOMContentLoaded', function() {
+    const panels = document.querySelectorAll('.service-features-panel');
+    
+    panels.forEach(panel => {
+        panel.addEventListener('scroll', function() {
+            this.classList.add('scrolling');
+            
+            // Убираем класс через небольшую задержку после остановки скролла
+            clearTimeout(this.scrollTimeout);
+            this.scrollTimeout = setTimeout(() => {
+                this.classList.remove('scrolling');
+            }, 500);
+        });
+    });
+});
+        
     </script>
 </body>
 </html>
+
 
