@@ -2095,6 +2095,34 @@
                 padding: 12px 25px;
             }
         }
+
+        /* ===== ИСПРАВЛЕНИЕ ДЛЯ МОБИЛЬНОЙ ВЕРСИИ (ФУНДАМЕНТ) ===== */
+@media (max-width: 900px) {
+    .service-swiper .swiper-slide {
+        overflow-y: auto;
+        max-height: 500px;
+    }
+    
+    .service-features-panel {
+        max-height: 400px;
+        overflow-y: auto;
+    }
+    
+    /* Стилизация скроллбара (опционально) */
+    .service-features-panel::-webkit-scrollbar {
+        width: 4px;
+    }
+    
+    .service-features-panel::-webkit-scrollbar-track {
+        background: rgba(255, 95, 31, 0.1);
+    }
+    
+    .service-features-panel::-webkit-scrollbar-thumb {
+        background: #ff5f1f;
+        border-radius: 4px;
+    }
+}
+        
     </style>
 </head>
 <body>
@@ -3324,3 +3352,4 @@
     </script>
 </body>
 </html>
+
